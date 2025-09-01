@@ -1,0 +1,18 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "160.25.232.205",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "pbl66",
+            "database": "pbl6",
+            "username": "devuser",
+            "password": "StrongPassword123!"
+        }
+    ]
+}

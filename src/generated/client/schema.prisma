@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./src/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(50)
+  description String?  @db.Text
+  created_at  DateTime @default(now())
+
+  products Product[]
+}
+
+enum Product_Status {
+  active
+  inactive
+}
+
+model Product {
+  id             Int            @id @default(autoincrement())
+  name           String
+  description    String?        @db.Text
+  price          Decimal        @db.Decimal(10, 2)
+  sale_price     Decimal?       @db.Decimal(10, 2)
+  category_id    Int
+  image_url      String?        @db.VarChar(500)
+  stock_quantity Int            @default(0)
+  material       String?        @db.VarChar(500)
+  color          String?        @db.VarChar(50)
+  dimensions     String?        @db.VarChar(100)
+  status         Product_Status @default(active)
+  created_at     DateTime       @default(now())
+
+  category      Category      @relation(fields: [category_id], references: [id])
+  order_details OrderDetail[]
+}
+
+model Customer {
+  id         Int      @id @default(autoincrement())
+  full_name  String
+  email      String   @unique
+  password   String   @db.VarChar(255)
+  phone      String?  @db.VarChar(20)
+  address    String?  @db.Text
+  created_at DateTime @default(now())
+
+  orders Order[]
+}
+
+enum Order_Status {
+  pending
+  confirmed
+  shipping
+  completed
+  cancelled
+}
+
+model Order {
+  id               Int          @id @default(autoincrement())
+  order_number     String       @unique
+  customer_id      Int
+  order_date       DateTime     @default(now())
+  total_amount     Decimal      @db.Decimal(12, 2)
+  status           Order_Status @default(pending)
+  shipping_address String       @db.Text
+  phone            String       @db.VarChar(20)
+  notes            String?      @db.Text
+
+  order_details OrderDetail[]
+
+  customer Customer @relation(fields: [customer_id], references: [id])
+}
+
+model OrderDetail {
+  id          Int     @id @default(autoincrement())
+  order_id    Int
+  product_id  Int
+  quantity    Int
+  unit_price  Decimal @db.Decimal(10, 2)
+  total_price Decimal @db.Decimal(10, 2)
+
+  order   Order   @relation(fields: [order_id], references: [id])
+  product Product @relation(fields: [product_id], references: [id])
+
+  @@unique([order_id, product_id])
+}
+
+model Admin {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique @db.VarChar(50)
+  password   String   @db.VarChar(255)
+  full_name  String   @db.VarChar(100)
+  email      String   @unique @db.VarChar(100)
+  created_at DateTime @default(now())
+}
