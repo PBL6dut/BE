@@ -8,9 +8,9 @@ const requireAuth = authMiddleware.checkLogin
 const { validateUpdateCustomer } = require('../validations/user.validation')
 
 router.use(requireAuth)
-router.get('/customer/list', userController.getAllCustomers);
-router.get('/customer/detail/:id', userController.getCustomerById);
-router.put('/customer/update/:id', validateUpdateCustomer, userController.updateCustomer);
-router.delete('/customer/delete/:id', userController.deleteCustomer);
+router.get('/customers/', userController.getAllCustomers);
+router.get('/customers/:id', userController.getCustomerById);
+router.put('/customers/:id', validateUpdateCustomer, userController.updateCustomer);
+router.delete('/customers/:id', userController.deleteCustomer);
 
 module.exports = router;

@@ -5,8 +5,8 @@ const authMiddleware = require('../middlewares/auth.middleware')
 
 const requireAuth = authMiddleware.checkLogin
 router.use(requireAuth)
-router.get('/list', orderController.getAllOrders);
-router.get('/detail/:id', orderController.getOrderById);
+router.get('/', orderController.getAllOrders);
+router.get('/:id', orderController.getOrderById);
 router.get('/customer/:customer_id', orderController.getOrdersByCustomer);
 
 module.exports = router;

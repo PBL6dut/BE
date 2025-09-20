@@ -28,7 +28,7 @@ const customerSchema = Joi.object({
 });
 
 const validateCreateCustomer = (req, res, next) => {
-  const { data } = req.body;
+  const data = req.body;
 
   const { errors } = customerSchema.validate(data, { abortEarly: false });
   if (errors) {
@@ -39,7 +39,7 @@ const validateCreateCustomer = (req, res, next) => {
 };
 
 const validateUpdateCustomer = (req, res, next) => {
-  const { data } = req.body;
+  const data = req.body;
 
   const dataKeys = Object.keys(data);
   const schemaKeys = Array.from(customerSchema._ids._byKey.keys());
