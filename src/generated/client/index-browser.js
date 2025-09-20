@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.15.0
- * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
+ * Prisma Client JS version: 6.16.1
+ * Query Engine version: 1c57fdcd7e44b29b9313256c76699e91c3ac3c43
  */
 Prisma.prismaVersion = {
-  client: "6.15.0",
-  engine: "85179d7826409ee107a6ba334b5e305ae3fba9fb"
+  client: "6.16.1",
+  engine: "1c57fdcd7e44b29b9313256c76699e91c3ac3c43"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -127,6 +127,12 @@ exports.Prisma.CategoryScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.Product_ImageScalarFieldEnum = {
+  id: 'id',
+  product_id: 'product_id',
+  url: 'url'
+};
+
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -134,13 +140,13 @@ exports.Prisma.ProductScalarFieldEnum = {
   price: 'price',
   sale_price: 'sale_price',
   category_id: 'category_id',
-  image_url: 'image_url',
   stock_quantity: 'stock_quantity',
   material: 'material',
   color: 'color',
   dimensions: 'dimensions',
   status: 'status',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.CustomerScalarFieldEnum = {
@@ -150,7 +156,8 @@ exports.Prisma.CustomerScalarFieldEnum = {
   password: 'password',
   phone: 'phone',
   address: 'address',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -159,10 +166,18 @@ exports.Prisma.OrderScalarFieldEnum = {
   customer_id: 'customer_id',
   order_date: 'order_date',
   total_amount: 'total_amount',
+  shipping_fee: 'shipping_fee',
   status: 'status',
+  payment_method: 'payment_method',
+  payment_status: 'payment_status',
+  paid_at: 'paid_at',
+  shipping_method: 'shipping_method',
   shipping_address: 'shipping_address',
   phone: 'phone',
-  notes: 'notes'
+  expected_delivery_date: 'expected_delivery_date',
+  notes: 'notes',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.OrderDetailScalarFieldEnum = {
@@ -198,10 +213,13 @@ exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
   description: 'description'
 };
 
+exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
+  url: 'url'
+};
+
 exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
-  image_url: 'image_url',
   material: 'material',
   color: 'color',
   dimensions: 'dimensions'
@@ -241,8 +259,32 @@ exports.Order_Status = exports.$Enums.Order_Status = {
   cancelled: 'cancelled'
 };
 
+exports.Payment_Method = exports.$Enums.Payment_Method = {
+  cash_on_delivery: 'cash_on_delivery',
+  bank_transfer: 'bank_transfer',
+  credit_card: 'credit_card',
+  e_wallet: 'e_wallet',
+  installment: 'installment'
+};
+
+exports.Payment_Status = exports.$Enums.Payment_Status = {
+  pending: 'pending',
+  paid: 'paid',
+  failed: 'failed',
+  refunded: 'refunded'
+};
+
+exports.Shipping_Method = exports.$Enums.Shipping_Method = {
+  standard_delivery: 'standard_delivery',
+  express_delivery: 'express_delivery',
+  same_day_delivery: 'same_day_delivery',
+  pickup_at_store: 'pickup_at_store',
+  installation_service: 'installation_service'
+};
+
 exports.Prisma.ModelName = {
   Category: 'Category',
+  Product_Image: 'Product_Image',
   Product: 'Product',
   Customer: 'Customer',
   Order: 'Order',
