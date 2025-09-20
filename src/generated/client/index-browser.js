@@ -127,32 +127,12 @@ exports.Prisma.CategoryScalarFieldEnum = {
   created_at: 'created_at'
 };
 
-exports.Prisma.Product_ImageScalarFieldEnum = {
-  id: 'id',
-  product_id: 'product_id',
-  url: 'url'
-};
-
-exports.Prisma.ProductScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  price: 'price',
-  sale_price: 'sale_price',
-  category_id: 'category_id',
-  stock_quantity: 'stock_quantity',
-  material: 'material',
-  color: 'color',
-  dimensions: 'dimensions',
-  status: 'status',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
 exports.Prisma.CustomerScalarFieldEnum = {
   id: 'id',
   full_name: 'full_name',
   email: 'email',
+  google_id: 'google_id',
+  facebook_id: 'facebook_id',
   password: 'password',
   phone: 'phone',
   address: 'address',
@@ -189,9 +169,33 @@ exports.Prisma.OrderDetailScalarFieldEnum = {
   total_price: 'total_price'
 };
 
+exports.Prisma.Product_ImageScalarFieldEnum = {
+  id: 'id',
+  product_id: 'product_id',
+  url: 'url'
+};
+
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  sale_price: 'sale_price',
+  category_id: 'category_id',
+  stock_quantity: 'stock_quantity',
+  material: 'material',
+  color: 'color',
+  dimensions: 'dimensions',
+  status: 'status',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.AdminScalarFieldEnum = {
   id: 'id',
   username: 'username',
+  google_id: 'google_id',
+  facebook_id: 'facebook_id',
   password: 'password',
   full_name: 'full_name',
   email: 'email',
@@ -213,21 +217,11 @@ exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
   description: 'description'
 };
 
-exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
-  url: 'url'
-};
-
-exports.Prisma.ProductOrderByRelevanceFieldEnum = {
-  name: 'name',
-  description: 'description',
-  material: 'material',
-  color: 'color',
-  dimensions: 'dimensions'
-};
-
 exports.Prisma.CustomerOrderByRelevanceFieldEnum = {
   full_name: 'full_name',
   email: 'email',
+  google_id: 'google_id',
+  facebook_id: 'facebook_id',
   password: 'password',
   phone: 'phone',
   address: 'address'
@@ -240,17 +234,26 @@ exports.Prisma.OrderOrderByRelevanceFieldEnum = {
   notes: 'notes'
 };
 
+exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
+  url: 'url'
+};
+
+exports.Prisma.ProductOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description',
+  material: 'material',
+  color: 'color',
+  dimensions: 'dimensions'
+};
+
 exports.Prisma.AdminOrderByRelevanceFieldEnum = {
   username: 'username',
+  google_id: 'google_id',
+  facebook_id: 'facebook_id',
   password: 'password',
   full_name: 'full_name',
   email: 'email'
 };
-exports.Product_Status = exports.$Enums.Product_Status = {
-  active: 'active',
-  inactive: 'inactive'
-};
-
 exports.Order_Status = exports.$Enums.Order_Status = {
   pending: 'pending',
   confirmed: 'confirmed',
@@ -282,13 +285,18 @@ exports.Shipping_Method = exports.$Enums.Shipping_Method = {
   installation_service: 'installation_service'
 };
 
+exports.Product_Status = exports.$Enums.Product_Status = {
+  active: 'active',
+  inactive: 'inactive'
+};
+
 exports.Prisma.ModelName = {
   Category: 'Category',
-  Product_Image: 'Product_Image',
-  Product: 'Product',
   Customer: 'Customer',
   Order: 'Order',
   OrderDetail: 'OrderDetail',
+  Product_Image: 'Product_Image',
+  Product: 'Product',
   Admin: 'Admin'
 };
 
