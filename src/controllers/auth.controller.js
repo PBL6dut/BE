@@ -21,7 +21,7 @@ const createCustomerToken = (customer) => {
     { id: customer.id, email: customer.email, role: "customer" },
     CUSTOMER_SECRET_KEY,
     {
-      expiresIn: "1h",
+      expiresIn: "24h",
     }
   );
   return token;
@@ -64,10 +64,6 @@ const adminLogin = async (req, res) => {
 
 const createAdmin = async (req, res) => {
   const data = req.body;
-  const errors = await validateUser.validateAdmin(data);
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json({ errors });
-  }
   data.password = await bcrypt.hash(data.password, 10);
   const newAdmin = await userModel.createAdmin(data);
   res.json(newAdmin);
@@ -107,10 +103,6 @@ const customerLogin = async (req, res) => {
 
 const createCustomer = async (req, res) => {
   const data = req.body;
-  const errors = await validateUser.validateCustomer(data);
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json({ errors });
-  }
   data.password = await bcrypt.hash(data.password, 10);
   const newCustomer = await userModel.createCustomer(data);
   res.status(201).json(newCustomer);

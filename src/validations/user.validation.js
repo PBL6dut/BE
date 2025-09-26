@@ -34,7 +34,6 @@ const validateCreateCustomer = (req, res, next) => {
   if (errors) {
     return res.status(400).json({ errors: errors.map((err) => err.message) });
   }
-  
   next();
 };
 
