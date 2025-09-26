@@ -17,7 +17,7 @@ const checkAdminUsername = async (username) => {
 }
 
 const createAdmin = async (data) => {
-    return prisma.admin.create({
+    return await prisma.admin.create({
         data
     })
 }
@@ -71,7 +71,7 @@ const customerLogin = async (email, password) => {
 }
 
 const getAllCustomers = async () => {
-    return customers = prisma.customer.findMany({
+    return customers = await prisma.customer.findMany({
         include: {
             orders: true
         }
@@ -79,7 +79,7 @@ const getAllCustomers = async () => {
 }
 
 const getCustomerById = async (id) => {
-    return prisma.customer.findUnique({
+    return await prisma.customer.findUnique({
         where: { id },
         include: {
             orders: true
@@ -89,20 +89,20 @@ const getCustomerById = async (id) => {
 
 
 const createCustomer = async (data) => {
-    return prisma.customer.create({
+    return await prisma.customer.create({
         data
     })
 }
 
 const updateCustomer = async (id, data) => {
-    return prisma.customer.update({
+    return await prisma.customer.update({
         where: { id },
         data
     })
 }
 
 const deleteCustomer = async (id) => {
-    return prisma.customer.delete({
+    return await prisma.customer.delete({
         where: { id }
     })
 }

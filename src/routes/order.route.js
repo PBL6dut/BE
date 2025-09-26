@@ -7,6 +7,6 @@ const requireAuth = authMiddleware.checkLogin
 router.use(requireAuth)
 router.get('/', orderController.getAllOrders);
 router.get('/:id', orderController.getOrderById);
-router.get('/customer/:customer_id', orderController.getOrdersByCustomer);
+router.get('/customers/:customer_id', orderController.getOrdersByCustomer);
 
 module.exports = router;

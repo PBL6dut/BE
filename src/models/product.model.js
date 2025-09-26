@@ -1,30 +1,64 @@
 const { PrismaClient } = require("../generated/client");
+const formatImageUrl = require("../utils/formatImageUrl");
 const { deleteFile } = require("../utils/imageStorage");
 const prisma = new PrismaClient();
 
 const getAllProducts = async () => {
-  return prisma.product.findMany({
+  const products = await prisma.product.findMany({
     include: {
       order_details: true,
       category: true,
-      images: true,
+      images: { select: { url: true } },
     },
   });
+  products &&
+    products.forEach((product) => {
+      product.images = product.images.map((image) => formatImageUrl(image.url));
+    });
+  return products;
+};
+
+const getProductsPagination = async (page, pageSize) => {
+  const skip = (page - 1) * pageSize;
+  const take = pageSize;
+  const pages = Math.ceil((await prisma.product.count()) / pageSize);
+  if (page > pages) {
+    return [];
+  }
+  const products = await prisma.product.findMany({
+    skip,
+    take,
+    include: {
+      category: {
+        select: { name: true },
+      },
+      images: { select: { url: true } },
+    },
+  });
+  products &&
+    products.forEach((product) => {
+      product.images = product.images.map((image) => formatImageUrl(image.url));
+    });
+  const result = { currentPage: page, totalPages: pages, products };
+  return result;
 };
 
 const getProductById = async (id) => {
-  return prisma.product.findUnique({
+  const product =await prisma.product.findUnique({
     where: { id },
     include: {
       order_details: true,
       category: true,
-      images: true,
+      images: { select: { url: true } },
     },
   });
+  product &&
+    (product.images = product.images.map((image) => formatImageUrl(image.url)));
+  return product;
 };
 
 const getAllCategories = async () => {
-  return prisma.category.findMany();
+  return await prisma.category.findMany();
 };
 
 const SearchProducts = async (data) => {
@@ -32,7 +66,7 @@ const SearchProducts = async (data) => {
   if (keys.length === 0) {
     return getAllProducts();
   }
-  return prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where: {
       OR: keys.map((key) => {
         // Nếu là số, dùng equals, nếu là chuỗi, dùng contains
@@ -42,15 +76,20 @@ const SearchProducts = async (data) => {
       }),
     },
     include: {
-      images: true,
+      images: { select: { url: true } },
       category: true,
     },
   });
+  products &&
+    products.forEach((product) => {
+      product.images = product.images.map((image) => formatImageUrl(image.url));
+    });
+  return products
 };
 
 const createProduct = async (data) => {
   const { image_url, ...productData } = data;
-  return prisma.product.create({
+  return await prisma.product.create({
     data: {
       ...productData,
       images: {
@@ -79,7 +118,7 @@ const updateProduct = async (id, data) => {
   }
 
   // Update product và tạo lại ảnh mới
-  return prisma.product.update({
+  return await prisma.product.update({
     where: { id },
     data: {
       ...productData,
@@ -105,7 +144,7 @@ const deleteProduct = async (id) => {
     await prisma.product_Image.deleteMany({ where: { product_id: id } });
     await prisma.orderDetail.deleteMany({ where: { product_id: id } });
 
-    return prisma.product.delete({ where: { id } });
+    return await prisma.product.delete({ where: { id } });
   } catch (error) {
     return error;
   }
@@ -113,6 +152,7 @@ const deleteProduct = async (id) => {
 
 module.exports = {
   getAllProducts,
+  getProductsPagination,
   getProductById,
   getAllCategories,
   createProduct,

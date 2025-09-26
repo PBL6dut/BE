@@ -1,20 +1,21 @@
 const productModel = require("../models/product.model");
-const productValidate = require("../validations/product.validation");
 
 const getAllProducts = async (req, res) => {
-  const products = await productModel.getAllProducts();
-  products.forEach((product) => {
-    product.images = product.images.map((image) =>
-      image.url.replace(/\\/g, "/")
-    );
-  });
+  let products;
+
+  if (req.query.page && req.query.pageSize) {
+    const page = parseInt(req.query.page);
+    const pageSize = parseInt(req.query.pageSize);
+    products = await productModel.getProductsPagination(page, pageSize);
+  } else {
+    products = await productModel.getAllProducts();
+  }
   res.json(products);
 };
 
 const getProductById = async (req, res) => {
   const productId = parseInt(req.params.id);
   const product = await productModel.getProductById(productId);
-  product && (product.images = product.images.map((image) => image.url.replace(/\\/g, "/")));
   res.json(product);
 };
 
@@ -30,13 +31,8 @@ const SearchProducts = async (req, res) => {
   data.sale_price && (data.sale_price = parseFloat(data.sale_price));
   data.stock_quantity && (data.stock_quantity = parseInt(data.stock_quantity));
   data.category_id && (data.category_id = parseInt(data.category_id));
-  
+
   const products = await productModel.SearchProducts(data);
-  products.forEach((product) => {
-    product.images = product.images.map((image) =>
-      image.url.replace(/\\/g, "/")
-    );
-  });
   res.json(products);
 };
 
@@ -65,7 +61,6 @@ const updateProduct = async (req, res) => {
   // Sửa dòng này để tránh lỗi khi req.files là undefined
   const imageFiles =
     req.files && req.files["image_url"] ? req.files["image_url"] : [];
-
 
   data.image_url = imageFiles ? imageFiles.map((file) => file.path) : [];
 
