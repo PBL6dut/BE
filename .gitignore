@@ -1,1 +1,16 @@
+# Environment variables
+# Không bao giờ commit file .env vì nó chứa các thông tin nhạy cảm.
 .env
+
+# Dependencies
+# Thư mục chứa các package đã cài đặt.
+/node_modules
+
+# Logs
+# Các file log được tạo ra trong quá trình chạy ứng dụng.
+*.log
+
+# Editor directories
+# Cài đặt riêng của VS Code.
+.vscode/
+

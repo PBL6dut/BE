@@ -7,7 +7,9 @@ const getAllProducts = async () => {
   const products = await prisma.product.findMany({
     include: {
       order_details: true,
-      category: true,
+      category: {
+        select: { id: true, name: true },
+      },
       images: { select: { url: true } },
     },
   });
@@ -30,7 +32,7 @@ const getProductsPagination = async (page, pageSize) => {
     take,
     include: {
       category: {
-        select: { name: true },
+        select: { id: true, name: true },
       },
       images: { select: { url: true } },
     },
@@ -44,11 +46,11 @@ const getProductsPagination = async (page, pageSize) => {
 };
 
 const getProductById = async (id) => {
-  const product =await prisma.product.findUnique({
+  const product = await prisma.product.findUnique({
     where: { id },
     include: {
       order_details: true,
-      category: true,
+      category: {select: { id: true, name: true }},
       images: { select: { url: true } },
     },
   });
@@ -58,7 +60,9 @@ const getProductById = async (id) => {
 };
 
 const getAllCategories = async () => {
-  return await prisma.category.findMany();
+  return await prisma.category.findMany({
+    select: { id: true, name: true },
+  });
 };
 
 const SearchProducts = async (data) => {
@@ -68,23 +72,25 @@ const SearchProducts = async (data) => {
   }
   const products = await prisma.product.findMany({
     where: {
-      OR: keys.map((key) => {
-        // Nếu là số, dùng equals, nếu là chuỗi, dùng contains
-        return typeof data[key] === "number"
-          ? { [key]: { equals: data[key] } }
-          : { [key]: { contains: data[key] } };
-      }),
+      // OR: keys.map((key) => {
+      //   // Nếu là số, dùng equals, nếu là chuỗi, dùng contains
+      //   return typeof data[key] === "number"
+      //     ? { [key]: { equals: data[key] } }
+      //     : { [key]: { contains: data[key] } };
+      // }),
+
+      name: { contains: data || "" },
     },
     include: {
       images: { select: { url: true } },
-      category: true,
+      category: { select: { id: true, name: true } },
     },
   });
   products &&
     products.forEach((product) => {
       product.images = product.images.map((image) => formatImageUrl(image.url));
     });
-  return products
+  return products;
 };
 
 const createProduct = async (data) => {
@@ -108,13 +114,15 @@ const updateProduct = async (id, data) => {
       where: { product_id: id },
     });
 
-    for (const image of oldImages) {
-      await deleteFile(image.url.replace(/\\/g, "/"));
-    }
+    if (oldImages.length > 0) {
+      for (const image of oldImages) {
+        await deleteFile(image.url.replace(/\\/g, "/"));
+      }
 
-    await prisma.product_Image.deleteMany({
-      where: { product_id: id },
-    });
+      await prisma.product_Image.deleteMany({
+        where: { product_id: id },
+      });
+    }
   }
 
   // Update product và tạo lại ảnh mới

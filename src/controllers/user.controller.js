@@ -1,6 +1,8 @@
 const userModel = require("../models/user.model");
 const validateUser = require("../validations/user.validation");
 const bcrypt = require("bcrypt");
+const { successResponse, errorResponse } = require("../utils/response");
+const { createCustomerToken } = require("./auth.controller");
 
 const checkCustomerAuth = (req, customerId) => {
   const { id } = req.user;
@@ -9,55 +11,51 @@ const checkCustomerAuth = (req, customerId) => {
 
 const getAllCustomers = async (req, res) => {
   const customers = await userModel.getAllCustomers();
-  res.json(customers);
+  return successResponse(res, "Get all customers success", customers);
 };
 
 const getCustomerById = async (req, res) => {
   const customerId = parseInt(req.params.id);
   const { role } = req.user;
   if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
-    return res.status(403).json({ error: "Forbidden: Access is denied" });
+    return errorResponse(res, "Forbidden", "Access is denied", null, 403);
   }
   const customer = await userModel.getCustomerById(customerId);
-  res.json(customer);
+  return successResponse(res, "Get customer success", customer);
 };
 
 const createCustomer = async (req, res) => {
   const customerData = req.body;
 
-  const errors = validateUser(customerData);
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json({ errors });
-  }
-
   const emailExists = await userModel.checkCustomerEmail(customerData.email);
   if (emailExists) {
-    return res.status(400).json({ errors: { email: "Email already exists" } });
+    return errorResponse(res, "Validation failed", "Email already exists", 400);
   }
 
   const newCustomer = await userModel.createCustomer(customerData);
-  res.json(newCustomer);
+  const token = await createCustomerToken(newCustomer);
+  return successResponse(res, "Customer created successfully", { customer: newCustomer, token }, 201);
 };
 
 const updateCustomer = async (req, res) => {
   const customerId = parseInt(req.params.id);
   const { role } = req.user;
   if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
-    return res.status(403).json({ error: "Forbidden: Access is denied" });
+    return errorResponse(res, "Forbidden", "Access is denied", null, 403);
   }
 
   const customerData = req.body;
 
   const emailExists = await userModel.checkCustomerEmail(customerData.email);
   if (emailExists) {
-    return res.status(400).json({ errors: { email: "Email already exists" } });
+    return errorResponse(res, "Validation failed", "Email already exists", 400);
   }
 
   const updatedCustomer = await userModel.updateCustomer(
     customerId,
     customerData
   );
-  res.json(updatedCustomer);
+  return successResponse(res, "Customer updated successfully", updatedCustomer);
 };
 
 const deleteCustomer = async (req, res) => {
@@ -65,11 +63,11 @@ const deleteCustomer = async (req, res) => {
   const { role } = req.user;
 
   if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
-    return res.status(403).json({ error: "Forbidden: Access is denied" });
+    return errorResponse(res, "Forbidden", "Access is denied", null, 403);
   }
 
   await userModel.deleteCustomer(customerId);
-  res.json({ message: "Customer deleted successfully" });
+  return successResponse(res, "Customer deleted successfully");
 };
 
 module.exports = {

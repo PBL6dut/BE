@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const { errorResponse } = require("../utils/response");
 
 const ValidateFiles = (files) => {
   const errors = [];
@@ -36,24 +37,30 @@ const schema = Joi.object({
   stock_quantity: Joi.number().integer().min(0).required(),
   material: Joi.string().max(100).optional(),
   color: Joi.string().max(50).optional(),
-  dimensions: Joi.string().max(50).optional(),
+  height: Joi.number().positive().optional(),
+  width: Joi.number().positive().optional(),
+  length: Joi.number().positive().optional(),
+  weight: Joi.number().positive().optional(),
   image_url: Joi.any().optional()
 });
 
 const validateCreateProduct = (req, res, next) => {
   const data = req.body;
   const files = req.files && req.files["image_url"] ? req.files["image_url"] : [];
+  if (!data || !files) {
+    return errorResponse(res, "Validation failed", "No data provided", 400);
+  }
 
   const { error } = schema.validate(data, { abortEarly: false });
   const fileErrors = ValidateFiles(files);
 
   // Gộp lỗi
   const errors = [];
-  if (error) errors.push(...error.details.map((err) => err.message));
+  if (error) errors.push(...error.details.map((err) => err.message.replace(/\"/g, "")));
   if (fileErrors.length > 0) errors.push(...fileErrors);
 
   if (errors.length > 0) {
-    return res.status(400).json({ errors });
+    return errorResponse(res, "Validation failed", errors, 400);
   }
   next();
 };
@@ -78,7 +85,7 @@ const validateUpdateProduct = (req, res, next) => {
   }
 
   if (errors.length > 0) {
-    return res.status(400).json({ errors });
+    return errorResponse(res, "Validation failed", errors, 400);
   }
   next();
 };
@@ -104,8 +111,6 @@ const validateUpdateProduct = (req, res, next) => {
 //   }
 //   return errors;
 // };
-
-
 
 module.exports = {
   validateCreateProduct,

@@ -3,15 +3,16 @@ const {
   checkCustomerEmail,
   checkCustomerPhone,
 } = require("../models/user.model");
+const { errorResponse } = require("../utils/response");
 
 const customerSchema = Joi.object({
   full_name: Joi.string().min(2).max(100).required(),
   email: Joi.string()
     .email()
     .required()
-    .custom((value, helpers) => {
-      if (checkCustomerEmail(value)) {
-        return helpers.error("email already exists");
+    .external(async (value, helpers) => {
+      if (await checkCustomerEmail(value)) {
+        return helpers.message("email already exists");
       }
       return value;
     }),
@@ -19,27 +20,36 @@ const customerSchema = Joi.object({
   phone: Joi.string()
     .min(10)
     .max(11)
-    .custom((value, helpers) => {
-      if (checkCustomerPhone(value)) {
-        return helpers.error("phone number already exists");
+    .required()
+    .external(async (value, helpers) => {
+      if (await checkCustomerPhone(value)) {
+        return helpers.message("phone number already exists");
       }
+      return value;
     }),
   address: Joi.string().max(200),
 });
 
-const validateCreateCustomer = (req, res, next) => {
+const validateCreateCustomer = async (req, res, next) => {
   const data = req.body;
-
-  const { errors } = customerSchema.validate(data, { abortEarly: false });
-  if (errors) {
-    return res.status(400).json({ errors: errors.map((err) => err.message) });
+  if(!data){
+    return errorResponse(res, "Validation failed", "No data provided", 400);
   }
-  next();
+
+  try {
+    await customerSchema.validateAsync(data, { abortEarly: false });
+    next();
+  } catch (error) {
+    console.log(error)
+    return errorResponse(res, "Validation failed", error.details.map((err) => err.message.replace(/\"/g, "")), 400);
+  }
 };
 
-const validateUpdateCustomer = (req, res, next) => {
+const validateUpdateCustomer = async (req, res, next) => {
   const data = req.body;
-
+  if(!data){
+    return errorResponse(res, "Validation failed", "No data provided", 400);
+  }
   const dataKeys = Object.keys(data);
   const schemaKeys = Array.from(customerSchema._ids._byKey.keys());
   const unavailableKeys = schemaKeys.filter((key) => !dataKeys.includes(key));
@@ -47,13 +57,13 @@ const validateUpdateCustomer = (req, res, next) => {
   const updateSchema = customerSchema.fork(unavailableKeys, (field) =>
     field.optional()
   );
-
-  const { errors } = updateSchema.validate(data, { abortEarly: false });
-  if (errors) {
-    return res.status(400).json({ errors: errors.map((err) => err.message) });
+  
+  try {
+    await updateSchema.validateAsync(data, { abortEarly: false });
+    next();
+  } catch (error) {
+    return errorResponse(res, "Validation failed", error.details.map((err) => err.message.replace(/\"/g, "")), 400);
   }
-
-  next();
 };
 
 module.exports = {

@@ -25,7 +25,7 @@ model Customer{
     google_id String? @unique
     facebook_id String? @unique
     password String @db.VarChar(255)
-    phone String? @db.VarChar(20)
+    phone String? @db.VarChar(20) @unique
     address String? @db.Text
     created_at DateTime @default(now())
     updated_at DateTime? @updatedAt
@@ -126,9 +126,12 @@ model Product{
     sale_price Decimal? @db.Decimal(10, 2)
     category_id Int
     stock_quantity Int @default(0)
-    material String? @db.VarChar(500)
-    color String? @db.VarChar(50)
-    dimensions String? @db.VarChar(100)
+    weight Decimal? @db.Decimal(10, 2) // Add weight in kg
+    length Decimal? @db.Decimal(10, 2) // Add length in cm
+    width Decimal? @db.Decimal(10, 2)  // Add width in cm
+    height Decimal? @db.Decimal(10, 2) // Add height in cm
+    material String? @db.VarChar(500) 
+    color String? @db.VarChar(50) 
     status Product_Status @default(active)
     created_at DateTime @default(now())
     updated_at DateTime? @updatedAt
