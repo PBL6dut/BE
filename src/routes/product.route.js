@@ -3,8 +3,7 @@ const router = express.Router()
 const productController = require('../controllers/product.controller')
 const upload = require('../utils/imageStorage');
 const authMiddleware = require('../middlewares/auth.middleware')
-const productValidate = require('../validations/product.validation')
-const { checkEmptyData } = require('../middlewares/checkEmptyData.middleware');
+const productValidate = require('../validations/product/product.validation')
 
 const requireAuth = authMiddleware.checkLogin
 const validateCreateProduct = productValidate.validateCreateProduct
