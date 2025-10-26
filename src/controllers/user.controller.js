@@ -1,8 +1,10 @@
 const userModel = require("../models/user.model");
-const validateUser = require("../validations/user.validation");
+const validateUser = require("../validations/user/user.validation");
 const bcrypt = require("bcrypt");
 const { successResponse, errorResponse } = require("../utils/response");
 const { createCustomerToken } = require("./auth.controller");
+const { default: ApiError } = require("../utils/ApiError");
+const { StatusCodes } = require("http-status-codes");
 
 const checkCustomerAuth = (req, customerId) => {
   const { id } = req.user;
@@ -14,66 +16,101 @@ const getAllCustomers = async (req, res) => {
   return successResponse(res, "Get all customers success", customers);
 };
 
-const getCustomerById = async (req, res) => {
-  const customerId = parseInt(req.params.id);
-  const { role } = req.user;
-  if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
-    return errorResponse(res, "Forbidden", "Access is denied", null, 403);
+const getCustomerById = async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Get customer failed",
+        "No customer ID provided"
+      );
+    }
+
+    const customerId = parseInt(req.params.id);
+    const { role } = req.user;
+
+    if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
+      throw new ApiError(
+        StatusCodes.FORBIDDEN,
+        "Forbidden",
+        "Access is denied"
+      );
+    }
+
+    const customer = await userModel.getCustomerById(customerId);
+    return successResponse(res, "Get customer success", customer);
+  } catch (error) {
+    next(error);
   }
-  const customer = await userModel.getCustomerById(customerId);
-  return successResponse(res, "Get customer success", customer);
 };
 
-const createCustomer = async (req, res) => {
-  const customerData = req.body;
+const updateCustomer = async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Update customer failed",
+        "No customer ID provided"
+      );
+    }
 
-  const emailExists = await userModel.checkCustomerEmail(customerData.email);
-  if (emailExists) {
-    return errorResponse(res, "Validation failed", "Email already exists", 400);
+    const customerId = parseInt(req.params.id);
+    const { role } = req.user;
+    if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
+      throw new ApiError(
+        StatusCodes.FORBIDDEN,
+        "Update customer failed",
+        "Access is denied"
+      );
+    }
+
+    const customerData = req.body;
+
+    const updatedCustomer = await userModel.updateCustomer(
+      customerId,
+      customerData
+    );
+    return successResponse(
+      res,
+      "Customer updated successfully",
+      updatedCustomer
+    );
+  } catch (error) {
+    next(error);
   }
-
-  const newCustomer = await userModel.createCustomer(customerData);
-  const token = await createCustomerToken(newCustomer);
-  return successResponse(res, "Customer created successfully", { customer: newCustomer, token }, 201);
-};
-
-const updateCustomer = async (req, res) => {
-  const customerId = parseInt(req.params.id);
-  const { role } = req.user;
-  if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
-    return errorResponse(res, "Forbidden", "Access is denied", null, 403);
-  }
-
-  const customerData = req.body;
-
-  const emailExists = await userModel.checkCustomerEmail(customerData.email);
-  if (emailExists) {
-    return errorResponse(res, "Validation failed", "Email already exists", 400);
-  }
-
-  const updatedCustomer = await userModel.updateCustomer(
-    customerId,
-    customerData
-  );
-  return successResponse(res, "Customer updated successfully", updatedCustomer);
 };
 
 const deleteCustomer = async (req, res) => {
-  const customerId = parseInt(req.params.id);
-  const { role } = req.user;
+  try {
+    const customerId = parseInt(req.params.id);
+    if (!customerId) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Delete customer failed",
+        "No customer ID provided"
+      );
+    }
 
-  if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
-    return errorResponse(res, "Forbidden", "Access is denied", null, 403);
+    const { role } = req.user;
+
+    if (role !== "admin" && !checkCustomerAuth(req, customerId)) {
+      throw new ApiError(
+        StatusCodes.FORBIDDEN,
+        "Delete customer failed",
+        "Access is denied"
+      );
+    }
+
+    await userModel.deleteCustomer(customerId);
+    return successResponse(res, "Customer deleted successfully");
+  } catch (error) {
+    next(error);
   }
-
-  await userModel.deleteCustomer(customerId);
-  return successResponse(res, "Customer deleted successfully");
 };
 
 module.exports = {
   getAllCustomers,
   getCustomerById,
-  createCustomer,
   updateCustomer,
   deleteCustomer,
 };
