@@ -94,6 +94,7 @@ const SearchProducts = async (data) => {
   }
 
   const products = await prisma.product.findMany({
+    take: 20,
     where: {
       // OR: keys.map((key) => {
       //   // Nếu là số, dùng equals, nếu là chuỗi, dùng contains
