@@ -55,6 +55,15 @@ const schema = Joi.object({
     "string.max": "Địa chỉ giao hàng không được vượt quá {#limit} ký tự",
     "any.required": "Địa chỉ giao hàng là bắt buộc",
   }),
+  to_district_id: Joi.number().integer().required().messages({
+    "number.base": "ID quận/huyện phải là một số",
+    "number.integer": "ID quận/huyện phải là một số nguyên",
+    "any.required": "ID quận/huyện là bắt buộc",
+  }),
+  to_ward_code: Joi.string().required().messages({
+    "string.base": "Mã phường/xã phải là một chuỗi ký tự",
+    "any.required": "Mã phường/xã là bắt buộc",
+  }),
   phone: Joi.string()
     .pattern(/^[0-9+\-() ]{7,20}$/)
     .required()
