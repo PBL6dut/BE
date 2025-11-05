@@ -159,18 +159,21 @@ const updateProduct = async (id, data) => {
   }
 
   const { image_url, ...productData } = data;
+  console.log(image_url);
 
   const { category_id } = productData;
-  const categoryExists = await prisma.category.findUnique({
-    where: { id: category_id },
-  });
+  if (category_id) {
+    const categoryExists = await prisma.category.findUnique({
+      where: { id: category_id },
+    });
 
-  if (!categoryExists) {
-    throw new ApiError(
-      StatusCodes.UNPROCESSABLE_ENTITY,
-      "Update product failed",
-      "Category does not exist"
-    );
+    if (!categoryExists) {
+      throw new ApiError(
+        StatusCodes.UNPROCESSABLE_ENTITY,
+        "Update product failed",
+        "Category does not exist"
+      );
+    }
   }
 
   // Xóa toàn bộ ảnh cũ

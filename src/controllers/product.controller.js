@@ -89,13 +89,14 @@ const SearchProducts = async (req, res, next) => {
 const createProduct = async (req, res, next) => {
   try {
     const data = req.body || [];
+    console.log(data);
     data.price && (data.price = parseFloat(data.price));
     data.sale_price && (data.sale_price = parseFloat(data.sale_price));
     data.stock_quantity &&
       (data.stock_quantity = parseInt(data.stock_quantity));
     data.category_id && (data.category_id = parseInt(data.category_id));
 
-    const imageFiles = req.files["image_url"] || [];
+    const imageFiles = req.files || [];
 
     data.image_url = imageFiles ? imageFiles.map((file) => file.path) : [];
 
@@ -134,7 +135,10 @@ const updateProduct = async (req, res, next) => {
     const productId = parseInt(req.params.id);
 
     const data = req.body || {};
-    if (Object.keys(data).length === 0) {
+    if (
+      Object.keys(data).length === 0 &&
+      (!req.files || Object.keys(req.files).length === 0)
+    ) {
       throw new ApiError(
         StatusCodes.BAD_REQUEST,
         "Update product failed",
@@ -149,8 +153,8 @@ const updateProduct = async (req, res, next) => {
     data.category_id && (data.category_id = parseInt(data.category_id));
 
     // Sửa dòng này để tránh lỗi khi req.files là undefined
-    const imageFiles =
-      req.files && req.files["image_url"] ? req.files["image_url"] : [];
+    const imageFiles = req.files || []
+    console.log(imageFiles)
 
     data.image_url = imageFiles ? imageFiles.map((file) => file.path) : [];
 

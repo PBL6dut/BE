@@ -33,8 +33,7 @@ const ValidateFiles = (files) => {
 
 const validateCreateProduct = (req, res, next) => {
   const data = req.body;
-  const files =
-    req.files && req.files["image_url"] ? req.files["image_url"] : [];
+  const files = req.files || [];
   if (!data || !files) {
     return next(
       new ApiError(
@@ -80,7 +79,7 @@ const validateUpdateProduct = (req, res, next) => {
     const updateSchema = schema.fork(unavailableKeys, (field) =>
       field.optional()
     );
-    
+
     const { error } = updateSchema.validate(data, { abortEarly: false });
     if (error) errors.push(...error.details.map((err) => err.message));
   }
