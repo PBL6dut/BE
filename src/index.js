@@ -1,3 +1,10 @@
+// src/index.js
+
+// =======================================================
+// DÒNG BỔ SUNG: TẢI BIẾN MÔI TRƯỜNG TRƯỚC HẾT
+require('dotenv').config(); 
+// =======================================================
+
 const express = require('express')
 const app = express()
 const port = 3000
