@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const authController = require('../controllers/auth.controller')
-const validateCustomer = require('../validations/user.validation')
-const { validateCreateCustomer } = require('../validations/user.validation')
+const validateCustomer = require('../validations/user/user.validation')
+const { validateCreateCustomer } = require('../validations/user/user.validation')
 
 router.post('/admin/verify-token', authController.verifyAdminToken);
 router.post('/admin/login', authController.adminLogin);

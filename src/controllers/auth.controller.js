@@ -2,8 +2,9 @@ const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY;
 const CUSTOMER_SECRET_KEY = process.env.CUSTOMER_SECRET_KEY;
-const validateUser = require("../validations/user.validation");
-const bcrypt = require("bcrypt");
+const { successResponse, errorResponse } = require("../utils/response");
+const { default: ApiError } = require("../utils/ApiError");
+const { StatusCodes } = require("http-status-codes");
 
 const createAdminToken = (admin) => {
   const token = jwt.sign(
@@ -27,85 +28,187 @@ const createCustomerToken = (customer) => {
   return token;
 };
 
-const verifyAdminToken = (req, res) => {
-  const { token } = req.body;
-
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized: No token provided" });
-  }
+const verifyAdminToken = (req, res, next) => {
   try {
+    if (!req.body) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Verification failed",
+        "No token provided"
+      );
+    }
+
+    const { token } = req.body;
+
     const decoded = jwt.verify(token, ADMIN_SECRET_KEY);
-    if (decoded) {
-      return res.status(200).json({ valid: true, admin: decoded });
-    } else {
-      return res.status(401).json({ error: "Unauthorized: Invalid token" });
-    }
+    return successResponse(res, "Verification successful", { token }, 200);
   } catch (error) {
-    console.error("Error during token verification:", error);
-    return res.status(401).json({ error: "Unauthorized: Invalid token" });
+    if (error.name === "TokenExpiredError") {
+      throw new ApiError(
+        StatusCodes.UNAUTHORIZED,
+        "Verification failed",
+        "Token has expired"
+      );
+    }
+    next(error);
   }
 };
 
-const adminLogin = async (req, res) => {
-  const data = req.body;
-  console.log(data);
-  const { email, password } = data;
-
-  const existingAdmin = await userModel.adminLogin(email, password);
-  if (!existingAdmin) {
-    return res.status(401).json({ message: "Invalid email or password" });
-  }
-
-  const token = createAdminToken(existingAdmin);
-  res
-    .status(200)
-    .json({ message: "Login successful", admin: existingAdmin, token });
-};
-
-const createAdmin = async (req, res) => {
-  const data = req.body;
-  data.password = await bcrypt.hash(data.password, 10);
-  const newAdmin = await userModel.createAdmin(data);
-  res.json(newAdmin);
-};
-
-const verifyCustomerToken = (req, res) => {
-  const { token } = req.body;
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized: No token provided" });
-  }
+const adminLogin = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, CUSTOMER_SECRET_KEY);
-    if (decoded) {
-      return res.status(200).json({ valid: true, customer: decoded });
-    } else {
-      return res.status(401).json({ error: "Unauthorized: Invalid token" });
+    if (!req.body) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Login failed",
+        "No data provided"
+      );
     }
+
+    const data = req.body;
+
+    const { email, password } = data;
+    if (!email || !password) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Login failed",
+        "Email and password are required"
+      );
+    }
+
+    const existingAdmin = await userModel.adminLogin(email, password);
+
+    const token = createAdminToken(existingAdmin);
+    return successResponse(
+      res,
+      "Login successful",
+      { admin: existingAdmin, token },
+      200
+    );
   } catch (error) {
-    console.error("Error during token verification:", error);
-    return res.status(401).json({ error: "Unauthorized: Invalid token" });
+    next(error);
   }
-}
-
-const customerLogin = async (req, res) => {
-  const data = req.body;
-  const { email, password } = data;
-
-  const existingCustomer = await userModel.customerLogin(email, password);
-  if (!existingCustomer) {
-    return res.status(401).json({ message: "Invalid email or password" });
-  }
-  const token = createCustomerToken(existingCustomer);
-  res
-    .status(200)
-    .json({ message: "Login successful", customer: existingCustomer, token });
 };
 
-const createCustomer = async (req, res) => {
-  const data = req.body;
-  data.password = await bcrypt.hash(data.password, 10);
-  const newCustomer = await userModel.createCustomer(data);
-  res.status(201).json(newCustomer);
+const createAdmin = async (req, res, next) => {
+  try {
+    const data = req.body;
+    if (!data) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Admin creation failed",
+        "No data provided"
+      );
+    }
+
+    const newAdmin = await userModel.createAdmin(data);
+    const token = createAdminToken(newAdmin);
+    return successResponse(
+      res,
+      "Admin created successfully",
+      { admin: newAdmin, token },
+      201
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+const verifyCustomerToken = (req, res, next) => {
+  try {
+    if (!req.body) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Verification failed",
+        "No token provided"
+      );
+    }
+
+    const { token } = req.body;
+    if (!token) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Verification failed",
+        "No token provided"
+      );
+    }
+
+    const decoded = jwt.verify(token, CUSTOMER_SECRET_KEY);
+    return successResponse(res, "Verification successful", { token }, 200);
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      throw new ApiError(
+        StatusCodes.UNPROCESSABLE_ENTITY,
+        "Verification failed",
+        "Token has expired"
+      );
+    }
+    next(error);
+  }
+};
+
+const customerLogin = async (req, res, next) => {
+  try {
+    const data = req.body;
+    if (!data) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Login failed",
+        "No data provided"
+      );
+    }
+
+    const { email, password } = data;
+    if (!email || !password) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Login failed",
+        "Email and password are required"
+      );
+    }
+
+    const existingCustomer = await userModel.customerLogin(email, password);
+    if (!existingCustomer) {
+      return errorResponse(
+        res,
+        "Login failed",
+        "Invalid email or password",
+        401
+      );
+    }
+    const token = createCustomerToken(existingCustomer);
+    return successResponse(
+      res,
+      "Login successful",
+      { customer: existingCustomer, token },
+      200
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createCustomer = async (req, res, next) => {
+  try {
+    const data = req.body;
+    if (!data) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Customer creation failed",
+        "No data provided"
+      );
+    }
+
+    const newCustomer = await userModel.createCustomer(data);
+    const token = createCustomerToken(newCustomer);
+    return successResponse(
+      res,
+      "Customer created successfully",
+      { customer: newCustomer, token },
+      201
+    );
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {
@@ -114,5 +217,5 @@ module.exports = {
   customerLogin,
   createCustomer,
   verifyAdminToken,
-  verifyCustomerToken
+  verifyCustomerToken,
 };

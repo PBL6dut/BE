@@ -2,10 +2,9 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/user.controller')
 const authMiddleware = require('../middlewares/auth.middleware')
-const validateCustomer = require('../validations/user.validation')
 
 const requireAuth = authMiddleware.checkLogin
-const { validateUpdateCustomer } = require('../validations/user.validation')
+const { validateUpdateCustomer } = require('../validations/user/user.validation')
 
 router.use(requireAuth)
 router.get('/customers/', userController.getAllCustomers);

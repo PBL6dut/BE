@@ -183,9 +183,12 @@ exports.Prisma.ProductScalarFieldEnum = {
   sale_price: 'sale_price',
   category_id: 'category_id',
   stock_quantity: 'stock_quantity',
+  weight: 'weight',
+  length: 'length',
+  width: 'width',
+  height: 'height',
   material: 'material',
   color: 'color',
-  dimensions: 'dimensions',
   status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -242,8 +245,7 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   material: 'material',
-  color: 'color',
-  dimensions: 'dimensions'
+  color: 'color'
 };
 
 exports.Prisma.AdminOrderByRelevanceFieldEnum = {

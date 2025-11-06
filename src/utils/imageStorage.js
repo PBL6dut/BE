@@ -19,9 +19,7 @@ const storage = (field) =>
 
 // const upload = multer({ storage });
 const userUpload = multer({ storage: storage("user") }).single("avatar");
-const productUpload = multer({ storage: storage("product") }).fields([
-  { name: "image_url", maxCount: 5 },
-]);
+const productUpload = multer({ storage: storage("product") }).array("image_url", 5);
 
 // const upload = multer({ userStorage }).fields([
 //   { name: 'avatar', maxCount: 1 },
