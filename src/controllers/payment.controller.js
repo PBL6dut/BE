@@ -94,10 +94,27 @@ const getWards = async (req, res, next) => {
   }
 };
 
+const getShippingServices = async (req, res, next) => {
+  try {
+    const { to_district_id } = req.body;
+    if (!to_district_id) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Get Shipping Services Failed",
+        "To District ID is required"
+      );
+    }
+    const services = await paymentModel.getShippingServices(to_district_id);
+    return successResponse(res, "Get Shipping Services Success", services, 200);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const calculateShippingFee = async (req, res, next) => {
   try {
     // console.log(req.body)
-    if (!req.body){
+    if (!req.body) {
       throw new ApiError(
         StatusCodes.BAD_REQUEST,
         "Calculate Shipping Fee Failed",
@@ -105,8 +122,24 @@ const calculateShippingFee = async (req, res, next) => {
       );
     }
 
-    const { to_district_id, to_ward_code, weight, length, width, height, price} = req.body;
-    if (!to_district_id || !to_ward_code || !weight || !length || !width || !height || !price) {
+    const {
+      to_district_id,
+      to_ward_code,
+      weight,
+      length,
+      width,
+      height,
+      price,
+    } = req.body;
+    if (
+      !to_district_id ||
+      !to_ward_code ||
+      !weight ||
+      !length ||
+      !width ||
+      !height ||
+      !price
+    ) {
       throw new ApiError(
         StatusCodes.BAD_REQUEST,
         "Calculate Shipping Fee Failed",
@@ -124,7 +157,12 @@ const calculateShippingFee = async (req, res, next) => {
       weight
     );
 
-    return successResponse(res, "Calculate Shipping Fee Success", { shippingFee }, 200);
+    return successResponse(
+      res,
+      "Calculate Shipping Fee Success",
+      { shippingFee },
+      200
+    );
   } catch (error) {
     next(error);
   }
@@ -141,5 +179,6 @@ module.exports = {
   getProvinces,
   getDistricts,
   getWards,
+  getShippingServices,
   calculateShippingFee,
 };

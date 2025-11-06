@@ -82,12 +82,12 @@ const getWards = async (district_id) => {
   }));
 };
 
-const getShippingServices = async (from_district_id, to_district_id) => {
-  if (!from_district_id || !to_district_id) {
+const getShippingServices = async (to_district_id) => {
+  if (!to_district_id) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
       "Get Shipping Services Failed",
-      "From District ID and To District ID are required"
+      "To District ID is required"
     );
   }
 
@@ -133,7 +133,7 @@ const calculateShippingFee = async (
       "Weight is required"
     );
   } else {
-    weight = parseInt(weight)*1000;
+    weight = parseInt(weight) * 1000;
   }
 
   if (!length) {
@@ -165,6 +165,11 @@ const calculateShippingFee = async (
   } else {
     height = parseInt(height);
   }
+
+  const shippingServices = await getShippingServices(to_district_id);
+  const service_id = shippingServices.filter(
+    (service) => service.service_type_id === 2
+  )[0]?.service_id;
 
   const url = `${GHN_API_SHIPPING_FEE}`;
   try {
