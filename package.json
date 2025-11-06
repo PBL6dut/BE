@@ -23,5 +23,8 @@
     "multer": "^2.0.2",
     "prisma": "^6.16.1",
     "vnpay": "^2.4.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
   }
 }
