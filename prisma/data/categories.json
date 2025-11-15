@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Giường ngủ",
+    "description": "Giường ngủ cao cấp gỗ óc chó, gỗ sồi, MDF phủ melamine, kích thước 1m6 - 2m"
+  },
+  {
+    "id": 2,
+    "name": "Sofa",
+    "description": "Sofa góc L, sofa văng, sofa bed da thật, nỉ cao cấp, vải bố chống xước"
+  },
+  {
+    "id": 3,
+    "name": "Ghế ăn & Ghế trang trí",
+    "description": "Ghế ăn gỗ, ghế bọc nệm, ghế cafe Bắc Âu, tân cổ điển"
+  },
+  {
+    "id": 4,
+    "name": "Bàn trà & Bàn phụ",
+    "description": "Bàn trà sofa kính cường lực, bàn nâng hạ thông minh, bàn marble"
+  },
+  {
+    "id": 5,
+    "name": "Đèn trang trí",
+    "description": "Đèn thả trần, đèn bàn ngủ, đèn cây đứng LED hiện đại"
+  },
+  {
+    "id": 6,
+    "name": "Tivi & Kệ tivi",
+    "description": "Tivi Samsung, LG, Sony 4K-8K và kệ tivi gỗ óc chó treo tường"
+  },
+  {
+    "id": 7,
+    "name": "Laptop & Phụ kiện",
+    "description": "MacBook Pro, Dell XPS, Asus ROG, MSI Gaming chính hãng"
+  },
+  {
+    "id": 8,
+    "name": "Tủ quần áo",
+    "description": "Tủ cánh lùa, tủ cánh mở, tủ âm tường gỗ tự nhiên"
+  },
+  {
+    "id": 9,
+    "name": "Cửa sổ & Phụ kiện",
+    "description": "Cửa nhôm Xingfa, cửa nhựa lõi thép, rèm tự động"
+  },
+  {
+    "id": 10,
+    "name": "Cửa chính & Cửa phòng",
+    "description": "Cửa thép vân gỗ, cửa gỗ tự nhiên, cửa chống cháy"
+  },
+  {
+    "id": 11,
+    "name": "Cây cảnh trang trí",
+    "description": "Cây giả trang trí, chậu composite, cây xanh văn phòng"
+  },
+  {
+    "id": 12,
+    "name": "Khung tranh & Trang trí tường",
+    "description": "Tranh canvas, gương soi toàn thân, khung ảnh treo tường"
+  }
+]

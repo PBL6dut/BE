@@ -192,7 +192,14 @@ exports.Prisma.ProductScalarFieldEnum = {
   color: 'color',
   status: 'status',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  brand: 'brand',
+  style: 'style',
+  discount: 'discount',
+  rating: 'rating',
+  reviews: 'reviews',
+  warranty: 'warranty',
+  shipping: 'shipping'
 };
 
 exports.Prisma.AdminScalarFieldEnum = {
@@ -204,6 +211,11 @@ exports.Prisma.AdminScalarFieldEnum = {
   full_name: 'full_name',
   email: 'email',
   created_at: 'created_at'
+};
+
+exports.Prisma.TagScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
 };
 
 exports.Prisma.SortOrder = {
@@ -246,7 +258,11 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   material: 'material',
-  color: 'color'
+  color: 'color',
+  brand: 'brand',
+  style: 'style',
+  warranty: 'warranty',
+  shipping: 'shipping'
 };
 
 exports.Prisma.AdminOrderByRelevanceFieldEnum = {
@@ -256,6 +272,10 @@ exports.Prisma.AdminOrderByRelevanceFieldEnum = {
   password: 'password',
   full_name: 'full_name',
   email: 'email'
+};
+
+exports.Prisma.TagOrderByRelevanceFieldEnum = {
+  name: 'name'
 };
 exports.Order_Status = exports.$Enums.Order_Status = {
   pending: 'pending',
@@ -300,7 +320,8 @@ exports.Prisma.ModelName = {
   OrderDetail: 'OrderDetail',
   Product_Image: 'Product_Image',
   Product: 'Product',
-  Admin: 'Admin'
+  Admin: 'Admin',
+  Tag: 'Tag'
 };
 
 /**

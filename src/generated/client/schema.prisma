@@ -95,8 +95,8 @@ model OrderDetail {
   order_id    Int
   product_id  Int
   quantity    Int
-  unit_price  Decimal @db.Decimal(10, 2)
-  total_price Decimal @db.Decimal(10, 2)
+  unit_price  Decimal @db.Decimal(12, 2)
+  total_price Decimal @db.Decimal(12, 2)
 
   order   Order   @relation(fields: [order_id], references: [id])
   product Product @relation(fields: [product_id], references: [id])
@@ -121,8 +121,8 @@ model Product {
   id             Int            @id @default(autoincrement())
   name           String
   description    String?        @db.Text
-  price          Decimal        @db.Decimal(10, 2)
-  sale_price     Decimal?       @db.Decimal(10, 2)
+  price          Decimal        @db.Decimal(12, 2)
+  sale_price     Decimal?       @db.Decimal(12, 2)
   category_id    Int
   stock_quantity Int            @default(0)
   weight         Decimal?       @db.Decimal(10, 2) // Add weight in kg
@@ -135,9 +135,21 @@ model Product {
   created_at     DateTime       @default(now())
   updated_at     DateTime?      @updatedAt
 
+  // --- CÁC TRƯỜNG MỚI THÊM VÀO ĐÂY ---
+  brand    String? @db.VarChar(100)
+  style    String? @db.VarChar(100)
+  discount Int?
+  rating   Float?
+  reviews  Int?
+  warranty String? @db.VarChar(100)
+  shipping String? @db.VarChar(100)
+
   category      Category        @relation(fields: [category_id], references: [id])
   order_details OrderDetail[]
   images        Product_Image[]
+
+  // --- THÊM QUAN HỆ NHIỀU-NHIỀU VỚI TAG ---
+  tags Tag[]
 }
 
 model Admin {
@@ -149,4 +161,10 @@ model Admin {
   full_name   String   @db.VarChar(100)
   email       String   @unique @db.VarChar(100)
   created_at  DateTime @default(now())
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(50) // Tên tag (ví dụ: "Hot", "Sale")
+  products Product[] // Danh sách các sản phẩm có tag này
 }
