@@ -112,6 +112,7 @@ enum Product_Status {
 model Product_Image {
   id         Int    @id @default(autoincrement())
   product_id Int
+  public_id  String @default("public_id") @db.VarChar(255)
   url        String @db.VarChar(500)
 
   product Product @relation(fields: [product_id], references: [id])

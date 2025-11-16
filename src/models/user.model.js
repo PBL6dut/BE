@@ -98,9 +98,13 @@ const checkCustomerId = async (id) => {
 const customerLogin = async (email, password) => {
   const existingCustomer = await prisma.customer.findUnique({
     where: { email },
-    include: {
-      created_at: false,
-      updated_at: false,
+    select: {
+      id: true,
+      full_name: true,
+      email: true,
+      phone: true,
+      address: true,
+      password: true,
     },
   });
 
@@ -144,9 +148,13 @@ const getAllCustomers = async () => {
 const getCustomerById = async (id) => {
   const customer = await prisma.customer.findUnique({
     where: { id },
-    include: {
-      orders: true,
-    },
+    select: {
+      id: true,
+      full_name: true,
+      email: true,
+      phone: true,
+      address: true,
+    }
   });
 
   if (!customer) {
@@ -286,6 +294,13 @@ const updateCustomer = async (id, data) => {
   return await prisma.customer.update({
     where: { id },
     data,
+    select: {
+      id: true,
+      full_name: true,
+      email: true,
+      phone: true,
+      address: true
+    }
   });
 };
 

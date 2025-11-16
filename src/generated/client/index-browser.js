@@ -173,6 +173,7 @@ exports.Prisma.OrderDetailScalarFieldEnum = {
 exports.Prisma.Product_ImageScalarFieldEnum = {
   id: 'id',
   product_id: 'product_id',
+  public_id: 'public_id',
   url: 'url'
 };
 
@@ -251,6 +252,7 @@ exports.Prisma.OrderOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
+  public_id: 'public_id',
   url: 'url'
 };
 

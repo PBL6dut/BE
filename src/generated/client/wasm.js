@@ -145,6 +145,7 @@ exports.Prisma.OrderDetailScalarFieldEnum = {
 exports.Prisma.Product_ImageScalarFieldEnum = {
   id: 'id',
   product_id: 'product_id',
+  public_id: 'public_id',
   url: 'url'
 };
 
@@ -223,6 +224,7 @@ exports.Prisma.OrderOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
+  public_id: 'public_id',
   url: 'url'
 };
 
@@ -306,7 +308,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/mac/code/pbl6/BE/src/generated/client",
+      "value": "C:\\Users\\ADMIN\\Desktop\\Hoc tren truong\\PBL6\\PBL6_BE\\src\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -315,12 +317,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/mac/code/pbl6/BE/schema.prisma",
+    "sourceFilePath": "C:\\Users\\ADMIN\\Desktop\\Hoc tren truong\\PBL6\\PBL6_BE\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -334,7 +336,6 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

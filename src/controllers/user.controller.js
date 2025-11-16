@@ -73,7 +73,8 @@ const updateCustomer = async (req, res, next) => {
     return successResponse(
       res,
       "Customer updated successfully",
-      updatedCustomer
+      updatedCustomer,
+      201
     );
   } catch (error) {
     next(error);
