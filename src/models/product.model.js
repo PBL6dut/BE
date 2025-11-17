@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { PrismaClient } = require("../generated/client");
-// const { default: ApiError } = require("../utils/ApiError");
-const ApiError = require("../utils/ApiError");
+const { default: ApiError } = require("../utils/ApiError");
+// const ApiError = require("../utils/ApiError");
 const formatImageUrl = require("../utils/formatImageUrl");
 const { deleteFile } = require("../utils/imageStorage");
 const prisma = new PrismaClient();
