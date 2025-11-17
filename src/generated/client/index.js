@@ -146,7 +146,6 @@ exports.Prisma.OrderDetailScalarFieldEnum = {
 exports.Prisma.Product_ImageScalarFieldEnum = {
   id: 'id',
   product_id: 'product_id',
-  public_id: 'public_id',
   url: 'url'
 };
 
@@ -225,7 +224,6 @@ exports.Prisma.OrderOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
-  public_id: 'public_id',
   url: 'url'
 };
 
@@ -320,6 +318,10 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -337,6 +339,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -345,8 +348,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./src/generated/client\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Category {\n  id          Int      @id @default(autoincrement())\n  name        String   @db.VarChar(50)\n  description String?  @db.Text\n  created_at  DateTime @default(now())\n\n  products Product[]\n}\n\nmodel Customer {\n  id          Int       @id @default(autoincrement())\n  full_name   String\n  email       String    @unique\n  google_id   String?   @unique\n  facebook_id String?   @unique\n  password    String    @db.VarChar(255)\n  phone       String?   @unique @db.VarChar(20)\n  address     String?   @db.Text\n  created_at  DateTime  @default(now())\n  updated_at  DateTime? @updatedAt\n\n  orders Order[]\n}\n\nenum Order_Status {\n  pending\n  confirmed\n  shipping\n  completed\n  cancelled\n}\n\nenum Payment_Method {\n  cash_on_delivery\n  bank_transfer\n  credit_card\n  e_wallet\n  installment\n}\n\nenum Payment_Status {\n  pending\n  paid\n  failed\n  refunded\n}\n\nenum Shipping_Method {\n  standard_delivery\n  express_delivery\n  same_day_delivery\n  pickup_at_store\n  installation_service\n}\n\nmodel Order {\n  id           Int      @id @default(autoincrement())\n  order_number String   @unique @db.VarChar(20)\n  customer_id  Int\n  order_date   DateTime @default(now())\n  total_amount Decimal  @db.Decimal(12, 2)\n  shipping_fee Decimal  @default(0) @db.Decimal(10, 2)\n\n  status Order_Status @default(pending)\n\n  payment_method Payment_Method @default(cash_on_delivery)\n  payment_status Payment_Status @default(pending)\n  paid_at        DateTime?\n\n  shipping_method        Shipping_Method @default(standard_delivery)\n  shipping_address       String          @db.Text\n  phone                  String          @db.VarChar(20)\n  expected_delivery_date DateTime?\n\n  notes      String?   @db.Text\n  created_at DateTime  @default(now())\n  updated_at DateTime? @updatedAt\n\n  customer      Customer      @relation(fields: [customer_id], references: [id])\n  order_details OrderDetail[]\n}\n\nmodel OrderDetail {\n  id          Int     @id @default(autoincrement())\n  order_id    Int\n  product_id  Int\n  quantity    Int\n  unit_price  Decimal @db.Decimal(12, 2)\n  total_price Decimal @db.Decimal(12, 2)\n\n  order   Order   @relation(fields: [order_id], references: [id])\n  product Product @relation(fields: [product_id], references: [id])\n\n  @@unique([order_id, product_id])\n}\n\nenum Product_Status {\n  active\n  inactive\n}\n\nmodel Product_Image {\n  id         Int    @id @default(autoincrement())\n  product_id Int\n  url        String @db.VarChar(500)\n\n  product Product @relation(fields: [product_id], references: [id])\n}\n\nmodel Product {\n  id             Int            @id @default(autoincrement())\n  name           String\n  description    String?        @db.Text\n  price          Decimal        @db.Decimal(12, 2)\n  sale_price     Decimal?       @db.Decimal(12, 2)\n  category_id    Int\n  stock_quantity Int            @default(0)\n  weight         Decimal?       @db.Decimal(10, 2) // Add weight in kg\n  length         Decimal?       @db.Decimal(10, 2) // Add length in cm\n  width          Decimal?       @db.Decimal(10, 2) // Add width in cm\n  height         Decimal?       @db.Decimal(10, 2) // Add height in cm\n  material       String?        @db.VarChar(500)\n  color          String?        @db.VarChar(50)\n  status         Product_Status @default(active)\n  created_at     DateTime       @default(now())\n  updated_at     DateTime?      @updatedAt\n\n  // --- CÁC TRƯỜNG MỚI THÊM VÀO ĐÂY ---\n  brand    String? @db.VarChar(100)\n  style    String? @db.VarChar(100)\n  discount Int?\n  rating   Float?\n  reviews  Int?\n  warranty String? @db.VarChar(100)\n  shipping String? @db.VarChar(100)\n\n  category      Category        @relation(fields: [category_id], references: [id])\n  order_details OrderDetail[]\n  images        Product_Image[]\n\n  // --- THÊM QUAN HỆ NHIỀU-NHIỀU VỚI TAG ---\n  tags Tag[]\n}\n\nmodel Admin {\n  id          Int      @id @default(autoincrement())\n  username    String   @unique @db.VarChar(50)\n  google_id   String?  @unique\n  facebook_id String?  @unique\n  password    String   @db.VarChar(255)\n  full_name   String   @db.VarChar(100)\n  email       String   @unique @db.VarChar(100)\n  created_at  DateTime @default(now())\n}\n\nmodel Tag {\n  id       Int       @id @default(autoincrement())\n  name     String    @unique @db.VarChar(50) // Tên tag (ví dụ: \"Hot\", \"Sale\")\n  products Product[] // Danh sách các sản phẩm có tag này\n}\n",
-  "inlineSchemaHash": "2169f6dd42f37c92ce11dae70a8f51cdb64c3e85009148ce07fd6fe2e14a2e46",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./src/generated/client\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Category {\n  id          Int      @id @default(autoincrement())\n  name        String   @db.VarChar(50)\n  description String?  @db.Text\n  created_at  DateTime @default(now())\n\n  products Product[]\n}\n\nmodel Customer {\n  id          Int       @id @default(autoincrement())\n  full_name   String\n  email       String    @unique\n  google_id   String?   @unique\n  facebook_id String?   @unique\n  password    String    @db.VarChar(255)\n  phone       String?   @unique @db.VarChar(20)\n  address     String?   @db.Text\n  created_at  DateTime  @default(now())\n  updated_at  DateTime? @updatedAt\n\n  orders Order[]\n}\n\nenum Order_Status {\n  pending\n  confirmed\n  shipping\n  completed\n  cancelled\n}\n\nenum Payment_Method {\n  cash_on_delivery\n  bank_transfer\n  credit_card\n  e_wallet\n  installment\n}\n\nenum Payment_Status {\n  pending\n  paid\n  failed\n  refunded\n}\n\nenum Shipping_Method {\n  standard_delivery\n  express_delivery\n  same_day_delivery\n  pickup_at_store\n  installation_service\n}\n\nmodel Order {\n  id           Int      @id @default(autoincrement())\n  order_number String   @unique @db.VarChar(20)\n  customer_id  Int\n  order_date   DateTime @default(now())\n  total_amount Decimal  @db.Decimal(12, 2)\n  shipping_fee Decimal  @default(0) @db.Decimal(10, 2)\n\n  status Order_Status @default(pending)\n\n  payment_method Payment_Method @default(cash_on_delivery)\n  payment_status Payment_Status @default(pending)\n  paid_at        DateTime?\n\n  shipping_method        Shipping_Method @default(standard_delivery)\n  shipping_address       String          @db.Text\n  phone                  String          @db.VarChar(20)\n  expected_delivery_date DateTime?\n\n  notes      String?   @db.Text\n  created_at DateTime  @default(now())\n  updated_at DateTime? @updatedAt\n\n  customer      Customer      @relation(fields: [customer_id], references: [id])\n  order_details OrderDetail[]\n}\n\nmodel OrderDetail {\n  id          Int     @id @default(autoincrement())\n  order_id    Int\n  product_id  Int\n  quantity    Int\n  unit_price  Decimal @db.Decimal(12, 2)\n  total_price Decimal @db.Decimal(12, 2)\n\n  order   Order   @relation(fields: [order_id], references: [id])\n  product Product @relation(fields: [product_id], references: [id])\n\n  @@unique([order_id, product_id])\n}\n\nenum Product_Status {\n  active\n  inactive\n}\n\nmodel Product_Image {\n  id         Int    @id @default(autoincrement())\n  product_id Int\n  url        String @db.VarChar(500)\n\n  product Product @relation(fields: [product_id], references: [id])\n}\n\nmodel Product {\n  id             Int            @id @default(autoincrement())\n  name           String\n  description    String?        @db.Text\n  price          Decimal        @db.Decimal(12, 2)\n  sale_price     Decimal?       @db.Decimal(12, 2)\n  category_id    Int\n  stock_quantity Int            @default(0)\n  weight         Decimal?       @db.Decimal(10, 2) // Add weight in kg\n  length         Decimal?       @db.Decimal(10, 2) // Add length in cm\n  width          Decimal?       @db.Decimal(10, 2) // Add width in cm\n  height         Decimal?       @db.Decimal(10, 2) // Add height in cm\n  material       String?        @db.VarChar(500)\n  color          String?        @db.VarChar(50)\n  status         Product_Status @default(active)\n  created_at     DateTime       @default(now())\n  updated_at     DateTime?      @updatedAt\n\n  // --- CÁC TRƯỜNG MỚI THÊM VÀO ĐÂY ---\n  brand    String? @db.VarChar(100)\n  style    String? @db.VarChar(100)\n  discount Int?\n  rating   Float?\n  reviews  Int?\n  warranty String? @db.VarChar(100)\n  shipping String? @db.VarChar(100)\n\n  category      Category        @relation(fields: [category_id], references: [id])\n  order_details OrderDetail[]\n  images        Product_Image[]\n\n  // --- THÊM QUAN HỆ NHIỀU-NHIỀU VỚI TAG ---\n  tags Tag[]\n}\n\nmodel Admin {\n  id          Int      @id @default(autoincrement())\n  username    String   @unique @db.VarChar(50)\n  google_id   String?  @unique\n  facebook_id String?  @unique\n  password    String   @db.VarChar(255)\n  full_name   String   @db.VarChar(100)\n  email       String   @unique @db.VarChar(100)\n  created_at  DateTime @default(now())\n}\n\nmodel Tag {\n  id       Int       @id @default(autoincrement())\n  name     String    @unique @db.VarChar(50) // Tên tag (ví dụ: \"Hot\", \"Sale\")\n  products Product[] // Danh sách các sản phẩm có tag này\n}\n",
+  "inlineSchemaHash": "1d7d60d9ca5660c473ece5f8296c714a6b03aee28691988c4cfd66917fc0a926",
   "copyEngine": true
 }
 
@@ -387,6 +390,10 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "src/generated/client/query_engine-windows.dll.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/client/schema.prisma")
