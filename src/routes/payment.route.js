@@ -10,6 +10,7 @@ router.get('/districts/:province_id', paymentController.getDistricts)
 router.get('/wards/:district_id', paymentController.getWards)
 router.post('/shipping-services', paymentController.getShippingServices)
 router.post('/shipping-fee', paymentController.calculateShippingFee)
+router.post('/check-payment', paymentController.checkPayment)
 
 
 module.exports = router

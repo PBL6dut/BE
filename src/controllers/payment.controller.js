@@ -168,9 +168,25 @@ const calculateShippingFee = async (req, res, next) => {
   }
 };
 
-const checkPayment = async (req, res) => {
-  console.log("Payment Check:", req.query);
-  return successResponse(res, "Check Payment Success", req.query, 200);
+const checkPayment = async (req, res, next) => {
+  try {
+    console.log("=== WEBHOOK RECEIVED ===");
+    console.log("Headers:", JSON.stringify(req.headers, null, 2));
+    console.log("Body:", JSON.stringify(req.body, null, 2));
+    console.log("Query:", JSON.stringify(req.query, null, 2));
+    console.log("========================");
+    
+    // TODO: Xử lý logic thanh toán ở đây
+    // Ví dụ: verify signature, update order status, v.v.
+    
+    return successResponse(res, "Webhook received successfully", { 
+      received: true,
+      timestamp: new Date().toISOString()
+    }, 200);
+  } catch (error) {
+    console.error("Webhook error:", error);
+    next(error);
+  }
 };
 
 module.exports = {
