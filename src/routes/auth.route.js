@@ -4,7 +4,7 @@ const authController = require('../controllers/auth.controller')
 const validateCustomer = require('../validations/user/user.validation')
 const { validateCreateCustomer } = require('../validations/user/user.validation')
 
-router.post('/admin/verify-token', authController.verifyAdminToken);
+router.get('/admin/verify-token', authController.verifyAdminToken);
 router.post('/admin/login', authController.adminLogin);
 router.post('/admin/create', authController.createAdmin);
 router.post('/customer/verify-token', authController.verifyCustomerToken);

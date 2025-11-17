@@ -38,8 +38,6 @@ const getProductsPagination = async (page, pageSize) => {
     skip,
     take,
     include: {
-      created_at: false,
-      updated_at: false,
       category: {
         select: { name: true },
       },

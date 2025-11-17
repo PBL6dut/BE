@@ -30,32 +30,30 @@ const createCustomerToken = (customer) => {
 
 const verifyAdminToken = (req, res, next) => {
   try {
-    if (!req.body) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Verification failed",
-        "No token provided"
-      );
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return errorResponse(res, "Unauthorized", "No token provided", 401);
     }
 
-    const { token } = req.body;
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      return errorResponse(res, "Unauthorized", "No token provided", 401);
+    }
 
+    // Dùng ADMIN_SECRET_KEY và verify đồng bộ để đơn giản
     const decoded = jwt.verify(token, ADMIN_SECRET_KEY);
-    return successResponse(res, "Verification successful", { token }, 200);
+    return successResponse(res, "Verification successful", { admin: decoded }, 200);
   } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      throw new ApiError(
-        StatusCodes.UNAUTHORIZED,
-        "Verification failed",
-        "Token has expired"
-      );
+    if (error && error.name === "TokenExpiredError") {
+      return errorResponse(res, "Verification failed", "Token has expired", 401);
     }
-    next(error);
+    return errorResponse(res, "Unauthorized", "Invalid token", 401);
   }
 };
 
 const adminLogin = async (req, res, next) => {
   try {
+    console.log("Admin login request body:", req.body);
     if (!req.body) {
       throw new ApiError(
         StatusCodes.BAD_REQUEST,
