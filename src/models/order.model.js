@@ -36,9 +36,12 @@ const getOrdersByCustomer = async (customer_id) => {
   const orders = await prisma.order.findMany({
     where: { customer_id },
     include: {
-      order_details: true,
+      order_details: {
+        include: {
+          product: true,
+      }
     },
-  });
+  }});
 
   if(orders.length !== 0) {
     orders.forEach(async (order) => {
