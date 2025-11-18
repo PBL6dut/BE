@@ -6,54 +6,85 @@ const formatImageUrl = require("../utils/formatImageUrl");
 const { deleteFile } = require("../utils/imageStorage");
 const prisma = new PrismaClient();
 
-const getAllProducts = async () => {
-  const products = await prisma.product.findMany({
+const getAllProducts = async (
+  role = "customer",
+  page = 1,
+  limit = 10,
+  query = {}
+) => {
+  const queryArgs = {
+    take: limit,
+    skip: (page - 1) * limit,
     include: {
-      order_details: true,
-      category: {
-        select: { id: true, name: true },
-      },
       images: { select: { url: true } },
+      category: { select: { id: true, name: true } },
+      order_details: role === "admin",
+      category_id: false,
     },
-  });
+  };
 
-  products &&
-    products.forEach((product) => {
-      product.images = product.images.map((image) => formatImageUrl(image.url));
-    });
-
-  return products;
-};
-
-const getProductsPagination = async (page, pageSize) => {
-  const skip = (page - 1) * pageSize;
-  const take = pageSize;
-  const pages = Math.ceil((await prisma.product.count()) / pageSize);
-
-  if (page > pages) {
-    return [];
+  if (Object.keys(query).length > 0) {
+    if (query.name) {
+      queryArgs.where = { name: { contains: query.name } };
+    }
+    if (query.category_id) {
+      queryArgs.where = {
+        ...queryArgs.where,
+        category_id: parseInt(query.category_id),
+      };
+    }
+    if (query.min_price) {
+      queryArgs.where = {
+        ...queryArgs.where,
+        price: { gte: parseFloat(query.min_price) },
+      };
+    }
+    if (query.max_price) {
+      queryArgs.where = {
+        ...queryArgs.where,
+        price: { ...queryArgs.where.price, lte: parseFloat(query.max_price) },
+      };
+    }
+    if (query.tags) {
+      const tagsArray = query.tags.split(",").map((tag) => tag.trim());
+      queryArgs.where = {
+        ...queryArgs.where,
+        tags: {
+          hasSome: tagsArray,
+        },
+      };
+    }
+    if (query.sort) {
+      const dashIndex = query.sort.indexOf("_");
+      const sortField = query.sort.substring(-1, dashIndex);
+      const sortOrder = query.sort.substring(dashIndex + 1, query.sort.length);
+      queryArgs.orderBy = {
+        [sortField]: sortOrder,
+      };
+    }
   }
 
-  const products = await prisma.product.findMany({
-    skip,
-    take,
-    include: {
-      category: {
-        select: { name: true },
-      },
-      images: { select: { url: true } },
-    },
-  });
+  const totalProducts = await prisma.product.count({ where: queryArgs.where });
+  const totalPages = Math.ceil(totalProducts / limit);
 
+  const products = await prisma.product.findMany(queryArgs);
   products &&
     products.forEach((product) => {
       product.images = product.images.map((image) => formatImageUrl(image.url));
     });
-  const result = { currentPage: page, totalPages: pages, products };
-  return result;
+
+  return { products, currentPage: page, totalPages };
 };
 
 const getProductById = async (id) => {
+  if (isNaN(id)) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      "Get product failed",
+      "Invalid product ID"
+    );
+  }
+
   const product = await prisma.product.findUnique({
     where: { id },
     include: {
@@ -66,6 +97,10 @@ const getProductById = async (id) => {
     },
   });
 
+  if (product) {
+    product.images = product.images.map((image) => formatImageUrl(image.url));
+  }
+
   if (!product) {
     throw new ApiError(
       StatusCodes.NOT_FOUND,
@@ -73,9 +108,6 @@ const getProductById = async (id) => {
       "Product not found"
     );
   }
-
-  product &&
-    (product.images = product.images.map((image) => formatImageUrl(image.url)));
 
   return product;
 };
@@ -219,26 +251,33 @@ const deleteProduct = async (id) => {
     );
   }
 
-  try {
-    const images = await prisma.product_Image.findMany({
-      where: { product_id: id },
-    });
+  // Bọc các thao tác xóa trong một transaction để đảm bảo toàn vẹn dữ liệu
+  return await prisma.$transaction(async (tx) => {
+    try {
+      const images = await tx.product_Image.findMany({
+        where: { product_id: id },
+      });
 
-    for (const image of images) {
-      await deleteFile(image.url.replace(/\\/g, "/"));
+      // Xóa file ảnh trên cloud
+      for (const image of images) {
+        await deleteFile(image.url.replace(/\\/g, "/"));
+      }
+
+      // Xóa các bản ghi liên quan trong database
+      await tx.product_Image.deleteMany({ where: { product_id: id } });
+      await tx.orderDetail.deleteMany({ where: { product_id: id } });
+
+      // Cuối cùng, xóa sản phẩm
+      return await tx.product.delete({ where: { id } });
+    } catch (error) {
+      // Nếu có lỗi, transaction sẽ tự động rollback
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Delete product failed during transaction",
+        error.message
+      );
     }
-
-    await prisma.product_Image.deleteMany({ where: { product_id: id } });
-    await prisma.orderDetail.deleteMany({ where: { product_id: id } });
-
-    return await prisma.product.delete({ where: { id } });
-  } catch (error) {
-    throw new ApiError(
-      StatusCodes.INTERNAL_SERVER_ERROR,
-      "Delete product failed",
-      error.message
-    );
-  }
+  });
 };
 
 const checkProductId = async (id) => {
@@ -250,7 +289,6 @@ const checkProductId = async (id) => {
 
 module.exports = {
   getAllProducts,
-  getProductsPagination,
   getProductById,
   getAllCategories,
   createProduct,

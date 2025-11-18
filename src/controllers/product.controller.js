@@ -5,30 +5,20 @@ const { successResponse, errorResponse } = require("../utils/response");
 
 const getAllProducts = async (req, res, next) => {
   try {
-    let products;
-    if (req.query.page && req.query.pageSize) {
-      if (
-        isNaN(parseInt(req.query.page)) ||
-        isNaN(parseInt(req.query.pageSize))
-      ) {
-        throw new ApiError(
-          StatusCodes.BAD_REQUEST,
-          "Get products pagination failed",
-          "Invalid page or pageSize"
-        );
-      }
+    const role = req.user?.role || "customer";
+    const { page: pageStr, pageSize: pageSizeStr, ...rest } = req.query;
+    let page = pageStr ? parseInt(pageStr, 10) : 1;
+    let limit = pageSizeStr ? parseInt(pageSizeStr, 10) : 10;
+    if (isNaN(page) || page < 1) page = 1;
+    if (isNaN(limit) || limit < 1) limit = 10;
 
-      const page = parseInt(req.query.page);
-      const pageSize = parseInt(req.query.pageSize);
-      products = await productModel.getProductsPagination(page, pageSize);
-    } else {
-      products = await productModel.getAllProducts();
+    const result = await productModel.getAllProducts(role, page, limit, rest);
+
+    if (!result.products || result.products.length === 0) {
+      return successResponse(res, "No products found", [], StatusCodes.OK);
     }
 
-    if (!products) {
-      return errorResponse(res, "No any products", null, 404);
-    }
-    return successResponse(res, "Get all products success", products);
+    return successResponse(res, "Get all products success", result);
   } catch (error) {
     next(error);
   }
@@ -36,22 +26,6 @@ const getAllProducts = async (req, res, next) => {
 
 const getProductById = async (req, res, next) => {
   try {
-    if (!req.params.id) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Get product failed",
-        "Product ID is required"
-      );
-    }
-
-    if (isNaN(parseInt(req.params.id))) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Get product failed",
-        "Invalid product ID"
-      );
-    }
-
     const productId = parseInt(req.params.id);
 
     const product = await productModel.getProductById(productId);
@@ -64,6 +38,11 @@ const getProductById = async (req, res, next) => {
 const getAllCategories = async (req, res, next) => {
   try {
     const categories = await productModel.getAllCategories();
+    
+    if (!categories || categories.length === 0) {
+      return successResponse(res, "No categories found", [], StatusCodes.OK);
+    }
+
     return successResponse(res, "Get all categories success", categories);
   } catch (error) {
     next(error);
