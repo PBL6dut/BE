@@ -3,6 +3,7 @@ const { PrismaClient } = require("../generated/client");
 const { default: ApiError } = require("../utils/ApiError");
 const prisma = new PrismaClient();
 const { getProductById } = require("./product.model");
+const formatImageUrl = require("../utils/formatImageUrl");
 
 const getAllOrders = async () => {
   return await prisma.order.findMany({
@@ -29,7 +30,7 @@ const getOrderById = async (id) => {
     );
   }
 
-  return order
+  return order;
 };
 
 const getOrdersByCustomer = async (customer_id) => {
@@ -38,19 +39,37 @@ const getOrdersByCustomer = async (customer_id) => {
     include: {
       order_details: {
         include: {
-          product: true,
-      }
+          product: {
+            select: {
+              id: true,
+              name: true,
+              images: { select: { url: true } },
+            },
+          },
+        },
+      },
     },
-  }});
+  });
 
-  if(orders.length !== 0) {
+  orders.forEach((order) => {
+    order.order_details.forEach((detail) => {
+      if (detail.product && detail.product.images.length > 0) {
+        detail.product.images = detail.product.images.map((img) => {
+          img.url = formatImageUrl(img.url);
+          return img;
+        });
+      }
+    });
+  });
+
+  if (orders.length !== 0) {
     orders.forEach(async (order) => {
-        delete order.created_at
-        delete order.updated_at
-    })
+      delete order.created_at;
+      delete order.updated_at;
+    });
   }
-  
-    return orders;
+
+  return orders;
 };
 
 const createOrder = async (orderData) => {
