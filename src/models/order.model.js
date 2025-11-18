@@ -56,7 +56,7 @@ const getOrdersByCustomer = async (customer_id) => {
       if (detail.product && detail.product.images.length > 0) {
         detail.product.images = detail.product.images.map((img) => {
           img.url = formatImageUrl(img.url);
-          return img;
+          return img.url;
         });
       }
     });
