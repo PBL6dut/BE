@@ -1,4 +1,4 @@
-const userModel = require("../models/user.model");
+const authService = require("../services/auth.service");
 const jwt = require("jsonwebtoken");
 const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY;
 const CUSTOMER_SECRET_KEY = process.env.CUSTOMER_SECRET_KEY;
@@ -53,27 +53,10 @@ const verifyAdminToken = (req, res, next) => {
 
 const adminLogin = async (req, res, next) => {
   try {
-    console.log("Admin login request body:", req.body);
-    if (!req.body) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Login failed",
-        "No data provided"
-      );
-    }
-
     const data = req.body;
-
     const { email, password } = data;
-    if (!email || !password) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Login failed",
-        "Email and password are required"
-      );
-    }
 
-    const existingAdmin = await userModel.adminLogin(email, password);
+    const existingAdmin = await authService.adminLogin(email, password);
 
     const token = createAdminToken(existingAdmin);
     return successResponse(
@@ -98,7 +81,7 @@ const createAdmin = async (req, res, next) => {
       );
     }
 
-    const newAdmin = await userModel.createAdmin(data);
+    const newAdmin = await authService.createAdmin(data);
     const token = createAdminToken(newAdmin);
     return successResponse(
       res,
@@ -147,24 +130,10 @@ const verifyCustomerToken = (req, res, next) => {
 const customerLogin = async (req, res, next) => {
   try {
     const data = req.body;
-    if (!data) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Login failed",
-        "No data provided"
-      );
-    }
 
     const { email, password } = data;
-    if (!email || !password) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Login failed",
-        "Email and password are required"
-      );
-    }
 
-    const existingCustomer = await userModel.customerLogin(email, password);
+    const existingCustomer = await authService.customerLogin(email, password);
     if (!existingCustomer) {
       return errorResponse(
         res,
@@ -188,15 +157,7 @@ const customerLogin = async (req, res, next) => {
 const createCustomer = async (req, res, next) => {
   try {
     const data = req.body;
-    if (!data) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Customer creation failed",
-        "No data provided"
-      );
-    }
-
-    const newCustomer = await userModel.createCustomer(data);
+    const newCustomer = await authService.createCustomer(data);
     const token = createCustomerToken(newCustomer);
     return successResponse(
       res,

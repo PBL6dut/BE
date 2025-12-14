@@ -3,17 +3,21 @@ const router = express.Router()
 const productController = require('../controllers/product.controller')
 const upload = require('../utils/imageStorage');
 const authMiddleware = require('../middlewares/auth.middleware')
-const productValidate = require('../validations/product/product.validation');
-const { validateGetProducts } = require('../validations/product/get-products.validation');
+const productValidate = require('../validators/product/product.validator');
+const { validateGetProducts } = require('../validators/product/get-products.validator');
+const { validatePaginationQuery } = require('../validators/pagination-query.validator');
 
 const requireAuth = authMiddleware.checkLogin
 const validateCreateProduct = productValidate.validateCreateProduct
 const validateUpdateProduct = productValidate.validateUpdateProduct
 const productUpload = upload.productUpload
 
-router.get('/', validateGetProducts, productController.getAllProducts);
+
+router.get('/', validatePaginationQuery, productController.getAllProducts);
+router.get('/count', productController.countProducts);
 router.get('/search', productController.SearchProducts);
 router.get('/categories', productController.getAllCategories);
+router.get('/upload-signature', requireAuth, productController.getUploadSignarture);
 router.get('/:id', productController.getProductById);
 // 'productUpload' middleware handles file uploads for product creation
 router.use(requireAuth)

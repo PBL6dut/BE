@@ -1,6 +1,6 @@
 const { default: ApiError } = require("../../utils/ApiError");
 const { StatusCodes } = require("http-status-codes");
-const { schema } = require("./product.schema.validation");
+const { schema } = require("./product.schema.validator");
 
 const ValidateFiles = (files) => {
   const errors = [];
@@ -57,7 +57,7 @@ const validateCreateProduct = (req, res, next) => {
     next(
       new ApiError(
         StatusCodes.UNPROCESSABLE_ENTITY,
-        "Validation failed",
+        "validator failed",
         errors
       )
     );
@@ -92,7 +92,7 @@ const validateUpdateProduct = (req, res, next) => {
   if (errors.length > 0) {
     const apiError = new ApiError(
       StatusCodes.UNPROCESSABLE_ENTITY,
-      "Validation failed",
+      "validator failed",
       errors
     );
     return next(apiError);

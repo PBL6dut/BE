@@ -152,6 +152,12 @@ exports.Prisma.OrderScalarFieldEnum = {
   payment_method: 'payment_method',
   payment_status: 'payment_status',
   paid_at: 'paid_at',
+  transaction_id: 'transaction_id',
+  transaction_code: 'transaction_code',
+  transaction_content: 'transaction_content',
+  gateway: 'gateway',
+  paid_amount: 'paid_amount',
+  payment_verified_at: 'payment_verified_at',
   shipping_method: 'shipping_method',
   shipping_address: 'shipping_address',
   phone: 'phone',
@@ -245,6 +251,10 @@ exports.Prisma.CustomerOrderByRelevanceFieldEnum = {
 
 exports.Prisma.OrderOrderByRelevanceFieldEnum = {
   order_number: 'order_number',
+  transaction_id: 'transaction_id',
+  transaction_code: 'transaction_code',
+  transaction_content: 'transaction_content',
+  gateway: 'gateway',
   shipping_address: 'shipping_address',
   phone: 'phone',
   notes: 'notes'

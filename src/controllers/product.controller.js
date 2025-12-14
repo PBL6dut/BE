@@ -1,20 +1,31 @@
 const { StatusCodes } = require("http-status-codes");
-const productModel = require("../models/product.model");
+const productservice = require("../services/product.service");
 const { default: ApiError } = require("../utils/ApiError");
 const { successResponse, errorResponse } = require("../utils/response");
+const cloudinaryConfig = require("../configs/cloudinary.config");
+const cloudinary = require('cloudinary').v2;
+// require('dotenv').config();
+
+cloudinary.config(cloudinaryConfig);
+
+const countProducts = async (req, res, next) => {
+  try {
+    const count = await productservice.countProducts();
+    return successResponse(res, "Count products success", count, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+}
 
 const getAllProducts = async (req, res, next) => {
   try {
-    const role = req.user?.role || "customer";
     const { page: pageStr, pageSize: pageSizeStr, ...rest } = req.query;
     let page = pageStr ? parseInt(pageStr, 10) : 1;
     let limit = pageSizeStr ? parseInt(pageSizeStr, 10) : 10;
-    if (isNaN(page) || page < 1) page = 1;
-    if (isNaN(limit) || limit < 1) limit = 10;
 
-    const result = await productModel.getAllProducts(role, page, limit, rest);
+    const result = await productservice.getAllProducts(page, limit, rest);
 
-    if (!result.products || result.products.length === 0) {
+    if (!result.data || result.data.length === 0) {
       return successResponse(res, "No products found", [], StatusCodes.OK);
     }
 
@@ -27,8 +38,7 @@ const getAllProducts = async (req, res, next) => {
 const getProductById = async (req, res, next) => {
   try {
     const productId = parseInt(req.params.id);
-
-    const product = await productModel.getProductById(productId);
+    const product = await productservice.getProductById(productId);
     return successResponse(res, "Get product success", product);
   } catch (error) {
     next(error);
@@ -37,7 +47,7 @@ const getProductById = async (req, res, next) => {
 
 const getAllCategories = async (req, res, next) => {
   try {
-    const categories = await productModel.getAllCategories();
+    const categories = await productservice.getAllCategories();
     
     if (!categories || categories.length === 0) {
       return successResponse(res, "No categories found", [], StatusCodes.OK);
@@ -58,17 +68,50 @@ const SearchProducts = async (req, res, next) => {
     // data.stock_quantity && (data.stock_quantity = parseInt(data.stock_quantity));
     // data.category_id && (data.category_id = parseInt(data.category_id));
 
-    const products = await productModel.SearchProducts(data);
+    const products = await productservice.SearchProducts(data);
     return successResponse(res, "Search products success", products);
   } catch (error) {
     next(error);
   }
 };
 
+const getUploadSignarture = (req, res, next) => {
+  try {
+    // 1. Tạo timestamp (thời gian hiện tại tính bằng giây)
+    const timestamp = Math.round((new Date).getTime() / 1000);
+
+    // 2. Định nghĩa các quy tắc upload (Params to sign)
+    // Những tham số nào bạn khai báo ở đây thì FE BẮT BUỘC phải gửi đúng y hệt
+    const uploadConfig = {
+      timestamp: timestamp,
+      folder: 'catalog', // Gom hết ảnh vào thư mục catalog như bạn muốn
+      // use_filename: true, // Nếu muốn giữ tên file gốc (tùy chọn)
+      // unique_filename: false, // Nếu muốn ghi đè file cũ cùng tên (tùy chọn)
+    };
+
+    // 3. Tạo chữ ký bí mật dựa trên uploadConfig và API_SECRET
+    const signature = cloudinary.utils.api_sign_request(
+      uploadConfig,
+      process.env.CLOUDINARY_API_SECRET
+    );
+
+    // 4. Trả về cho Frontend
+    return successResponse(res, "Get upload signature success", {
+      timestamp,
+      signature,
+      folder: uploadConfig.folder,
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+      apiKey: process.env.CLOUDINARY_API_KEY
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
 const createProduct = async (req, res, next) => {
   try {
     const data = req.body || [];
-    console.log(data);
     data.price && (data.price = parseFloat(data.price));
     data.sale_price && (data.sale_price = parseFloat(data.sale_price));
     data.stock_quantity &&
@@ -81,7 +124,7 @@ const createProduct = async (req, res, next) => {
 
     // data.image_url = JSON.stringify(data.image_url);
 
-    const newProduct = await productModel.createProduct(data);
+    const newProduct = await productservice.createProduct(data);
     return successResponse(
       res,
       "Product created successfully",
@@ -137,7 +180,7 @@ const updateProduct = async (req, res, next) => {
 
     data.image_url = imageFiles ? imageFiles.map((file) => file.path) : [];
 
-    const updatedProduct = await productModel.updateProduct(productId, data);
+    const updatedProduct = await productservice.updateProduct(productId, data);
     return successResponse(res, "Product updated successfully", updatedProduct);
   } catch (error) {
     next(error);
@@ -162,7 +205,7 @@ const deleteProduct = async (req, res, next) => {
       }
 
       const productId = parseInt(req.params.id);
-      const deletedProduct = await productModel.deleteProduct(productId);
+      const deletedProduct = await productservice.deleteProduct(productId);
       return successResponse(
         res,
         "Product deleted successfully",
@@ -182,4 +225,6 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  countProducts,
+  getUploadSignarture,
 };

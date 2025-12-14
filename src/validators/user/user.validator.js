@@ -1,13 +1,14 @@
 const { default: ApiError } = require("../../utils/ApiError");
 const { StatusCodes } = require("http-status-codes");
-const { schema } = require("../user/user.schema.validation");
+const { schema } = require("./user.schema.validator");
 
 const validateCreateCustomer = async (req, res, next) => {
-  const data = req.body;
   try {
-    if (!data) {
+    if (!req.body) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Create customer failed", "No data provided");
     }
+    const data = req.body;
+    console.log("Validating data:", data); // Debug log
     await schema.validateAsync(data, { abortEarly: false });
     next();
   } catch (err) {

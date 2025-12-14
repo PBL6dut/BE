@@ -2,7 +2,7 @@ const Joi = require("joi");
 const { errorResponse } = require("../../utils/response");
 const { default: ApiError } = require("../../utils/ApiError");
 const { StatusCodes } = require("http-status-codes");
-const { schema } = require("./order.schema.validation");
+const { schema } = require("./order.schema.validator");
 
 const validateCreateOrder = async (req, res, next) => {
   try {
@@ -19,7 +19,7 @@ const validateCreateOrder = async (req, res, next) => {
       );
       const apiError = new ApiError(
         StatusCodes.UNPROCESSABLE_ENTITY,
-        "Validation failed",
+        "validation failed",
         errorDetails
       );
       return next(apiError);

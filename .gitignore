@@ -17,3 +17,5 @@
 ./public/uploads
 test
 
+/src/generated/
+

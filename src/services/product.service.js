@@ -4,76 +4,23 @@ const { default: ApiError } = require("../utils/ApiError");
 // const ApiError = require("../utils/ApiError");
 const formatImageUrl = require("../utils/formatImageUrl");
 const { deleteFile } = require("../utils/imageStorage");
-const prisma = new PrismaClient();
+const productRepository = require("../repositories/product.repository");
+
+const countProducts = async () => {
+  const count = await productRepository.countProducts();
+  return count;
+}
 
 const getAllProducts = async (
-  role = "customer",
   page = 1,
   limit = 10,
   query = {}
-) => {
-  const queryArgs = {
-    take: limit,
-    skip: (page - 1) * limit,
-    include: {
-      images: { select: { url: true } },
-      category: { select: { id: true, name: true } },
-      order_details: role === "admin",
-      category_id: false,
-    },
-  };
+) => {  
+  const result = await productRepository.getProducts(page, limit, query);
+  const { products, count } = result;
+  const totalPages = Math.ceil(count / limit);
 
-  if (Object.keys(query).length > 0) {
-    if (query.name) {
-      queryArgs.where = { name: { contains: query.name } };
-    }
-    if (query.category_id) {
-      queryArgs.where = {
-        ...queryArgs.where,
-        category_id: parseInt(query.category_id),
-      };
-    }
-    if (query.min_price) {
-      queryArgs.where = {
-        ...queryArgs.where,
-        price: { gte: parseFloat(query.min_price) },
-      };
-    }
-    if (query.max_price) {
-      queryArgs.where = {
-        ...queryArgs.where,
-        price: { ...queryArgs.where.price, lte: parseFloat(query.max_price) },
-      };
-    }
-    if (query.tags) {
-      const tagsArray = query.tags.split(",").map((tag) => tag.trim());
-      queryArgs.where = {
-        ...queryArgs.where,
-        tags: {
-          hasSome: tagsArray,
-        },
-      };
-    }
-    if (query.sort) {
-      const dashIndex = query.sort.indexOf("_");
-      const sortField = query.sort.substring(-1, dashIndex);
-      const sortOrder = query.sort.substring(dashIndex + 1, query.sort.length);
-      queryArgs.orderBy = {
-        [sortField]: sortOrder,
-      };
-    }
-  }
-
-  const totalProducts = await prisma.product.count({ where: queryArgs.where });
-  const totalPages = Math.ceil(totalProducts / limit);
-
-  const products = await prisma.product.findMany(queryArgs);
-  products &&
-    products.forEach((product) => {
-      product.images = product.images.map((image) => formatImageUrl(image.url));
-    });
-
-  return { products, currentPage: page, totalPages };
+  return { data: products, pagination: { currentPage: page, totalPages } };
 };
 
 const getProductById = async (id) => {
@@ -85,21 +32,7 @@ const getProductById = async (id) => {
     );
   }
 
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      order_details: false,
-      category: { select: { id: true, name: true } },
-      images: { select: { url: true } },
-      created_at: false,
-      updated_at: false,
-      category_id: false,
-    },
-  });
-
-  if (product) {
-    product.images = product.images.map((image) => formatImageUrl(image.url));
-  }
+  const product = await productRepository.getProductById(id);
 
   if (!product) {
     throw new ApiError(
@@ -113,9 +46,7 @@ const getProductById = async (id) => {
 };
 
 const getAllCategories = async () => {
-  return await prisma.category.findMany({
-    select: { id: true, name: true },
-  });
+  return await productRepository.getAllCategories();
 };
 
 const SearchProducts = async (data) => {
@@ -296,4 +227,5 @@ module.exports = {
   deleteProduct,
   SearchProducts,
   checkProductId,
+  countProducts,
 };

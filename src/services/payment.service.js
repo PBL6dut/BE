@@ -6,6 +6,7 @@ const GHN_SHOP_ID_SANDBOX = process.env.GHN_SHOP_ID_SANDBOX;
 const GHN_API_PROVINCES = process.env.GHN_API_PROVINCES;
 const GHN_API_DISTRICTS = process.env.GHN_API_DISTRICTS;
 const GHN_API_WARDS = process.env.GHN_API_WARDS;
+const GHN_API_EXPECTED_DELIVERY_DATE = process.env.GHN_API_EXPECTED_DELIVERY_DATE;
 const { default: ApiError } = require("../utils/ApiError");
 const from_district_id = process.env.FROM_DISTRICT_ID;
 const service_id = process.env.SERVICE_ID;
@@ -189,6 +190,7 @@ const calculateShippingFee = async (
       {
         headers: {
           Token: GHN_TOKEN_SANDBOX,
+          ShopId: GHN_SHOP_ID_SANDBOX,
           "Content-Type": "application/json",
         },
       }
@@ -206,10 +208,61 @@ const calculateShippingFee = async (
   }
 };
 
+const getExpectedDeliveryDate = async (
+  to_district_id,
+  to_ward_code,
+) => {
+  if (!to_district_id || !to_ward_code) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      "Get Expected Delivery Date Failed",
+      "To District ID, To Ward Code, and Service ID are required"
+    );
+  }
+
+  const shippingServices = await getShippingServices(to_district_id);
+  const service_id = await shippingServices.filter(
+    (service) => service.service_type_id === 2
+  )[0]?.service_id;
+
+  const url = `${GHN_API_EXPECTED_DELIVERY_DATE}`;
+  try {
+    const response = await axios.post(
+      url,
+      {
+        service_id: parseInt(service_id),
+        from_district_id: parseInt(from_district_id),
+        to_district_id: to_district_id,
+        to_ward_code: to_ward_code,
+      },
+      {
+        headers: {
+          Token: GHN_TOKEN_SANDBOX,
+          ShopId: GHN_SHOP_ID_SANDBOX,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.data && response.data.code === 200) {
+      const leadtimeSeconds = response.data.data.leadtime;
+      const leadtimeMilliseconds = leadtimeSeconds * 1000;
+      const expected_delivery_date = new Date(leadtimeMilliseconds);
+      return expected_delivery_date;
+    }
+  } catch (error) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Get Expected Delivery Date Failed",
+      error.message
+    );
+  }
+};
+
 module.exports = {
   getProvinces,
   getDistricts,
   getWards,
   getShippingServices,
   calculateShippingFee,
+  getExpectedDeliveryDate,
 };

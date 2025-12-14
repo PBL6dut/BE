@@ -1,19 +1,51 @@
-const userModel = require("../models/user.model");
-const validateUser = require("../validations/user/user.validation");
+const userservice = require("../services/user.service");
+const validateUser = require("../validators/user/user.validator");
 const bcrypt = require("bcrypt");
 const { successResponse, errorResponse } = require("../utils/response");
 const { createCustomerToken } = require("./auth.controller");
 const { default: ApiError } = require("../utils/ApiError");
 const { StatusCodes } = require("http-status-codes");
+const paginationQueryValidator = require("../validators/pagination-query.validator");
+
+const getAllCustomers = async (req, res, next) => {
+  try {
+    const { page: pageStr, pageSize: pageSizeStr, ...rest } = req.query;
+    let page = pageStr ? parseInt(pageStr, 10) : 1;
+    let limit = pageSizeStr ? parseInt(pageSizeStr, 10) : 10;
+    const customers = await userservice.getAllCustomers(limit, page);
+    return successResponse(res, "Get all customers success", customers);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCurrentCustomer = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const customer = await userservice.getCurrentCustomer(id);
+    return successResponse(res, "Get current customer success", customer, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+}
 
 const checkCustomerAuth = (req, customerId) => {
   const { id } = req.user;
   return id === customerId;
 };
 
-const getAllCustomers = async (req, res) => {
-  const customers = await userModel.getAllCustomers();
-  return successResponse(res, "Get all customers success", customers);
+const countCustomers = async (req, res, next) => {
+  try {
+    const count = await userservice.countCustomers();
+    return successResponse(
+      res,
+      "Count customers success",
+      count,
+      StatusCodes.OK
+    );
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getCustomerById = async (req, res, next) => {
@@ -37,7 +69,7 @@ const getCustomerById = async (req, res, next) => {
       );
     }
 
-    const customer = await userModel.getCustomerById(customerId);
+    const customer = await userservice.getCustomerById(customerId);
     return successResponse(res, "Get customer success", customer);
   } catch (error) {
     next(error);
@@ -66,7 +98,7 @@ const updateCustomer = async (req, res, next) => {
 
     const customerData = req.body;
 
-    const updatedCustomer = await userModel.updateCustomer(
+    const updatedCustomer = await userservice.updateCustomer(
       customerId,
       customerData
     );
@@ -102,7 +134,7 @@ const deleteCustomer = async (req, res) => {
       );
     }
 
-    await userModel.deleteCustomer(customerId);
+    await userservice.deleteCustomer(customerId);
     return successResponse(res, "Customer deleted successfully");
   } catch (error) {
     next(error);
@@ -114,4 +146,6 @@ module.exports = {
   getCustomerById,
   updateCustomer,
   deleteCustomer,
+  countCustomers,
+  getCurrentCustomer,
 };

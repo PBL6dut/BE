@@ -2,7 +2,7 @@ const Joi = require("joi");
 const {
   checkCustomerEmail,
   checkCustomerPhone,
-} = require("../../models/user.model");
+} = require("../../services/user.service");
 
 const schema = Joi.object({
   full_name: Joi.string().min(2).max(100).required().messages({

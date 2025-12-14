@@ -1,12 +1,17 @@
-const orderModel = require("../models/order.model");
+const orderservice = require("../services/order.service");
 const { successResponse, errorResponse } = require("../utils/response");
-const { getProductById } = require("../models/product.model");
+const { getProductById } = require("../services/product.service");
 const { default: ApiError } = require("../utils/ApiError");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllOrders = async (req, res, next) => {
   try {
-    const orders = await orderModel.getAllOrders();
+    const { page: pageStr, pageSize: pageSizeStr, ...rest } = req.query;
+    let page = pageStr ? parseInt(pageStr, 10) : 1;
+    let limit = pageSizeStr ? parseInt(pageSizeStr, 10) : 10;
+    if (isNaN(page) || page < 1) page = 1;
+    if (isNaN(limit) || limit < 1) limit = 10;
+    const orders = await orderservice.getAllOrders(page, limit);
     return successResponse(res, "Get all orders success", orders);
   } catch (error) {
     next(error);
@@ -32,7 +37,7 @@ const getOrderById = async (req, res, next) => {
     }
 
     const orderId = parseInt(req.params.id);
-    const order = await orderModel.getOrderById(orderId);
+    const order = await orderservice.getOrderById(orderId);
     return successResponse(res, "Get order success", order);
   } catch (error) {
     next(error);
@@ -67,7 +72,7 @@ const getOrdersByCustomer = async (req, res, next) => {
       );
     }
 
-    const orders = await orderModel.getOrdersByCustomer(customerId);
+    const orders = await orderservice.getOrdersByCustomer(customerId);
     return successResponse(res, "Get orders by customer success", orders);
   } catch (error) {
     next(error);
@@ -77,33 +82,45 @@ const getOrdersByCustomer = async (req, res, next) => {
 const createOrder = async (req, res, next) => {
   try {
     const data = req.body;
-    if (!data) {
-        throw new ApiError(
-          StatusCodes.BAD_REQUEST,
-          "Create order failed",
-          "No data provided"
-        );
-    }
+    const customer_id = req.user.id;
 
-    if (data.customer_id) {
-      data.customer_id = parseInt(data.customer_id, 10);
-    }
-
+    data.customer_id = customer_id;
+    
     data.order_details.forEach((item) => {
       if (item.product_id) item.product_id = parseInt(item.product_id, 10);
       if (item.quantity) item.quantity = parseInt(item.quantity, 10);
     });
 
-    const newOrder = await orderModel.createOrder(data);
+    const newOrder = await orderservice.createOrder(data);
     return successResponse(res, "Create order success", newOrder, 201);
   } catch (error) {
     next(error);
   }
 };
 
+const countOrders = async (req, res, next) => {
+  try {
+    const count = await orderservice.countOrders();
+    return successResponse(res, "Count orders success", count, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const totalIncome = async (req, res, next) => {
+  try {
+    const income = await orderservice.totalIncome();
+    return successResponse(res, "Total income success", income, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getAllOrders,
   getOrderById,
   getOrdersByCustomer,
   createOrder,
+  countOrders,
+  totalIncome,
 };
