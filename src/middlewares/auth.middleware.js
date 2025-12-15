@@ -24,18 +24,30 @@ const checkLogin = (req, res, next) => {
       );
     }
 
+    console.log("🔍 Token received:", token.substring(0, 20) + "...");
+
     // Kiểm tra admin trước
     try {
       const admin = jwt.verify(token, ADMIN_SECRET_KEY);
+      console.log("✅ Admin token verified successfully");
       req.user = admin;
       return next();
     } catch (err) {
+      console.log("⚠️ Admin token verification failed:", err.name);
       // Không phải admin, thử customer
     }
-    const customer = jwt.verify(token, CUSTOMER_SECRET_KEY);
-    req.user = customer;
-    return next();
+
+    try {
+      const customer = jwt.verify(token, CUSTOMER_SECRET_KEY);
+      console.log("✅ Customer token verified successfully");
+      req.user = customer;
+      return next();
+    } catch (err) {
+      console.log("❌ Customer token verification failed:", err.name, err.message);
+      throw err;
+    }
   } catch (error) {
+    console.log("❌ Authentication error:", error.name, error.message);
     return errorResponse(res, "Unauthorized", "Invalid token", 401);
   }
 };

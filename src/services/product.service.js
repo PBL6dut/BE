@@ -6,6 +6,8 @@ const formatImageUrl = require("../utils/formatImageUrl");
 const { deleteFile } = require("../utils/imageStorage");
 const productRepository = require("../repositories/product.repository");
 
+const prisma = new PrismaClient();
+
 const countProducts = async () => {
   const count = await productRepository.countProducts();
   return count;

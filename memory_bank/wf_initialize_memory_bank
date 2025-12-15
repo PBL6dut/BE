@@ -1,0 +1,70 @@
+# Workflow: Initialize Memory Bank
+
+## Current Tasks
+- Read source code of PBL6 Backend project
+- Create memory_bank directory structure
+- Generate long_term memory file with project overview
+- Generate workflow file for current session
+
+## Plan (Simple)
+1. Explore the codebase structure (controllers, models, routes, middlewares)
+2. Read key files to understand:
+   - Main entry point (index.js)
+   - Database schema (schema.prisma)
+   - Controllers and models for main features
+   - Authentication and authorization flow
+   - API routes structure
+3. Analyze the architecture and tech stack
+4. Document findings in long_term memory file
+5. Create workflow tracking file
+
+## Steps
+1. ✓ Find and read package.json to understand dependencies
+2. ✓ Explore src/ directory structure
+3. ✓ Read main entry point (src/index.js)
+4. ✓ Find and read Prisma schema
+5. ✓ Read controllers (product, order, auth, payment, user)
+6. ✓ Read models to understand database operations
+7. ✓ Read middleware files (auth, error handling)
+8. ✓ Read utility files (imageStorage, response, ApiError, formatImageUrl)
+9. ✓ Create memory_bank directory
+10. ✓ Write long_term memory file with comprehensive project overview
+11. ✓ Write workflow file for current session
+
+## Things Done
+- ✓ Explored entire project structure
+- ✓ Read package.json and identified tech stack
+- ✓ Analyzed main entry point and route structure
+- ✓ Read Prisma schema and understood database models
+- ✓ Reviewed all 5 controllers (auth, product, order, payment, user)
+- ✓ Reviewed product and auth models
+- ✓ Reviewed authentication middleware
+- ✓ Reviewed image storage utilities
+- ✓ Created memory_bank directory
+- ✓ Created long_term file with complete project documentation
+- ✓ Created wf_initialize_memory_bank workflow file
+
+## Things Not Done Yet
+- None - all initialization tasks completed
+
+## Key Findings & Insights
+1. **Architecture Pattern**: MVC-like pattern (Routes → Controllers → Models)
+2. **Authentication**: Dual JWT system (separate tokens for admin/customer)
+3. **Image Handling**: Hybrid approach (local Multer storage + Cloudinary cloud storage)
+4. **Payment Flow**: VNPay integration for QR payments
+5. **Shipping**: GHN API integration for Vietnam shipping
+6. **Database**: MySQL with Prisma ORM, well-structured schema
+7. **Error Handling**: Centralized with custom ApiError class
+8. **File Organization**: Clear separation of concerns
+9. **Code Quality**: Some files exceed 150-line guideline (product.model: 264 lines, product.controller: 208 lines)
+10. **Testing**: Jest configured but test files not found in initial scan
+
+## Recommendations for Future Work
+1. Consider splitting large model/controller files to meet 150-line guideline
+2. Add comprehensive API documentation (Swagger/OpenAPI)
+3. Implement rate limiting for API endpoints
+4. Add data validation middleware before controllers
+5. Implement caching for frequently accessed data (products, categories)
+6. Add comprehensive error logging
+7. Implement database migrations tracking
+8. Add integration tests for API endpoints

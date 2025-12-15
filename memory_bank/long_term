@@ -1,0 +1,196 @@
+# PBL6 E-Commerce Backend - Long Term Memory
+
+## Project Overview
+- **Project Name**: PBL6 E-Commerce Backend
+- **Type**: REST API Backend for E-commerce Platform
+- **Tech Stack**: Node.js, Express.js, Prisma ORM, MySQL
+- **Port**: 3000
+- **Main Branch**: main
+- **Dev Branch**: dev
+
+## Core Features
+1. **Authentication & Authorization**
+   - Admin authentication (JWT, 1h expiration)
+   - Customer authentication (JWT, 24h expiration)
+   - Token verification via Authorization header (Bearer scheme)
+   - Social login support (Google, Facebook via IDs)
+   - Role-based access control (admin/customer)
+   - Middleware: auth.middleware.js (checkLogin)
+
+2. **Product Management**
+   - CRUD operations for products with role-based data visibility
+   - Unified pagination with advanced filtering (name, category, price range, tags)
+   - Sorting support (by any product field)
+   - Product images (up to 5 images per product) with cascade delete
+   - Categories management
+   - Tags system (many-to-many relationship)
+   - Transaction-based delete for data integrity
+   - Product attributes: price, sale_price, stock_quantity, dimensions (weight, length, width, height), material, color, brand, style, rating, reviews, warranty, shipping info
+
+3. **Order Management**
+   - Order creation with multiple products
+   - Order tracking by customer
+   - Order status: pending, confirmed, shipping, completed, cancelled
+   - Payment methods: cash_on_delivery, bank_transfer, credit_card, e_wallet, installment
+   - Payment status: pending, paid, failed, refunded
+   - Shipping methods: standard_delivery, express_delivery, same_day_delivery, pickup_at_store, installation_service
+   - Sepay transaction tracking: transaction_id, transaction_code, gateway, paid_amount
+   - Payment verification timestamp tracking
+
+4. **Payment Integration**
+   - VNPay QR payment
+   - Sepay webhook integration for payment notifications
+   - Payment verification with detailed logging
+   - Transaction tracking (ID, code, content, gateway, amount)
+   - Webhook endpoint with comprehensive request logging
+
+5. **Shipping Integration**
+   - GHN (Giao Hàng Nhanh) API integration
+   - Get provinces, districts, wards
+   - Calculate shipping fee
+   - Get available shipping services
+
+6. **Image Management**
+   - Local storage with Multer (public/uploads/)
+   - Cloudinary integration for cloud storage
+   - Image URL formatting utility
+   - Cascade delete support (images auto-deleted with product)
+
+7. **AI Integration**
+   - Google Generative AI (@google/generative-ai)
+   - OpenAI
+
+## Project Structure
+```
+src/
+├── controllers/        # Request handlers
+│   ├── auth.controller.js
+│   ├── order.controller.js
+│   ├── payment.controller.js
+│   ├── product.controller.js
+│   └── user.controller.js
+├── models/            # Database operations (Prisma)
+│   ├── order.model.js
+│   ├── payment.model.js
+│   ├── product.model.js
+│   └── user.model.js
+├── routes/            # API route definitions
+│   ├── auth.route.js
+│   ├── order.route.js
+│   ├── payment.route.js
+│   ├── product.route.js
+│   └── user.route.js
+├── middlewares/       # Middleware functions
+│   ├── auth.middleware.js
+│   └── errorHandling.middleware.js
+├── validations/       # Joi validation schemas
+│   ├── order/
+│   ├── user/
+│   └── product/
+├── utils/             # Helper utilities
+│   ├── ApiError.js
+│   ├── response.js
+│   ├── imageStorage.js
+│   └── formatImageUrl.js
+├── common/            # Common utilities
+├── generated/         # Prisma generated client
+└── index.js           # Entry point
+```
+
+## Database Schema (Prisma)
+- **User Tables**: Customer, Admin
+- **Product Tables**: Product, Product_Image (with cascade delete), Category, Tag
+- **Order Tables**: Order (with Sepay fields), OrderDetail
+- **Enums**: Order_Status, Payment_Method, Payment_Status, Shipping_Method, Product_Status
+- **Indexes**: transaction_id, payment_status, order_number (for fast lookups)
+- **Binary Targets**: native, debian-openssl-3.0.x (for deployment compatibility)
+
+### Order Model Sepay Integration
+- `transaction_id` (unique) - Sepay transaction identifier
+- `transaction_code` - Bank transaction code (e.g., FT25322218005287)
+- `transaction_content` - Full transfer content from bank
+- `gateway` - Payment gateway/bank name (MBBank, Momo, VNPay, etc.)
+- `paid_amount` - Actual amount received from payment
+- `payment_verified_at` - Timestamp when webhook confirmed payment
+
+## API Endpoints Structure
+- `/api/auth/*` - Authentication endpoints
+- `/api/users/*` - User management
+- `/api/products/*` - Product operations
+- `/api/orders/*` - Order management
+- `/api/payment/*` - Payment & shipping operations
+
+## Key Dependencies
+- Express 5.1.0
+- Prisma 6.16.1
+- JWT (jsonwebtoken)
+- Bcrypt 6.0.0
+- Multer 2.0.2
+- Cloudinary 2.8.0
+- VNPay 2.4.4
+- Google Generative AI 0.24.1
+- OpenAI 6.9.0
+- Joi 18.0.1
+- Axios 1.12.2
+
+## Development Commands
+- `npm start` - Start server with nodemon
+- `npm test` - Run Jest tests
+- `npm run seed` - Seed database
+
+## Important Notes
+- Images stored locally in `public/uploads/` with subfolders (user, product)
+- Cloudinary used for cloud image storage
+- Product images use cascade delete - deleting product auto-deletes images
+- Delete operations wrapped in transactions for data integrity
+- Error handling via centralized errorHandling.middleware
+- Response formatting via utils/response.js (successResponse, errorResponse)
+- Custom ApiError class for consistent error handling
+- File size guideline: Keep files under 150 lines
+- Database: MySQL with Prisma ORM
+- Prisma client output: ./src/generated/client
+- Token verification uses Authorization header (Bearer scheme)
+- Webhook logging enabled for payment debugging
+- Role-based data filtering (admin sees more details than customer)
+
+## Environment Variables Required
+- DATABASE_URL
+- ADMIN_SECRET_KEY
+- CUSTOMER_SECRET_KEY
+- VNP_TMNCODE, VNP_HASHSECRET, VNP_PAYURL
+- GHN_API_URL, GHN_TOKEN_SANDBOX, GHN_SHOP_ID_SANDBOX
+- GHN_API_PROVINCES, GHN_API_DISTRICTS, GHN_API_WARDS
+- Cloudinary credentials (if using)
+- Google AI & OpenAI API keys (if using)
+
+## Current State
+- Modified files:
+  - schema.prisma (added Sepay fields, indexes, cascade delete)
+  - payment.controller.js (webhook logging)
+  - auth.controller.js (improved token verification)
+  - product.model.js (refactored pagination, added transaction)
+  - product.controller.js (simplified logic)
+  - prisma/data/categories.json, generated client files
+- New SQL session file: pbl66.session.sql
+- Recent updates:
+  - Sepay payment webhook integration
+  - Refactored product pagination with unified getAllProducts
+  - Added transaction-based delete operations
+  - Improved authentication token handling
+  - Enhanced database indexes for performance
+  - Added role-based data visibility
+
+## Recent Improvements (Latest Session)
+1. **Payment System**: Sepay webhook ready for integration with detailed logging
+2. **Product API**: Unified pagination reduces code duplication, supports advanced filtering
+3. **Data Integrity**: Transaction-based deletes + cascade delete configuration
+4. **Authentication**: More secure token verification from headers
+5. **Performance**: Added database indexes for common queries (transaction_id, payment_status, order_number)
+
+## Architecture Patterns
+- **MVC-like**: Routes → Controllers → Models
+- **Middleware Pipeline**: auth → validation → controller → error handling
+- **Centralized Error Handling**: Custom ApiError class + errorHandling middleware
+- **Response Standardization**: successResponse/errorResponse utilities
+- **Transaction-Based Operations**: Critical operations (delete) wrapped in DB transactions
+- **Role-Based Access**: Data filtering and visibility based on user role
