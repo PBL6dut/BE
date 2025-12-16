@@ -18,6 +18,7 @@ router.get('/count', productController.countProducts);
 router.get('/search', productController.SearchProducts);
 router.get('/categories', productController.getAllCategories);
 router.get('/upload-signature', requireAuth, productController.getUploadSignarture);
+router.get('/most-by-category', requireAuth, productController.getMostProductsByCategory);
 router.get('/:id', productController.getProductById);
 // 'productUpload' middleware handles file uploads for product creation
 router.use(requireAuth)

@@ -13,6 +13,11 @@ const countProducts = async () => {
   return count;
 }
 
+const getMostProductsByCategory = async () => {
+  const result = await productRepository.getMostProductsByCategory();
+  return result;
+}
+
 const getAllProducts = async (
   page = 1,
   limit = 10,
@@ -140,17 +145,23 @@ const updateProduct = async (id, data) => {
     }
   }
 
-  // Xóa toàn bộ ảnh cũ
-  if (image_url) {
+  if (image_url && image_url.length > 0) {
+    // 1. Tìm ảnh cũ trong DB
     const oldImages = await prisma.product_Image.findMany({
       where: { product_id: id },
     });
 
+    // 2. Xóa ảnh cũ trên Cloudinary và DB
     if (oldImages.length > 0) {
       for (const image of oldImages) {
-        await deleteFile(image.url.replace(/\\/g, "/"));
+        try {
+          // Xóa trên Cloudinary
+          await deleteFile(image.url.replace(/\\/g, "/"));
+        } catch (err) {
+          console.error(`Failed to delete image ${image.url}:`, err);
+        }
       }
-
+      // Xóa record trong bảng Product_Image
       await prisma.product_Image.deleteMany({
         where: { product_id: id },
       });
@@ -168,6 +179,16 @@ const updateProduct = async (id, data) => {
         },
       }),
     },
+    include: {
+      images: {
+        select: { url: true },
+      },
+      category: {
+        select: { id: true, name: true },
+      },
+      category_id: false,
+      order_details: true,
+    }
   });
 };
 
@@ -230,4 +251,5 @@ module.exports = {
   SearchProducts,
   checkProductId,
   countProducts,
+  getMostProductsByCategory,
 };

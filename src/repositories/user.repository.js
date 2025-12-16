@@ -13,7 +13,8 @@ const getAllCustomers = async (pageSize = 10, page = 1) => {
     skip: (page - 1) * pageSize,
     take: pageSize,
   });
-  return customers;
+  const count = await countCustomers();
+  return { customers, count };
 };
 
 const getCustomerById = async (id) => {

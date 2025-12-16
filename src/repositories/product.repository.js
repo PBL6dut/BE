@@ -1,5 +1,20 @@
 const prisma = require("../utils/prisma-client");
 
+const getMostProductsByCategory = async () => {
+  const result =
+    await prisma.$queryRaw`SELECT c.name, COUNT(p.id) AS total_products
+FROM Category c
+JOIN Product p ON c.id = p.category_id
+GROUP BY c.id, c.name
+ORDER BY total_products DESC
+LIMIT 5;
+`;
+  return result.map((row) => ({
+    ...row,
+    total_products: Number(row.total_products),
+  }));
+};
+
 const countProducts = async () => {
   const count = await prisma.product.count();
   return count;
@@ -66,8 +81,7 @@ const getProducts = async (page = 1, limit = 10, query = {}) => {
   }
 
   const products = await prisma.product.findMany(queryArgs);
-  console.log(products);
-  const count = products.length;
+  const count = await countProducts();
   return { products, count };
 };
 
@@ -107,4 +121,5 @@ module.exports = {
   getAllCategories,
   getProductById,
   getProductsByIds,
+  getMostProductsByCategory,
 };

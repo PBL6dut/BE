@@ -17,6 +17,15 @@ const countProducts = async (req, res, next) => {
   }
 }
 
+const getMostProductsByCategory = async (req, res, next) => {
+  try {
+    const result = await productservice.getMostProductsByCategory();
+    return successResponse(res, "Get most products by category success", result, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+}
+
 const getAllProducts = async (req, res, next) => {
   try {
     const { page: pageStr, pageSize: pageSizeStr, ...rest } = req.query;
@@ -227,4 +236,5 @@ module.exports = {
   deleteProduct,
   countProducts,
   getUploadSignarture,
+  getMostProductsByCategory,
 };

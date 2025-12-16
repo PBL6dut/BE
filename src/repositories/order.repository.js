@@ -32,7 +32,7 @@ const getAllOrders = async (page = 1, pageSize = 10) => {
     take: pageSize,
     skip: (page - 1) * pageSize,
   });
-  const count = orders.length;
+  const count = await countOrders();
   return { orders, count };
 };
 

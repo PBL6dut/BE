@@ -7,9 +7,10 @@ const { default: ApiError } = require("../utils/ApiError");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllCustomers = async (pageSize = 10, page = 1) => {
-  const customers = await userRepository.getAllCustomers(pageSize, page);
+  const result = await userRepository.getAllCustomers(pageSize, page);
+  const { customers, count } = result;
   const currentPage = page < 1 ? 1 : page;
-  const totalCustomers = await prisma.customer.count();
+  const totalCustomers = count;
   const totalPages = Math.ceil(totalCustomers / pageSize);
   return { data: customers, pagination: { currentPage, totalPages } };
 };
