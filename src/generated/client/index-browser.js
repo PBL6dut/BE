@@ -224,9 +224,30 @@ exports.Prisma.TagScalarFieldEnum = {
   name: 'name'
 };
 
+exports.Prisma.AiSearchHistoryScalarFieldEnum = {
+  id: 'id',
+  session_id: 'session_id',
+  user_id: 'user_id',
+  anonymous_id: 'anonymous_id',
+  query_type: 'query_type',
+  platform: 'platform',
+  source_feature: 'source_feature',
+  original_image_url: 'original_image_url',
+  detected_objects: 'detected_objects',
+  selected_bbox: 'selected_bbox',
+  recommendations: 'recommendations',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.NullsOrder = {
@@ -287,6 +308,25 @@ exports.Prisma.AdminOrderByRelevanceFieldEnum = {
 exports.Prisma.TagOrderByRelevanceFieldEnum = {
   name: 'name'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.AiSearchHistoryOrderByRelevanceFieldEnum = {
+  session_id: 'session_id',
+  anonymous_id: 'anonymous_id',
+  platform: 'platform',
+  source_feature: 'source_feature',
+  original_image_url: 'original_image_url'
+};
 exports.Order_Status = exports.$Enums.Order_Status = {
   pending: 'pending',
   confirmed: 'confirmed',
@@ -323,6 +363,11 @@ exports.Product_Status = exports.$Enums.Product_Status = {
   inactive: 'inactive'
 };
 
+exports.Query_Type = exports.$Enums.Query_Type = {
+  detect: 'detect',
+  recommend: 'recommend'
+};
+
 exports.Prisma.ModelName = {
   Category: 'Category',
   Customer: 'Customer',
@@ -331,7 +376,8 @@ exports.Prisma.ModelName = {
   Product_Image: 'Product_Image',
   Product: 'Product',
   Admin: 'Admin',
-  Tag: 'Tag'
+  Tag: 'Tag',
+  AiSearchHistory: 'AiSearchHistory'
 };
 
 /**

@@ -53,6 +53,11 @@ export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
  * 
  */
 export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
+/**
+ * Model AiSearchHistory
+ * 
+ */
+export type AiSearchHistory = $Result.DefaultSelection<Prisma.$AiSearchHistoryPayload>
 
 /**
  * Enums
@@ -108,6 +113,14 @@ export const Product_Status: {
 
 export type Product_Status = (typeof Product_Status)[keyof typeof Product_Status]
 
+
+export const Query_Type: {
+  detect: 'detect',
+  recommend: 'recommend'
+};
+
+export type Query_Type = (typeof Query_Type)[keyof typeof Query_Type]
+
 }
 
 export type Order_Status = $Enums.Order_Status
@@ -129,6 +142,10 @@ export const Shipping_Method: typeof $Enums.Shipping_Method
 export type Product_Status = $Enums.Product_Status
 
 export const Product_Status: typeof $Enums.Product_Status
+
+export type Query_Type = $Enums.Query_Type
+
+export const Query_Type: typeof $Enums.Query_Type
 
 /**
  * ##  Prisma Client ʲˢ
@@ -327,6 +344,16 @@ export class PrismaClient<
     * ```
     */
   get tag(): Prisma.TagDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiSearchHistory`: Exposes CRUD operations for the **AiSearchHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiSearchHistories
+    * const aiSearchHistories = await prisma.aiSearchHistory.findMany()
+    * ```
+    */
+  get aiSearchHistory(): Prisma.AiSearchHistoryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -775,7 +802,8 @@ export namespace Prisma {
     Product_Image: 'Product_Image',
     Product: 'Product',
     Admin: 'Admin',
-    Tag: 'Tag'
+    Tag: 'Tag',
+    AiSearchHistory: 'AiSearchHistory'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -794,7 +822,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "category" | "customer" | "order" | "orderDetail" | "product_Image" | "product" | "admin" | "tag"
+      modelProps: "category" | "customer" | "order" | "orderDetail" | "product_Image" | "product" | "admin" | "tag" | "aiSearchHistory"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1326,6 +1354,72 @@ export namespace Prisma {
           }
         }
       }
+      AiSearchHistory: {
+        payload: Prisma.$AiSearchHistoryPayload<ExtArgs>
+        fields: Prisma.AiSearchHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiSearchHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiSearchHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.AiSearchHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiSearchHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.AiSearchHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.AiSearchHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.AiSearchHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.AiSearchHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          update: {
+            args: Prisma.AiSearchHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiSearchHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiSearchHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AiSearchHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.AiSearchHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiSearchHistory>
+          }
+          groupBy: {
+            args: Prisma.AiSearchHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiSearchHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiSearchHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<AiSearchHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1430,6 +1524,7 @@ export namespace Prisma {
     product?: ProductOmit
     admin?: AdminOmit
     tag?: TagOmit
+    aiSearchHistory?: AiSearchHistoryOmit
   }
 
   /* Types for Logging */
@@ -10051,6 +10146,1002 @@ export namespace Prisma {
 
 
   /**
+   * Model AiSearchHistory
+   */
+
+  export type AggregateAiSearchHistory = {
+    _count: AiSearchHistoryCountAggregateOutputType | null
+    _avg: AiSearchHistoryAvgAggregateOutputType | null
+    _sum: AiSearchHistorySumAggregateOutputType | null
+    _min: AiSearchHistoryMinAggregateOutputType | null
+    _max: AiSearchHistoryMaxAggregateOutputType | null
+  }
+
+  export type AiSearchHistoryAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+  }
+
+  export type AiSearchHistorySumAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+  }
+
+  export type AiSearchHistoryMinAggregateOutputType = {
+    id: number | null
+    session_id: string | null
+    user_id: number | null
+    anonymous_id: string | null
+    query_type: $Enums.Query_Type | null
+    platform: string | null
+    source_feature: string | null
+    original_image_url: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type AiSearchHistoryMaxAggregateOutputType = {
+    id: number | null
+    session_id: string | null
+    user_id: number | null
+    anonymous_id: string | null
+    query_type: $Enums.Query_Type | null
+    platform: string | null
+    source_feature: string | null
+    original_image_url: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type AiSearchHistoryCountAggregateOutputType = {
+    id: number
+    session_id: number
+    user_id: number
+    anonymous_id: number
+    query_type: number
+    platform: number
+    source_feature: number
+    original_image_url: number
+    detected_objects: number
+    selected_bbox: number
+    recommendations: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type AiSearchHistoryAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+  }
+
+  export type AiSearchHistorySumAggregateInputType = {
+    id?: true
+    user_id?: true
+  }
+
+  export type AiSearchHistoryMinAggregateInputType = {
+    id?: true
+    session_id?: true
+    user_id?: true
+    anonymous_id?: true
+    query_type?: true
+    platform?: true
+    source_feature?: true
+    original_image_url?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type AiSearchHistoryMaxAggregateInputType = {
+    id?: true
+    session_id?: true
+    user_id?: true
+    anonymous_id?: true
+    query_type?: true
+    platform?: true
+    source_feature?: true
+    original_image_url?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type AiSearchHistoryCountAggregateInputType = {
+    id?: true
+    session_id?: true
+    user_id?: true
+    anonymous_id?: true
+    query_type?: true
+    platform?: true
+    source_feature?: true
+    original_image_url?: true
+    detected_objects?: true
+    selected_bbox?: true
+    recommendations?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type AiSearchHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiSearchHistory to aggregate.
+     */
+    where?: AiSearchHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiSearchHistories to fetch.
+     */
+    orderBy?: AiSearchHistoryOrderByWithRelationInput | AiSearchHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiSearchHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiSearchHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiSearchHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiSearchHistories
+    **/
+    _count?: true | AiSearchHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AiSearchHistoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AiSearchHistorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiSearchHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiSearchHistoryMaxAggregateInputType
+  }
+
+  export type GetAiSearchHistoryAggregateType<T extends AiSearchHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiSearchHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiSearchHistory[P]>
+      : GetScalarType<T[P], AggregateAiSearchHistory[P]>
+  }
+
+
+
+
+  export type AiSearchHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiSearchHistoryWhereInput
+    orderBy?: AiSearchHistoryOrderByWithAggregationInput | AiSearchHistoryOrderByWithAggregationInput[]
+    by: AiSearchHistoryScalarFieldEnum[] | AiSearchHistoryScalarFieldEnum
+    having?: AiSearchHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiSearchHistoryCountAggregateInputType | true
+    _avg?: AiSearchHistoryAvgAggregateInputType
+    _sum?: AiSearchHistorySumAggregateInputType
+    _min?: AiSearchHistoryMinAggregateInputType
+    _max?: AiSearchHistoryMaxAggregateInputType
+  }
+
+  export type AiSearchHistoryGroupByOutputType = {
+    id: number
+    session_id: string
+    user_id: number | null
+    anonymous_id: string | null
+    query_type: $Enums.Query_Type
+    platform: string | null
+    source_feature: string | null
+    original_image_url: string | null
+    detected_objects: JsonValue | null
+    selected_bbox: JsonValue | null
+    recommendations: JsonValue | null
+    created_at: Date
+    updated_at: Date
+    _count: AiSearchHistoryCountAggregateOutputType | null
+    _avg: AiSearchHistoryAvgAggregateOutputType | null
+    _sum: AiSearchHistorySumAggregateOutputType | null
+    _min: AiSearchHistoryMinAggregateOutputType | null
+    _max: AiSearchHistoryMaxAggregateOutputType | null
+  }
+
+  type GetAiSearchHistoryGroupByPayload<T extends AiSearchHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiSearchHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiSearchHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiSearchHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], AiSearchHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiSearchHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    session_id?: boolean
+    user_id?: boolean
+    anonymous_id?: boolean
+    query_type?: boolean
+    platform?: boolean
+    source_feature?: boolean
+    original_image_url?: boolean
+    detected_objects?: boolean
+    selected_bbox?: boolean
+    recommendations?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["aiSearchHistory"]>
+
+
+
+  export type AiSearchHistorySelectScalar = {
+    id?: boolean
+    session_id?: boolean
+    user_id?: boolean
+    anonymous_id?: boolean
+    query_type?: boolean
+    platform?: boolean
+    source_feature?: boolean
+    original_image_url?: boolean
+    detected_objects?: boolean
+    selected_bbox?: boolean
+    recommendations?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type AiSearchHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "session_id" | "user_id" | "anonymous_id" | "query_type" | "platform" | "source_feature" | "original_image_url" | "detected_objects" | "selected_bbox" | "recommendations" | "created_at" | "updated_at", ExtArgs["result"]["aiSearchHistory"]>
+
+  export type $AiSearchHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiSearchHistory"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      session_id: string
+      user_id: number | null
+      anonymous_id: string | null
+      query_type: $Enums.Query_Type
+      platform: string | null
+      source_feature: string | null
+      original_image_url: string | null
+      detected_objects: Prisma.JsonValue | null
+      selected_bbox: Prisma.JsonValue | null
+      recommendations: Prisma.JsonValue | null
+      created_at: Date
+      updated_at: Date
+    }, ExtArgs["result"]["aiSearchHistory"]>
+    composites: {}
+  }
+
+  type AiSearchHistoryGetPayload<S extends boolean | null | undefined | AiSearchHistoryDefaultArgs> = $Result.GetResult<Prisma.$AiSearchHistoryPayload, S>
+
+  type AiSearchHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiSearchHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiSearchHistoryCountAggregateInputType | true
+    }
+
+  export interface AiSearchHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiSearchHistory'], meta: { name: 'AiSearchHistory' } }
+    /**
+     * Find zero or one AiSearchHistory that matches the filter.
+     * @param {AiSearchHistoryFindUniqueArgs} args - Arguments to find a AiSearchHistory
+     * @example
+     * // Get one AiSearchHistory
+     * const aiSearchHistory = await prisma.aiSearchHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiSearchHistoryFindUniqueArgs>(args: SelectSubset<T, AiSearchHistoryFindUniqueArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiSearchHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiSearchHistoryFindUniqueOrThrowArgs} args - Arguments to find a AiSearchHistory
+     * @example
+     * // Get one AiSearchHistory
+     * const aiSearchHistory = await prisma.aiSearchHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiSearchHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, AiSearchHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiSearchHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiSearchHistoryFindFirstArgs} args - Arguments to find a AiSearchHistory
+     * @example
+     * // Get one AiSearchHistory
+     * const aiSearchHistory = await prisma.aiSearchHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiSearchHistoryFindFirstArgs>(args?: SelectSubset<T, AiSearchHistoryFindFirstArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiSearchHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiSearchHistoryFindFirstOrThrowArgs} args - Arguments to find a AiSearchHistory
+     * @example
+     * // Get one AiSearchHistory
+     * const aiSearchHistory = await prisma.aiSearchHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiSearchHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, AiSearchHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiSearchHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiSearchHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiSearchHistories
+     * const aiSearchHistories = await prisma.aiSearchHistory.findMany()
+     * 
+     * // Get first 10 AiSearchHistories
+     * const aiSearchHistories = await prisma.aiSearchHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiSearchHistoryWithIdOnly = await prisma.aiSearchHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiSearchHistoryFindManyArgs>(args?: SelectSubset<T, AiSearchHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiSearchHistory.
+     * @param {AiSearchHistoryCreateArgs} args - Arguments to create a AiSearchHistory.
+     * @example
+     * // Create one AiSearchHistory
+     * const AiSearchHistory = await prisma.aiSearchHistory.create({
+     *   data: {
+     *     // ... data to create a AiSearchHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiSearchHistoryCreateArgs>(args: SelectSubset<T, AiSearchHistoryCreateArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiSearchHistories.
+     * @param {AiSearchHistoryCreateManyArgs} args - Arguments to create many AiSearchHistories.
+     * @example
+     * // Create many AiSearchHistories
+     * const aiSearchHistory = await prisma.aiSearchHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiSearchHistoryCreateManyArgs>(args?: SelectSubset<T, AiSearchHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a AiSearchHistory.
+     * @param {AiSearchHistoryDeleteArgs} args - Arguments to delete one AiSearchHistory.
+     * @example
+     * // Delete one AiSearchHistory
+     * const AiSearchHistory = await prisma.aiSearchHistory.delete({
+     *   where: {
+     *     // ... filter to delete one AiSearchHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiSearchHistoryDeleteArgs>(args: SelectSubset<T, AiSearchHistoryDeleteArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiSearchHistory.
+     * @param {AiSearchHistoryUpdateArgs} args - Arguments to update one AiSearchHistory.
+     * @example
+     * // Update one AiSearchHistory
+     * const aiSearchHistory = await prisma.aiSearchHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiSearchHistoryUpdateArgs>(args: SelectSubset<T, AiSearchHistoryUpdateArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiSearchHistories.
+     * @param {AiSearchHistoryDeleteManyArgs} args - Arguments to filter AiSearchHistories to delete.
+     * @example
+     * // Delete a few AiSearchHistories
+     * const { count } = await prisma.aiSearchHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiSearchHistoryDeleteManyArgs>(args?: SelectSubset<T, AiSearchHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiSearchHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiSearchHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiSearchHistories
+     * const aiSearchHistory = await prisma.aiSearchHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiSearchHistoryUpdateManyArgs>(args: SelectSubset<T, AiSearchHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AiSearchHistory.
+     * @param {AiSearchHistoryUpsertArgs} args - Arguments to update or create a AiSearchHistory.
+     * @example
+     * // Update or create a AiSearchHistory
+     * const aiSearchHistory = await prisma.aiSearchHistory.upsert({
+     *   create: {
+     *     // ... data to create a AiSearchHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiSearchHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiSearchHistoryUpsertArgs>(args: SelectSubset<T, AiSearchHistoryUpsertArgs<ExtArgs>>): Prisma__AiSearchHistoryClient<$Result.GetResult<Prisma.$AiSearchHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiSearchHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiSearchHistoryCountArgs} args - Arguments to filter AiSearchHistories to count.
+     * @example
+     * // Count the number of AiSearchHistories
+     * const count = await prisma.aiSearchHistory.count({
+     *   where: {
+     *     // ... the filter for the AiSearchHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiSearchHistoryCountArgs>(
+      args?: Subset<T, AiSearchHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiSearchHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiSearchHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiSearchHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiSearchHistoryAggregateArgs>(args: Subset<T, AiSearchHistoryAggregateArgs>): Prisma.PrismaPromise<GetAiSearchHistoryAggregateType<T>>
+
+    /**
+     * Group by AiSearchHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiSearchHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiSearchHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiSearchHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: AiSearchHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiSearchHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiSearchHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiSearchHistory model
+   */
+  readonly fields: AiSearchHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiSearchHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiSearchHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiSearchHistory model
+   */
+  interface AiSearchHistoryFieldRefs {
+    readonly id: FieldRef<"AiSearchHistory", 'Int'>
+    readonly session_id: FieldRef<"AiSearchHistory", 'String'>
+    readonly user_id: FieldRef<"AiSearchHistory", 'Int'>
+    readonly anonymous_id: FieldRef<"AiSearchHistory", 'String'>
+    readonly query_type: FieldRef<"AiSearchHistory", 'Query_Type'>
+    readonly platform: FieldRef<"AiSearchHistory", 'String'>
+    readonly source_feature: FieldRef<"AiSearchHistory", 'String'>
+    readonly original_image_url: FieldRef<"AiSearchHistory", 'String'>
+    readonly detected_objects: FieldRef<"AiSearchHistory", 'Json'>
+    readonly selected_bbox: FieldRef<"AiSearchHistory", 'Json'>
+    readonly recommendations: FieldRef<"AiSearchHistory", 'Json'>
+    readonly created_at: FieldRef<"AiSearchHistory", 'DateTime'>
+    readonly updated_at: FieldRef<"AiSearchHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiSearchHistory findUnique
+   */
+  export type AiSearchHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * Filter, which AiSearchHistory to fetch.
+     */
+    where: AiSearchHistoryWhereUniqueInput
+  }
+
+  /**
+   * AiSearchHistory findUniqueOrThrow
+   */
+  export type AiSearchHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * Filter, which AiSearchHistory to fetch.
+     */
+    where: AiSearchHistoryWhereUniqueInput
+  }
+
+  /**
+   * AiSearchHistory findFirst
+   */
+  export type AiSearchHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * Filter, which AiSearchHistory to fetch.
+     */
+    where?: AiSearchHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiSearchHistories to fetch.
+     */
+    orderBy?: AiSearchHistoryOrderByWithRelationInput | AiSearchHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiSearchHistories.
+     */
+    cursor?: AiSearchHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiSearchHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiSearchHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiSearchHistories.
+     */
+    distinct?: AiSearchHistoryScalarFieldEnum | AiSearchHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AiSearchHistory findFirstOrThrow
+   */
+  export type AiSearchHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * Filter, which AiSearchHistory to fetch.
+     */
+    where?: AiSearchHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiSearchHistories to fetch.
+     */
+    orderBy?: AiSearchHistoryOrderByWithRelationInput | AiSearchHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiSearchHistories.
+     */
+    cursor?: AiSearchHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiSearchHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiSearchHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiSearchHistories.
+     */
+    distinct?: AiSearchHistoryScalarFieldEnum | AiSearchHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AiSearchHistory findMany
+   */
+  export type AiSearchHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * Filter, which AiSearchHistories to fetch.
+     */
+    where?: AiSearchHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiSearchHistories to fetch.
+     */
+    orderBy?: AiSearchHistoryOrderByWithRelationInput | AiSearchHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiSearchHistories.
+     */
+    cursor?: AiSearchHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiSearchHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiSearchHistories.
+     */
+    skip?: number
+    distinct?: AiSearchHistoryScalarFieldEnum | AiSearchHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AiSearchHistory create
+   */
+  export type AiSearchHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AiSearchHistory.
+     */
+    data: XOR<AiSearchHistoryCreateInput, AiSearchHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * AiSearchHistory createMany
+   */
+  export type AiSearchHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiSearchHistories.
+     */
+    data: AiSearchHistoryCreateManyInput | AiSearchHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiSearchHistory update
+   */
+  export type AiSearchHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AiSearchHistory.
+     */
+    data: XOR<AiSearchHistoryUpdateInput, AiSearchHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which AiSearchHistory to update.
+     */
+    where: AiSearchHistoryWhereUniqueInput
+  }
+
+  /**
+   * AiSearchHistory updateMany
+   */
+  export type AiSearchHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiSearchHistories.
+     */
+    data: XOR<AiSearchHistoryUpdateManyMutationInput, AiSearchHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which AiSearchHistories to update
+     */
+    where?: AiSearchHistoryWhereInput
+    /**
+     * Limit how many AiSearchHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiSearchHistory upsert
+   */
+  export type AiSearchHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AiSearchHistory to update in case it exists.
+     */
+    where: AiSearchHistoryWhereUniqueInput
+    /**
+     * In case the AiSearchHistory found by the `where` argument doesn't exist, create a new AiSearchHistory with this data.
+     */
+    create: XOR<AiSearchHistoryCreateInput, AiSearchHistoryUncheckedCreateInput>
+    /**
+     * In case the AiSearchHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiSearchHistoryUpdateInput, AiSearchHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * AiSearchHistory delete
+   */
+  export type AiSearchHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+    /**
+     * Filter which AiSearchHistory to delete.
+     */
+    where: AiSearchHistoryWhereUniqueInput
+  }
+
+  /**
+   * AiSearchHistory deleteMany
+   */
+  export type AiSearchHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiSearchHistories to delete
+     */
+    where?: AiSearchHistoryWhereInput
+    /**
+     * Limit how many AiSearchHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiSearchHistory without action
+   */
+  export type AiSearchHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiSearchHistory
+     */
+    select?: AiSearchHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiSearchHistory
+     */
+    omit?: AiSearchHistoryOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10191,12 +11282,39 @@ export namespace Prisma {
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
+  export const AiSearchHistoryScalarFieldEnum: {
+    id: 'id',
+    session_id: 'session_id',
+    user_id: 'user_id',
+    anonymous_id: 'anonymous_id',
+    query_type: 'query_type',
+    platform: 'platform',
+    source_feature: 'source_feature',
+    original_image_url: 'original_image_url',
+    detected_objects: 'detected_objects',
+    selected_bbox: 'selected_bbox',
+    recommendations: 'recommendations',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type AiSearchHistoryScalarFieldEnum = (typeof AiSearchHistoryScalarFieldEnum)[keyof typeof AiSearchHistoryScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const NullsOrder: {
@@ -10282,6 +11400,34 @@ export namespace Prisma {
   export type TagOrderByRelevanceFieldEnum = (typeof TagOrderByRelevanceFieldEnum)[keyof typeof TagOrderByRelevanceFieldEnum]
 
 
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const AiSearchHistoryOrderByRelevanceFieldEnum: {
+    session_id: 'session_id',
+    anonymous_id: 'anonymous_id',
+    platform: 'platform',
+    source_feature: 'source_feature',
+    original_image_url: 'original_image_url'
+  };
+
+  export type AiSearchHistoryOrderByRelevanceFieldEnum = (typeof AiSearchHistoryOrderByRelevanceFieldEnum)[keyof typeof AiSearchHistoryOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -10354,6 +11500,27 @@ export namespace Prisma {
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Query_Type'
+   */
+  export type EnumQuery_TypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Query_Type'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
   /**
    * Deep Input Types
@@ -11029,6 +12196,101 @@ export namespace Prisma {
     NOT?: TagScalarWhereWithAggregatesInput | TagScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Tag"> | number
     name?: StringWithAggregatesFilter<"Tag"> | string
+  }
+
+  export type AiSearchHistoryWhereInput = {
+    AND?: AiSearchHistoryWhereInput | AiSearchHistoryWhereInput[]
+    OR?: AiSearchHistoryWhereInput[]
+    NOT?: AiSearchHistoryWhereInput | AiSearchHistoryWhereInput[]
+    id?: IntFilter<"AiSearchHistory"> | number
+    session_id?: StringFilter<"AiSearchHistory"> | string
+    user_id?: IntNullableFilter<"AiSearchHistory"> | number | null
+    anonymous_id?: StringNullableFilter<"AiSearchHistory"> | string | null
+    query_type?: EnumQuery_TypeFilter<"AiSearchHistory"> | $Enums.Query_Type
+    platform?: StringNullableFilter<"AiSearchHistory"> | string | null
+    source_feature?: StringNullableFilter<"AiSearchHistory"> | string | null
+    original_image_url?: StringNullableFilter<"AiSearchHistory"> | string | null
+    detected_objects?: JsonNullableFilter<"AiSearchHistory">
+    selected_bbox?: JsonNullableFilter<"AiSearchHistory">
+    recommendations?: JsonNullableFilter<"AiSearchHistory">
+    created_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
+    updated_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
+  }
+
+  export type AiSearchHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    anonymous_id?: SortOrderInput | SortOrder
+    query_type?: SortOrder
+    platform?: SortOrderInput | SortOrder
+    source_feature?: SortOrderInput | SortOrder
+    original_image_url?: SortOrderInput | SortOrder
+    detected_objects?: SortOrderInput | SortOrder
+    selected_bbox?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _relevance?: AiSearchHistoryOrderByRelevanceInput
+  }
+
+  export type AiSearchHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    session_id?: string
+    AND?: AiSearchHistoryWhereInput | AiSearchHistoryWhereInput[]
+    OR?: AiSearchHistoryWhereInput[]
+    NOT?: AiSearchHistoryWhereInput | AiSearchHistoryWhereInput[]
+    user_id?: IntNullableFilter<"AiSearchHistory"> | number | null
+    anonymous_id?: StringNullableFilter<"AiSearchHistory"> | string | null
+    query_type?: EnumQuery_TypeFilter<"AiSearchHistory"> | $Enums.Query_Type
+    platform?: StringNullableFilter<"AiSearchHistory"> | string | null
+    source_feature?: StringNullableFilter<"AiSearchHistory"> | string | null
+    original_image_url?: StringNullableFilter<"AiSearchHistory"> | string | null
+    detected_objects?: JsonNullableFilter<"AiSearchHistory">
+    selected_bbox?: JsonNullableFilter<"AiSearchHistory">
+    recommendations?: JsonNullableFilter<"AiSearchHistory">
+    created_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
+    updated_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
+  }, "id" | "session_id">
+
+  export type AiSearchHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    anonymous_id?: SortOrderInput | SortOrder
+    query_type?: SortOrder
+    platform?: SortOrderInput | SortOrder
+    source_feature?: SortOrderInput | SortOrder
+    original_image_url?: SortOrderInput | SortOrder
+    detected_objects?: SortOrderInput | SortOrder
+    selected_bbox?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _count?: AiSearchHistoryCountOrderByAggregateInput
+    _avg?: AiSearchHistoryAvgOrderByAggregateInput
+    _max?: AiSearchHistoryMaxOrderByAggregateInput
+    _min?: AiSearchHistoryMinOrderByAggregateInput
+    _sum?: AiSearchHistorySumOrderByAggregateInput
+  }
+
+  export type AiSearchHistoryScalarWhereWithAggregatesInput = {
+    AND?: AiSearchHistoryScalarWhereWithAggregatesInput | AiSearchHistoryScalarWhereWithAggregatesInput[]
+    OR?: AiSearchHistoryScalarWhereWithAggregatesInput[]
+    NOT?: AiSearchHistoryScalarWhereWithAggregatesInput | AiSearchHistoryScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"AiSearchHistory"> | number
+    session_id?: StringWithAggregatesFilter<"AiSearchHistory"> | string
+    user_id?: IntNullableWithAggregatesFilter<"AiSearchHistory"> | number | null
+    anonymous_id?: StringNullableWithAggregatesFilter<"AiSearchHistory"> | string | null
+    query_type?: EnumQuery_TypeWithAggregatesFilter<"AiSearchHistory"> | $Enums.Query_Type
+    platform?: StringNullableWithAggregatesFilter<"AiSearchHistory"> | string | null
+    source_feature?: StringNullableWithAggregatesFilter<"AiSearchHistory"> | string | null
+    original_image_url?: StringNullableWithAggregatesFilter<"AiSearchHistory"> | string | null
+    detected_objects?: JsonNullableWithAggregatesFilter<"AiSearchHistory">
+    selected_bbox?: JsonNullableWithAggregatesFilter<"AiSearchHistory">
+    recommendations?: JsonNullableWithAggregatesFilter<"AiSearchHistory">
+    created_at?: DateTimeWithAggregatesFilter<"AiSearchHistory"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"AiSearchHistory"> | Date | string
   }
 
   export type CategoryCreateInput = {
@@ -11749,6 +13011,115 @@ export namespace Prisma {
   export type TagUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AiSearchHistoryCreateInput = {
+    session_id: string
+    user_id?: number | null
+    anonymous_id?: string | null
+    query_type: $Enums.Query_Type
+    platform?: string | null
+    source_feature?: string | null
+    original_image_url?: string | null
+    detected_objects?: NullableJsonNullValueInput | InputJsonValue
+    selected_bbox?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type AiSearchHistoryUncheckedCreateInput = {
+    id?: number
+    session_id: string
+    user_id?: number | null
+    anonymous_id?: string | null
+    query_type: $Enums.Query_Type
+    platform?: string | null
+    source_feature?: string | null
+    original_image_url?: string | null
+    detected_objects?: NullableJsonNullValueInput | InputJsonValue
+    selected_bbox?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type AiSearchHistoryUpdateInput = {
+    session_id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    anonymous_id?: NullableStringFieldUpdateOperationsInput | string | null
+    query_type?: EnumQuery_TypeFieldUpdateOperationsInput | $Enums.Query_Type
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    source_feature?: NullableStringFieldUpdateOperationsInput | string | null
+    original_image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    detected_objects?: NullableJsonNullValueInput | InputJsonValue
+    selected_bbox?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiSearchHistoryUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    session_id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    anonymous_id?: NullableStringFieldUpdateOperationsInput | string | null
+    query_type?: EnumQuery_TypeFieldUpdateOperationsInput | $Enums.Query_Type
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    source_feature?: NullableStringFieldUpdateOperationsInput | string | null
+    original_image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    detected_objects?: NullableJsonNullValueInput | InputJsonValue
+    selected_bbox?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiSearchHistoryCreateManyInput = {
+    id?: number
+    session_id: string
+    user_id?: number | null
+    anonymous_id?: string | null
+    query_type: $Enums.Query_Type
+    platform?: string | null
+    source_feature?: string | null
+    original_image_url?: string | null
+    detected_objects?: NullableJsonNullValueInput | InputJsonValue
+    selected_bbox?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type AiSearchHistoryUpdateManyMutationInput = {
+    session_id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    anonymous_id?: NullableStringFieldUpdateOperationsInput | string | null
+    query_type?: EnumQuery_TypeFieldUpdateOperationsInput | $Enums.Query_Type
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    source_feature?: NullableStringFieldUpdateOperationsInput | string | null
+    original_image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    detected_objects?: NullableJsonNullValueInput | InputJsonValue
+    selected_bbox?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiSearchHistoryUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    session_id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    anonymous_id?: NullableStringFieldUpdateOperationsInput | string | null
+    query_type?: EnumQuery_TypeFieldUpdateOperationsInput | $Enums.Query_Type
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    source_feature?: NullableStringFieldUpdateOperationsInput | string | null
+    original_image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    detected_objects?: NullableJsonNullValueInput | InputJsonValue
+    selected_bbox?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -12624,6 +13995,130 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+  export type EnumQuery_TypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeFilter<$PrismaModel> | $Enums.Query_Type
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type AiSearchHistoryOrderByRelevanceInput = {
+    fields: AiSearchHistoryOrderByRelevanceFieldEnum | AiSearchHistoryOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type AiSearchHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrder
+    anonymous_id?: SortOrder
+    query_type?: SortOrder
+    platform?: SortOrder
+    source_feature?: SortOrder
+    original_image_url?: SortOrder
+    detected_objects?: SortOrder
+    selected_bbox?: SortOrder
+    recommendations?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type AiSearchHistoryAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type AiSearchHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrder
+    anonymous_id?: SortOrder
+    query_type?: SortOrder
+    platform?: SortOrder
+    source_feature?: SortOrder
+    original_image_url?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type AiSearchHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrder
+    anonymous_id?: SortOrder
+    query_type?: SortOrder
+    platform?: SortOrder
+    source_feature?: SortOrder
+    original_image_url?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type AiSearchHistorySumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type EnumQuery_TypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel> | $Enums.Query_Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuery_TypeFilter<$PrismaModel>
+    _max?: NestedEnumQuery_TypeFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
   export type ProductCreateNestedManyWithoutCategoryInput = {
     create?: XOR<ProductCreateWithoutCategoryInput, ProductUncheckedCreateWithoutCategoryInput> | ProductCreateWithoutCategoryInput[] | ProductUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutCategoryInput | ProductCreateOrConnectWithoutCategoryInput[]
@@ -13056,6 +14551,10 @@ export namespace Prisma {
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
+  export type EnumQuery_TypeFieldUpdateOperationsInput = {
+    set?: $Enums.Query_Type
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -13401,6 +14900,46 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumQuery_TypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeFilter<$PrismaModel> | $Enums.Query_Type
+  }
+
+  export type NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel> | $Enums.Query_Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuery_TypeFilter<$PrismaModel>
+    _max?: NestedEnumQuery_TypeFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type ProductCreateWithoutCategoryInput = {
