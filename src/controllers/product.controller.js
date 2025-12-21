@@ -8,6 +8,15 @@ const cloudinary = require('cloudinary').v2;
 
 cloudinary.config(cloudinaryConfig);
 
+const getStatistics = async (req, res, next) => {
+  try {
+    const stats = await productservice.getStatistics();
+    return successResponse(res, "Get product statistics success", stats, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+}
+
 const countProducts = async (req, res, next) => {
   try {
     const count = await productservice.countProducts();
@@ -234,7 +243,8 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
-  countProducts,
+  getStatistics,
   getUploadSignarture,
   getMostProductsByCategory,
+  countProducts,
 };

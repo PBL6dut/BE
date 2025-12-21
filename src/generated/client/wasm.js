@@ -104,13 +104,14 @@ exports.Prisma.CustomerScalarFieldEnum = {
   id: 'id',
   full_name: 'full_name',
   email: 'email',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   phone: 'phone',
   address: 'address',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id',
+  fcm_token: 'fcm_token'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -119,24 +120,24 @@ exports.Prisma.OrderScalarFieldEnum = {
   customer_id: 'customer_id',
   order_date: 'order_date',
   total_amount: 'total_amount',
-  shipping_fee: 'shipping_fee',
   status: 'status',
+  shipping_address: 'shipping_address',
+  phone: 'phone',
+  notes: 'notes',
+  created_at: 'created_at',
+  expected_delivery_date: 'expected_delivery_date',
+  paid_at: 'paid_at',
   payment_method: 'payment_method',
   payment_status: 'payment_status',
-  paid_at: 'paid_at',
-  transaction_id: 'transaction_id',
-  transaction_code: 'transaction_code',
-  transaction_content: 'transaction_content',
+  shipping_fee: 'shipping_fee',
+  shipping_method: 'shipping_method',
+  updated_at: 'updated_at',
   gateway: 'gateway',
   paid_amount: 'paid_amount',
   payment_verified_at: 'payment_verified_at',
-  shipping_method: 'shipping_method',
-  shipping_address: 'shipping_address',
-  phone: 'phone',
-  expected_delivery_date: 'expected_delivery_date',
-  notes: 'notes',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  transaction_code: 'transaction_code',
+  transaction_content: 'transaction_content',
+  transaction_id: 'transaction_id'
 };
 
 exports.Prisma.OrderDetailScalarFieldEnum = {
@@ -162,33 +163,33 @@ exports.Prisma.ProductScalarFieldEnum = {
   sale_price: 'sale_price',
   category_id: 'category_id',
   stock_quantity: 'stock_quantity',
-  weight: 'weight',
-  length: 'length',
-  width: 'width',
-  height: 'height',
   material: 'material',
   color: 'color',
   status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at',
+  height: 'height',
+  length: 'length',
+  weight: 'weight',
+  width: 'width',
   brand: 'brand',
-  style: 'style',
   discount: 'discount',
   rating: 'rating',
   reviews: 'reviews',
-  warranty: 'warranty',
-  shipping: 'shipping'
+  shipping: 'shipping',
+  style: 'style',
+  warranty: 'warranty'
 };
 
 exports.Prisma.AdminScalarFieldEnum = {
   id: 'id',
   username: 'username',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   full_name: 'full_name',
   email: 'email',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
@@ -196,9 +197,30 @@ exports.Prisma.TagScalarFieldEnum = {
   name: 'name'
 };
 
+exports.Prisma.AiSearchHistoryScalarFieldEnum = {
+  id: 'id',
+  session_id: 'session_id',
+  user_id: 'user_id',
+  anonymous_id: 'anonymous_id',
+  query_type: 'query_type',
+  platform: 'platform',
+  source_feature: 'source_feature',
+  original_image_url: 'original_image_url',
+  detected_objects: 'detected_objects',
+  selected_bbox: 'selected_bbox',
+  recommendations: 'recommendations',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.NullsOrder = {
@@ -214,22 +236,23 @@ exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
 exports.Prisma.CustomerOrderByRelevanceFieldEnum = {
   full_name: 'full_name',
   email: 'email',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   phone: 'phone',
-  address: 'address'
+  address: 'address',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id',
+  fcm_token: 'fcm_token'
 };
 
 exports.Prisma.OrderOrderByRelevanceFieldEnum = {
   order_number: 'order_number',
-  transaction_id: 'transaction_id',
-  transaction_code: 'transaction_code',
-  transaction_content: 'transaction_content',
-  gateway: 'gateway',
   shipping_address: 'shipping_address',
   phone: 'phone',
-  notes: 'notes'
+  notes: 'notes',
+  gateway: 'gateway',
+  transaction_code: 'transaction_code',
+  transaction_content: 'transaction_content',
+  transaction_id: 'transaction_id'
 };
 
 exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
@@ -242,22 +265,41 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   material: 'material',
   color: 'color',
   brand: 'brand',
+  shipping: 'shipping',
   style: 'style',
-  warranty: 'warranty',
-  shipping: 'shipping'
+  warranty: 'warranty'
 };
 
 exports.Prisma.AdminOrderByRelevanceFieldEnum = {
   username: 'username',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   full_name: 'full_name',
-  email: 'email'
+  email: 'email',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id'
 };
 
 exports.Prisma.TagOrderByRelevanceFieldEnum = {
   name: 'name'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.AiSearchHistoryOrderByRelevanceFieldEnum = {
+  session_id: 'session_id',
+  anonymous_id: 'anonymous_id',
+  platform: 'platform',
+  source_feature: 'source_feature',
+  original_image_url: 'original_image_url'
 };
 exports.Order_Status = exports.$Enums.Order_Status = {
   pending: 'pending',
@@ -295,6 +337,11 @@ exports.Product_Status = exports.$Enums.Product_Status = {
   inactive: 'inactive'
 };
 
+exports.Query_Type = exports.$Enums.Query_Type = {
+  detect: 'detect',
+  recommend: 'recommend'
+};
+
 exports.Prisma.ModelName = {
   Category: 'Category',
   Customer: 'Customer',
@@ -303,7 +350,8 @@ exports.Prisma.ModelName = {
   Product_Image: 'Product_Image',
   Product: 'Product',
   Admin: 'Admin',
-  Tag: 'Tag'
+  Tag: 'Tag',
+  AiSearchHistory: 'AiSearchHistory'
 };
 /**
  * Create the Client
@@ -348,7 +396,6 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -357,13 +404,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./src/generated/client\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Category {\n  id          Int      @id @default(autoincrement())\n  name        String   @db.VarChar(50)\n  description String?  @db.Text\n  created_at  DateTime @default(now())\n\n  products Product[]\n}\n\nmodel Customer {\n  id          Int       @id @default(autoincrement())\n  full_name   String\n  email       String    @unique\n  google_id   String?   @unique\n  facebook_id String?   @unique\n  password    String    @db.VarChar(255)\n  phone       String?   @unique @db.VarChar(20)\n  address     String?   @db.Text\n  created_at  DateTime  @default(now())\n  updated_at  DateTime? @updatedAt\n\n  orders Order[]\n}\n\nenum Order_Status {\n  pending\n  confirmed\n  shipping\n  completed\n  cancelled\n}\n\nenum Payment_Method {\n  cash_on_delivery\n  bank_transfer\n  credit_card\n  e_wallet\n  installment\n}\n\nenum Payment_Status {\n  pending\n  paid\n  failed\n  refunded\n}\n\nenum Shipping_Method {\n  standard_delivery\n  express_delivery\n  same_day_delivery\n  pickup_at_store\n  installation_service\n}\n\nmodel Order {\n  id           Int      @id @default(autoincrement())\n  order_number String   @unique @db.VarChar(20)\n  customer_id  Int\n  order_date   DateTime @default(now())\n  total_amount Decimal  @db.Decimal(12, 2)\n  shipping_fee Decimal  @default(0) @db.Decimal(10, 2)\n\n  status Order_Status @default(pending)\n\n  payment_method Payment_Method @default(cash_on_delivery)\n  payment_status Payment_Status @default(pending)\n  paid_at        DateTime?\n\n  // ✅ THÊM CÁC FIELD MỚI CHO SEPAY\n  transaction_id      String?   @unique @db.VarChar(50) // ID giao dịch từ Sepay, phải là duy nhất\n  transaction_code    String?   @db.VarChar(50) // Mã giao dịch ngân hàng (FT25322218005287)\n  transaction_content String?   @db.Text // Nội dung chuyển khoản đầy đủ\n  gateway             String?   @db.VarChar(50) // Tên ngân hàng/ví (MBBank, Momo, VNPay...)\n  paid_amount         Decimal?  @db.Decimal(12, 2) // Số tiền thực tế nhận được\n  payment_verified_at DateTime? // Thời điểm xác nhận thanh toán từ webhook\n\n  shipping_method        Shipping_Method @default(standard_delivery)\n  shipping_address       String          @db.Text\n  phone                  String          @db.VarChar(20)\n  expected_delivery_date DateTime?\n\n  notes      String?   @db.Text\n  created_at DateTime  @default(now())\n  updated_at DateTime? @updatedAt\n\n  customer      Customer      @relation(fields: [customer_id], references: [id])\n  order_details OrderDetail[]\n\n  // ✅ THÊM INDEX ĐỂ TÌM KIẾM NHANH\n  @@index([transaction_id])\n  @@index([payment_status])\n  @@index([order_number])\n}\n\nmodel OrderDetail {\n  id          Int     @id @default(autoincrement())\n  order_id    Int\n  product_id  Int\n  quantity    Int\n  unit_price  Decimal @db.Decimal(12, 2)\n  total_price Decimal @db.Decimal(12, 2)\n\n  order   Order   @relation(fields: [order_id], references: [id])\n  product Product @relation(fields: [product_id], references: [id])\n\n  @@unique([order_id, product_id])\n}\n\nenum Product_Status {\n  active\n  inactive\n}\n\nmodel Product_Image {\n  id         Int    @id @default(autoincrement())\n  product_id Int\n  url        String @db.VarChar(500)\n\n  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)\n}\n\nmodel Product {\n  id             Int            @id @default(autoincrement())\n  name           String\n  description    String?        @db.Text\n  price          Decimal        @db.Decimal(12, 2)\n  sale_price     Decimal?       @db.Decimal(12, 2)\n  category_id    Int\n  stock_quantity Int            @default(0)\n  weight         Decimal?       @db.Decimal(10, 2) // Add weight in kg\n  length         Decimal?       @db.Decimal(10, 2) // Add length in cm\n  width          Decimal?       @db.Decimal(10, 2) // Add width in cm\n  height         Decimal?       @db.Decimal(10, 2) // Add height in cm\n  material       String?        @db.VarChar(500)\n  color          String?        @db.VarChar(50)\n  status         Product_Status @default(active)\n  created_at     DateTime       @default(now())\n  updated_at     DateTime?      @updatedAt\n\n  // --- CÁC TRƯỜNG MỚI THÊM VÀO ĐÂY ---\n  brand    String? @db.VarChar(100)\n  style    String? @db.VarChar(100)\n  discount Int?\n  rating   Float?\n  reviews  Int?\n  warranty String? @db.VarChar(100)\n  shipping String? @db.VarChar(100)\n\n  category      Category        @relation(fields: [category_id], references: [id])\n  order_details OrderDetail[]\n  images        Product_Image[]\n\n  // --- THÊM QUAN HỆ NHIỀU-NHIỀU VỚI TAG ---\n  tags Tag[]\n}\n\nmodel Admin {\n  id          Int      @id @default(autoincrement())\n  username    String   @unique @db.VarChar(50)\n  google_id   String?  @unique\n  facebook_id String?  @unique\n  password    String   @db.VarChar(255)\n  full_name   String   @db.VarChar(100)\n  email       String   @unique @db.VarChar(100)\n  created_at  DateTime @default(now())\n}\n\nmodel Tag {\n  id       Int       @id @default(autoincrement())\n  name     String    @unique @db.VarChar(50) // Tên tag (ví dụ: \"Hot\", \"Sale\")\n  products Product[] // Danh sách các sản phẩm có tag này\n}\n",
-  "inlineSchemaHash": "cf3b0884fdb2f103de03880cf2ab3324bf2614daaf225553ad7a8d2c058bb0e8",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./src/generated/client\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Category {\n  id          Int       @id @default(autoincrement())\n  name        String    @db.VarChar(50)\n  description String?   @db.Text\n  created_at  DateTime  @default(now())\n  products    Product[]\n}\n\nmodel Customer {\n  id          Int       @id @default(autoincrement())\n  full_name   String\n  email       String    @unique\n  password    String    @db.VarChar(255)\n  phone       String?   @unique @db.VarChar(20)\n  address     String?   @db.Text\n  created_at  DateTime  @default(now())\n  updated_at  DateTime? @updatedAt\n  facebook_id String?   @unique\n  google_id   String?   @unique\n  fcm_token   String?\n  orders      Order[]\n}\n\nmodel Order {\n  id                     Int             @id @default(autoincrement())\n  order_number           String          @unique @db.VarChar(20)\n  customer_id            Int\n  order_date             DateTime        @default(now())\n  total_amount           Decimal         @db.Decimal(12, 2)\n  status                 Order_Status    @default(pending)\n  shipping_address       String          @db.Text\n  phone                  String          @db.VarChar(20)\n  notes                  String?         @db.Text\n  created_at             DateTime        @default(now())\n  expected_delivery_date DateTime?\n  paid_at                DateTime?\n  payment_method         Payment_Method  @default(cash_on_delivery)\n  payment_status         Payment_Status  @default(pending)\n  shipping_fee           Decimal         @default(0.00) @db.Decimal(10, 2)\n  shipping_method        Shipping_Method @default(standard_delivery)\n  updated_at             DateTime?       @updatedAt\n  gateway                String?         @db.VarChar(50)\n  paid_amount            Decimal?        @db.Decimal(12, 2)\n  payment_verified_at    DateTime?\n  transaction_code       String?         @db.VarChar(50)\n  transaction_content    String?         @db.Text\n  transaction_id         String?         @unique @db.VarChar(50)\n  customer               Customer        @relation(fields: [customer_id], references: [id])\n  order_details          OrderDetail[]\n\n  @@index([transaction_id])\n  @@index([payment_status])\n  @@index([order_number])\n  @@index([customer_id], map: \"Order_customer_id_fkey\")\n}\n\nmodel OrderDetail {\n  id          Int     @id @default(autoincrement())\n  order_id    Int\n  product_id  Int\n  quantity    Int\n  unit_price  Decimal @db.Decimal(12, 2)\n  total_price Decimal @db.Decimal(12, 2)\n  order       Order   @relation(fields: [order_id], references: [id])\n  product     Product @relation(fields: [product_id], references: [id])\n\n  @@unique([order_id, product_id])\n  @@index([product_id], map: \"OrderDetail_product_id_fkey\")\n}\n\nmodel Product_Image {\n  id         Int     @id @default(autoincrement())\n  product_id Int\n  url        String  @db.VarChar(500)\n  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)\n\n  @@index([product_id], map: \"Product_Image_product_id_fkey\")\n}\n\nmodel Product {\n  id             Int             @id @default(autoincrement())\n  name           String\n  description    String?         @db.Text\n  price          Decimal         @db.Decimal(12, 2)\n  sale_price     Decimal?        @db.Decimal(12, 2)\n  category_id    Int\n  stock_quantity Int             @default(0)\n  material       String?         @db.VarChar(500)\n  color          String?         @db.VarChar(50)\n  status         Product_Status  @default(active)\n  created_at     DateTime        @default(now())\n  updated_at     DateTime?       @updatedAt\n  height         Decimal?        @db.Decimal(10, 2)\n  length         Decimal?        @db.Decimal(10, 2)\n  weight         Decimal?        @db.Decimal(10, 2)\n  width          Decimal?        @db.Decimal(10, 2)\n  brand          String?         @db.VarChar(100)\n  discount       Int?\n  rating         Float?\n  reviews        Int?\n  shipping       String?         @db.VarChar(100)\n  style          String?         @db.VarChar(100)\n  warranty       String?         @db.VarChar(100)\n  order_details  OrderDetail[]\n  category       Category        @relation(fields: [category_id], references: [id])\n  images         Product_Image[]\n  tags           Tag[]           @relation(\"ProductToTag\")\n\n  @@index([category_id], map: \"Product_category_id_fkey\")\n}\n\nmodel Admin {\n  id          Int      @id @default(autoincrement())\n  username    String   @unique @db.VarChar(50)\n  password    String   @db.VarChar(255)\n  full_name   String   @db.VarChar(100)\n  email       String   @unique @db.VarChar(100)\n  created_at  DateTime @default(now())\n  facebook_id String?  @unique\n  google_id   String?  @unique\n}\n\nmodel Tag {\n  id       Int       @id @default(autoincrement())\n  name     String    @unique @db.VarChar(50)\n  products Product[] @relation(\"ProductToTag\")\n}\n\nmodel AiSearchHistory {\n  id                 Int        @id @default(autoincrement())\n  session_id         String     @unique(map: \"session_id\") @db.VarChar(36)\n  user_id            Int?\n  anonymous_id       String?    @db.VarChar(255)\n  query_type         Query_Type\n  platform           String?    @db.VarChar(50)\n  source_feature     String?    @db.VarChar(100)\n  original_image_url String?    @db.Text\n  detected_objects   Json?\n  selected_bbox      Json?\n  recommendations    Json?\n  created_at         DateTime?  @default(now()) @db.Timestamp(0)\n  updated_at         DateTime?  @default(now()) @updatedAt @db.Timestamp(0)\n\n  @@index([anonymous_id], map: \"idx_anonymous_id\")\n  @@index([created_at], map: \"idx_created_at\")\n  @@index([session_id], map: \"idx_session_id\")\n  @@index([user_id], map: \"idx_user_id\")\n  @@map(\"ai_search_history\")\n}\n\nenum Order_Status {\n  pending\n  confirmed\n  shipping\n  completed\n  cancelled\n}\n\nenum Payment_Method {\n  cash_on_delivery\n  bank_transfer\n  credit_card\n  e_wallet\n  installment\n}\n\nenum Payment_Status {\n  pending\n  paid\n  failed\n  refunded\n}\n\nenum Shipping_Method {\n  standard_delivery\n  express_delivery\n  same_day_delivery\n  pickup_at_store\n  installation_service\n}\n\nenum Product_Status {\n  active\n  inactive\n}\n\nenum Query_Type {\n  detect\n  recommend\n}\n",
+  "inlineSchemaHash": "459dd3c0a7528e249f92623cb22b35b0ba471e82f43d3c3c98aec2fb21312cdb",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Category\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"products\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"CategoryToProduct\"}],\"dbName\":null},\"Customer\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"full_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"google_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"facebook_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"CustomerToOrder\"}],\"dbName\":null},\"Order\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customer_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"total_amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"shipping_fee\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"Order_Status\"},{\"name\":\"payment_method\",\"kind\":\"enum\",\"type\":\"Payment_Method\"},{\"name\":\"payment_status\",\"kind\":\"enum\",\"type\":\"Payment_Status\"},{\"name\":\"paid_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"transaction_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transaction_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transaction_content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"gateway\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paid_amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"payment_verified_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"shipping_method\",\"kind\":\"enum\",\"type\":\"Shipping_Method\"},{\"name\":\"shipping_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expected_delivery_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToOrder\"},{\"name\":\"order_details\",\"kind\":\"object\",\"type\":\"OrderDetail\",\"relationName\":\"OrderToOrderDetail\"}],\"dbName\":null},\"OrderDetail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"product_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"unit_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"total_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"order\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderToOrderDetail\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"OrderDetailToProduct\"}],\"dbName\":null},\"Product_Image\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"product_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToProduct_Image\"}],\"dbName\":null},\"Product\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"sale_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"category_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"stock_quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"weight\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"length\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"width\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"height\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"material\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"color\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"Product_Status\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"brand\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"style\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"discount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"reviews\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"warranty\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"shipping\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"CategoryToProduct\"},{\"name\":\"order_details\",\"kind\":\"object\",\"type\":\"OrderDetail\",\"relationName\":\"OrderDetailToProduct\"},{\"name\":\"images\",\"kind\":\"object\",\"type\":\"Product_Image\",\"relationName\":\"ProductToProduct_Image\"},{\"name\":\"tags\",\"kind\":\"object\",\"type\":\"Tag\",\"relationName\":\"ProductToTag\"}],\"dbName\":null},\"Admin\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"google_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"facebook_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"full_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Tag\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"products\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToTag\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Category\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"products\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"CategoryToProduct\"}],\"dbName\":null},\"Customer\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"full_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"facebook_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"google_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fcm_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"CustomerToOrder\"}],\"dbName\":null},\"Order\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customer_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"total_amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"Order_Status\"},{\"name\":\"shipping_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"expected_delivery_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"paid_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"payment_method\",\"kind\":\"enum\",\"type\":\"Payment_Method\"},{\"name\":\"payment_status\",\"kind\":\"enum\",\"type\":\"Payment_Status\"},{\"name\":\"shipping_fee\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"shipping_method\",\"kind\":\"enum\",\"type\":\"Shipping_Method\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"gateway\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paid_amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"payment_verified_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"transaction_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transaction_content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transaction_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToOrder\"},{\"name\":\"order_details\",\"kind\":\"object\",\"type\":\"OrderDetail\",\"relationName\":\"OrderToOrderDetail\"}],\"dbName\":null},\"OrderDetail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"product_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"unit_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"total_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"order\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderToOrderDetail\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"OrderDetailToProduct\"}],\"dbName\":null},\"Product_Image\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"product_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToProduct_Image\"}],\"dbName\":null},\"Product\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"sale_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"category_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"stock_quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"material\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"color\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"Product_Status\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"height\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"length\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"weight\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"width\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"brand\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"discount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"reviews\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"shipping\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"style\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"warranty\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order_details\",\"kind\":\"object\",\"type\":\"OrderDetail\",\"relationName\":\"OrderDetailToProduct\"},{\"name\":\"category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"CategoryToProduct\"},{\"name\":\"images\",\"kind\":\"object\",\"type\":\"Product_Image\",\"relationName\":\"ProductToProduct_Image\"},{\"name\":\"tags\",\"kind\":\"object\",\"type\":\"Tag\",\"relationName\":\"ProductToTag\"}],\"dbName\":null},\"Admin\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"full_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"facebook_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"google_id\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Tag\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"products\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToTag\"}],\"dbName\":null},\"AiSearchHistory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"session_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"anonymous_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"query_type\",\"kind\":\"enum\",\"type\":\"Query_Type\"},{\"name\":\"platform\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source_feature\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"original_image_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"detected_objects\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"selected_bbox\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"recommendations\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"ai_search_history\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
