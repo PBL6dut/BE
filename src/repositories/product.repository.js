@@ -32,56 +32,63 @@ const getProducts = async (page = 1, limit = 10, query = {}) => {
           order: true,
         },
       },
-      category_id: false,
+      // category_id: false, // Prisma có thể báo lỗi dòng này nếu version cũ, nếu chạy ổn thì giữ nguyên
     },
     orderBy: {
       created_at: "desc",
     },
+    where: {}, // Khởi tạo where rỗng trước
   };
 
   if (Object.keys(query).length > 0) {
+    // Xử lý tìm kiếm chung (Tên sản phẩm HOẶC Tên danh mục)
     if (query.name) {
-      queryArgs.where = { name: { contains: query.name } };
+      queryArgs.where.OR = [
+        { name: { contains: query.name } },
+        { category: { name: { contains: query.name } } },
+      ];
     }
+
+    // Các điều kiện bên dưới sẽ hoạt động như AND với khối OR ở trên
     if (query.category_id) {
-      queryArgs.where = {
-        ...queryArgs.where,
-        category_id: parseInt(query.category_id),
-      };
+      queryArgs.where.category_id = parseInt(query.category_id);
     }
+
+    // Đoạn code cũ xử lý query.name ở đây đã được gộp vào khối OR ở trên rồi, nên bỏ đi.
+
     if (query.min_price) {
-      queryArgs.where = {
-        ...queryArgs.where,
-        price: { gte: parseFloat(query.min_price) },
+      queryArgs.where.price = {
+        ...queryArgs.where.price, // Giữ lại các điều kiện price khác nếu có
+        gte: parseFloat(query.min_price),
       };
     }
     if (query.max_price) {
-      queryArgs.where = {
-        ...queryArgs.where,
-        price: { ...queryArgs.where.price, lte: parseFloat(query.max_price) },
+      queryArgs.where.price = {
+        ...queryArgs.where.price,
+        lte: parseFloat(query.max_price),
       };
     }
     if (query.tags) {
       const tagsArray = query.tags.split(",").map((tag) => tag.trim());
-      queryArgs.where = {
-        ...queryArgs.where,
-        tags: {
-          hasSome: tagsArray,
-        },
+      queryArgs.where.tags = {
+        hasSome: tagsArray,
       };
     }
     if (query.sort) {
       const dashIndex = query.sort.indexOf("_");
-      const sortField = query.sort.substring(-1, dashIndex);
-      const sortOrder = query.sort.substring(dashIndex + 1, query.sort.length);
-      queryArgs.orderBy = {
-        [sortField]: sortOrder,
-      };
+      // Sửa lỗi logic substring: tham số đầu tiên không được âm
+      if (dashIndex !== -1) {
+        const sortField = query.sort.substring(0, dashIndex);
+        const sortOrder = query.sort.substring(dashIndex + 1);
+        queryArgs.orderBy = {
+          [sortField]: sortOrder,
+        };
+      }
     }
   }
 
   const products = await prisma.product.findMany(queryArgs);
-  const count = await countProducts();
+  const count = await countProducts(); // Lưu ý: count này đang đếm all, nếu muốn count theo filter thì phải truyền where vào countProducts
   return { products, count };
 };
 

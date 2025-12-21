@@ -79,15 +79,6 @@ model OrderDetail {
   @@index([product_id], map: "OrderDetail_product_id_fkey")
 }
 
-model Product_Image {
-  id         Int     @id @default(autoincrement())
-  product_id Int
-  url        String  @db.VarChar(500)
-  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
-
-  @@index([product_id], map: "Product_Image_product_id_fkey")
-}
-
 model Product {
   id             Int             @id @default(autoincrement())
   name           String
@@ -137,28 +128,6 @@ model Tag {
   products Product[] @relation("ProductToTag")
 }
 
-model AiSearchHistory {
-  id                 Int        @id @default(autoincrement())
-  session_id         String     @unique(map: "session_id") @db.VarChar(36)
-  user_id            Int?
-  anonymous_id       String?    @db.VarChar(255)
-  query_type         Query_Type
-  platform           String?    @db.VarChar(50)
-  source_feature     String?    @db.VarChar(100)
-  original_image_url String?    @db.Text
-  detected_objects   Json?
-  selected_bbox      Json?
-  recommendations    Json?
-  created_at         DateTime?  @default(now()) @db.Timestamp(0)
-  updated_at         DateTime?  @default(now()) @updatedAt @db.Timestamp(0)
-
-  @@index([anonymous_id], map: "idx_anonymous_id")
-  @@index([created_at], map: "idx_created_at")
-  @@index([session_id], map: "idx_session_id")
-  @@index([user_id], map: "idx_user_id")
-  @@map("ai_search_history")
-}
-
 enum Order_Status {
   pending
   confirmed
@@ -195,9 +164,12 @@ enum Product_Status {
   inactive
 }
 
-enum Query_Type {
-  detect
-  recommend
+model Product_Image {
+  id         Int    @id @default(autoincrement())
+  product_id Int
+  url        String @db.VarChar(500)
+
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 }
 
 enum Query_Type {

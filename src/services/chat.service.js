@@ -9,7 +9,7 @@ class ChatService {
     // Chỉ cần khởi tạo Gemini Chat Model
     this.chatModel = new ChatGoogleGenerativeAI({
       apiKey: process.env.GEMINI_API_KEY, // Sửa lại tên biến môi trường cho đúng với bên dưới
-      model: "gemini-2.5-flash-lite",
+      model: "gemini-3-flash-preview",
       temperature: 0, // Để 0 khi trích xuất data
     });
 
@@ -38,6 +38,14 @@ class ChatService {
       select: { color: true },
       distinct: ["color"],
     });
+    const styles = await prisma.product.findMany({
+      select: { style: true },
+      distinct: ["style"],
+    });
+    const ratings = await prisma.product.findMany({
+      select: { rating: true },
+      distinct: ["rating"],
+    });
 
     this.metadataCache = {
       categoryList: categories.map((c) => c.name).join(", "),
@@ -49,6 +57,14 @@ class ChatService {
         .map((c) => c.color)
         .filter(Boolean)
         .join(", "),
+      styleList: styles
+        .map((s) => s.style)
+        .filter(Boolean)
+        .join(", "),
+      ratingList: ratings
+        .map((r) => r.rating)
+        .filter(Boolean)
+        .join(", "),
     };
     this.lastCacheTime = NOW;
 
@@ -57,7 +73,7 @@ class ChatService {
 
   // 2. Hàm trích xuất filter từ câu hỏi
   async extractFilters(question) {
-    const { categoryList, materialList, colorList } =
+    const { categoryList, materialList, colorList, styleList, ratingList } =
       await this.getDatabaseMetadata();
 
     const prompt = PromptTemplate.fromTemplate(`
@@ -66,6 +82,8 @@ class ChatService {
         - Categories: [${categoryList}]
         - Colors: [${colorList}]
         - Materials: [${materialList}]
+        - Styles: [${styleList}]
+        - Ratings: [${ratingList}]
         
         Câu hỏi: "{question}"
         
@@ -78,7 +96,10 @@ class ChatService {
             "category": "string (bắt buộc, phải nằm trong list Categories)", 
             "maxPrice": "number (nếu có)", 
             "color": "string (nếu có, phải nằm trong list Colors)", 
-            "material": "string (nếu có, phải nằm trong list Materials)" 
+            "material": "string (nếu có, phải nằm trong list Materials)"
+            "style": "string (nếu có, phải nằm trong list Styles)"
+            "minPrice": "number (nếu có)"
+            "rating": "number (nếu có, phải nằm trong list Ratings)"
         }}
         
         CHỈ TRẢ VỀ JSON DUY NHẤT.
@@ -131,7 +152,7 @@ class ChatService {
     // Dùng model temperature cao hơn xíu để văn phong tự nhiên
     const chatModelCreative = new ChatGoogleGenerativeAI({
       apiKey: process.env.GEMINI_API_KEY,
-      model: "gemini-2.5-flash-lite",
+      model: "gemini-3-flash-preview",
       temperature: 0.7,
     });
 
@@ -150,61 +171,64 @@ class ChatService {
 
       // B1: Trích xuất Filters
       const filters = await this.extractFilters(question);
-
-      if (!filters.category) {
-        return []; // Không biết tìm loại gì thì chịu
-      }
+      const filtersKeys = Object.keys(filters);
+      console.log("Extracted filters:", filters);
 
       // 2. Định nghĩa các cấp độ ưu tiên (Strategy List)
       // Mỗi cấp độ là một object chứa các trường cần filter
-      const searchStrategies = [
-        {
-          name: "Tuyệt đối (Perfect)",
-          useFields: ["category", "maxPrice", "color", "material"],
-        },
-        {
-          name: "Bỏ chất liệu",
-          useFields: ["category", "maxPrice", "color"],
-        },
-        {
-          name: "Bỏ màu sắc (Chỉ giữ Giá + Loại)",
-          useFields: ["category", "maxPrice"],
-        },
-        {
-          name: "Chỉ cùng Loại (Gợi ý chung)",
-          useFields: ["category"],
-        },
-      ];
+      const searchStrategies2 = []
+      for (let i = filtersKeys.length; i >= 1; i--) {
+        searchStrategies2.push(filtersKeys.slice(0, i));
+      }
+      console.log("searchStrategies2:", searchStrategies2);
 
       let finalProducts = [];
       let seenProductIds = new Set(); // Để tránh trùng lặp nếu chạy nhiều query
 
       // 3. Chạy vòng lặp chiến thuật
-      for (const strategy of searchStrategies) {
+      for (const strategy of searchStrategies2) {
         // Nếu đã tìm đủ 5 sản phẩm thì dừng ngay, không tìm thêm nữa
         if (finalProducts.length >= 5) break;
 
         console.log(`🔍 Đang thử chiến thuật: ${strategy.name}...`);
 
         // Xây dựng whereClause động dựa trên strategy hiện tại
-        const whereClause = {
-          category: { name: { contains: filters.category } }, // Luôn giữ Category
-        };
+        let whereClause = {};
 
         // Chỉ thêm các điều kiện nếu strategy yêu cầu VÀ filter có dữ liệu
-        if (strategy.useFields.includes("maxPrice") && filters.maxPrice) {
+        if (strategy.includes("category") && filters.category) {
+          whereClause.category = { name: { contains: filters.category } };
+        }
+        if (strategy.includes("maxPrice") && filters.maxPrice) {
           whereClause.price = { lte: filters.maxPrice };
         }
-        if (strategy.useFields.includes("color") && filters.color) {
+        if (strategy.includes("minPrice") && filters.minPrice) {
+          whereClause.price = {
+            ...whereClause.price,
+            gte: filters.minPrice,
+          };
+        }
+        if (strategy.includes("color") && filters.color) {
           whereClause.color = { contains: filters.color };
         }
-        if (strategy.useFields.includes("material") && filters.material) {
+        if (strategy.includes("material") && filters.material) {
           whereClause.material = { contains: filters.material };
         }
+        if (strategy.includes("style") && filters.style) {
+          whereClause.style = { contains: filters.style };
+        }
+        if (strategy.includes("rating") && filters.rating) {
+          whereClause.rating = filters.rating;
+        }
+        console.log("whereClause:", whereClause);
 
         // Query Database
         const products = await prisma.product.findMany({
           where: whereClause,
+          include: {
+            images: { select: { url: true } },
+            category: { select: { id: true, name: true } },
+          },
           take: 5, // Lấy thử 5 cái mỗi lần
           orderBy: { price: "asc" }, // Ưu tiên rẻ trước nếu muốn
         });

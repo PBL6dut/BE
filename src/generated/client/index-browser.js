@@ -177,12 +177,6 @@ exports.Prisma.OrderDetailScalarFieldEnum = {
   total_price: 'total_price'
 };
 
-exports.Prisma.Product_ImageScalarFieldEnum = {
-  id: 'id',
-  product_id: 'product_id',
-  url: 'url'
-};
-
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -223,6 +217,12 @@ exports.Prisma.AdminScalarFieldEnum = {
 exports.Prisma.TagScalarFieldEnum = {
   id: 'id',
   name: 'name'
+};
+
+exports.Prisma.Product_ImageScalarFieldEnum = {
+  id: 'id',
+  product_id: 'product_id',
+  url: 'url'
 };
 
 exports.Prisma.AiSearchHistoryScalarFieldEnum = {
@@ -286,10 +286,6 @@ exports.Prisma.OrderOrderByRelevanceFieldEnum = {
   transaction_id: 'transaction_id'
 };
 
-exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
-  url: 'url'
-};
-
 exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
@@ -312,6 +308,10 @@ exports.Prisma.AdminOrderByRelevanceFieldEnum = {
 
 exports.Prisma.TagOrderByRelevanceFieldEnum = {
   name: 'name'
+};
+
+exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
+  url: 'url'
 };
 
 exports.Prisma.JsonNullValueFilter = {
@@ -379,10 +379,10 @@ exports.Prisma.ModelName = {
   Customer: 'Customer',
   Order: 'Order',
   OrderDetail: 'OrderDetail',
-  Product_Image: 'Product_Image',
   Product: 'Product',
   Admin: 'Admin',
   Tag: 'Tag',
+  Product_Image: 'Product_Image',
   AiSearchHistory: 'AiSearchHistory'
 };
 

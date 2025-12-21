@@ -34,11 +34,6 @@ export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
  */
 export type OrderDetail = $Result.DefaultSelection<Prisma.$OrderDetailPayload>
 /**
- * Model Product_Image
- * 
- */
-export type Product_Image = $Result.DefaultSelection<Prisma.$Product_ImagePayload>
-/**
  * Model Product
  * 
  */
@@ -54,10 +49,10 @@ export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
  */
 export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
 /**
- * Model AiSearchHistory
+ * Model Product_Image
  * 
  */
-export type AiSearchHistory = $Result.DefaultSelection<Prisma.$AiSearchHistoryPayload>
+export type Product_Image = $Result.DefaultSelection<Prisma.$Product_ImagePayload>
 /**
  * Model AiSearchHistory
  * 
@@ -126,14 +121,6 @@ export const Query_Type: {
 
 export type Query_Type = (typeof Query_Type)[keyof typeof Query_Type]
 
-
-export const Query_Type: {
-  detect: 'detect',
-  recommend: 'recommend'
-};
-
-export type Query_Type = (typeof Query_Type)[keyof typeof Query_Type]
-
 }
 
 export type Order_Status = $Enums.Order_Status
@@ -155,10 +142,6 @@ export const Shipping_Method: typeof $Enums.Shipping_Method
 export type Product_Status = $Enums.Product_Status
 
 export const Product_Status: typeof $Enums.Product_Status
-
-export type Query_Type = $Enums.Query_Type
-
-export const Query_Type: typeof $Enums.Query_Type
 
 export type Query_Type = $Enums.Query_Type
 
@@ -323,16 +306,6 @@ export class PrismaClient<
   get orderDetail(): Prisma.OrderDetailDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.product_Image`: Exposes CRUD operations for the **Product_Image** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Product_Images
-    * const product_Images = await prisma.product_Image.findMany()
-    * ```
-    */
-  get product_Image(): Prisma.Product_ImageDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.product`: Exposes CRUD operations for the **Product** model.
     * Example usage:
     * ```ts
@@ -363,14 +336,14 @@ export class PrismaClient<
   get tag(): Prisma.TagDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.aiSearchHistory`: Exposes CRUD operations for the **AiSearchHistory** model.
+   * `prisma.product_Image`: Exposes CRUD operations for the **Product_Image** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more AiSearchHistories
-    * const aiSearchHistories = await prisma.aiSearchHistory.findMany()
+    * // Fetch zero or more Product_Images
+    * const product_Images = await prisma.product_Image.findMany()
     * ```
     */
-  get aiSearchHistory(): Prisma.AiSearchHistoryDelegate<ExtArgs, ClientOptions>;
+  get product_Image(): Prisma.Product_ImageDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.aiSearchHistory`: Exposes CRUD operations for the **AiSearchHistory** model.
@@ -826,12 +799,10 @@ export namespace Prisma {
     Customer: 'Customer',
     Order: 'Order',
     OrderDetail: 'OrderDetail',
-    Product_Image: 'Product_Image',
     Product: 'Product',
     Admin: 'Admin',
     Tag: 'Tag',
-    AiSearchHistory: 'AiSearchHistory'
-    Tag: 'Tag',
+    Product_Image: 'Product_Image',
     AiSearchHistory: 'AiSearchHistory'
   };
 
@@ -851,8 +822,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "category" | "customer" | "order" | "orderDetail" | "product_Image" | "product" | "admin" | "tag" | "aiSearchHistory"
-      modelProps: "category" | "customer" | "order" | "orderDetail" | "product_Image" | "product" | "admin" | "tag" | "aiSearchHistory"
+      modelProps: "category" | "customer" | "order" | "orderDetail" | "product" | "admin" | "tag" | "product_Image" | "aiSearchHistory"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1120,72 +1090,6 @@ export namespace Prisma {
           }
         }
       }
-      Product_Image: {
-        payload: Prisma.$Product_ImagePayload<ExtArgs>
-        fields: Prisma.Product_ImageFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.Product_ImageFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.Product_ImageFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
-          }
-          findFirst: {
-            args: Prisma.Product_ImageFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.Product_ImageFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
-          }
-          findMany: {
-            args: Prisma.Product_ImageFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>[]
-          }
-          create: {
-            args: Prisma.Product_ImageCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
-          }
-          createMany: {
-            args: Prisma.Product_ImageCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.Product_ImageDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
-          }
-          update: {
-            args: Prisma.Product_ImageUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
-          }
-          deleteMany: {
-            args: Prisma.Product_ImageDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.Product_ImageUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.Product_ImageUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
-          }
-          aggregate: {
-            args: Prisma.Product_ImageAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateProduct_Image>
-          }
-          groupBy: {
-            args: Prisma.Product_ImageGroupByArgs<ExtArgs>
-            result: $Utils.Optional<Product_ImageGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.Product_ImageCountArgs<ExtArgs>
-            result: $Utils.Optional<Product_ImageCountAggregateOutputType> | number
-          }
-        }
-      }
       Product: {
         payload: Prisma.$ProductPayload<ExtArgs>
         fields: Prisma.ProductFieldRefs
@@ -1384,69 +1288,69 @@ export namespace Prisma {
           }
         }
       }
-      AiSearchHistory: {
-        payload: Prisma.$AiSearchHistoryPayload<ExtArgs>
-        fields: Prisma.AiSearchHistoryFieldRefs
+      Product_Image: {
+        payload: Prisma.$Product_ImagePayload<ExtArgs>
+        fields: Prisma.Product_ImageFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.AiSearchHistoryFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload> | null
+            args: Prisma.Product_ImageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.AiSearchHistoryFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+            args: Prisma.Product_ImageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
           }
           findFirst: {
-            args: Prisma.AiSearchHistoryFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload> | null
+            args: Prisma.Product_ImageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.AiSearchHistoryFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+            args: Prisma.Product_ImageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
           }
           findMany: {
-            args: Prisma.AiSearchHistoryFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>[]
+            args: Prisma.Product_ImageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>[]
           }
           create: {
-            args: Prisma.AiSearchHistoryCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+            args: Prisma.Product_ImageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
           }
           createMany: {
-            args: Prisma.AiSearchHistoryCreateManyArgs<ExtArgs>
+            args: Prisma.Product_ImageCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.AiSearchHistoryDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+            args: Prisma.Product_ImageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
           }
           update: {
-            args: Prisma.AiSearchHistoryUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+            args: Prisma.Product_ImageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
           }
           deleteMany: {
-            args: Prisma.AiSearchHistoryDeleteManyArgs<ExtArgs>
+            args: Prisma.Product_ImageDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.AiSearchHistoryUpdateManyArgs<ExtArgs>
+            args: Prisma.Product_ImageUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.AiSearchHistoryUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+            args: Prisma.Product_ImageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Product_ImagePayload>
           }
           aggregate: {
-            args: Prisma.AiSearchHistoryAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAiSearchHistory>
+            args: Prisma.Product_ImageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProduct_Image>
           }
           groupBy: {
-            args: Prisma.AiSearchHistoryGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AiSearchHistoryGroupByOutputType>[]
+            args: Prisma.Product_ImageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Product_ImageGroupByOutputType>[]
           }
           count: {
-            args: Prisma.AiSearchHistoryCountArgs<ExtArgs>
-            result: $Utils.Optional<AiSearchHistoryCountAggregateOutputType> | number
+            args: Prisma.Product_ImageCountArgs<ExtArgs>
+            result: $Utils.Optional<Product_ImageCountAggregateOutputType> | number
           }
         }
       }
@@ -1616,11 +1520,10 @@ export namespace Prisma {
     customer?: CustomerOmit
     order?: OrderOmit
     orderDetail?: OrderDetailOmit
-    product_Image?: Product_ImageOmit
     product?: ProductOmit
     admin?: AdminOmit
     tag?: TagOmit
-    aiSearchHistory?: AiSearchHistoryOmit
+    product_Image?: Product_ImageOmit
     aiSearchHistory?: AiSearchHistoryOmit
   }
 
@@ -6113,951 +6016,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Product_Image
-   */
-
-  export type AggregateProduct_Image = {
-    _count: Product_ImageCountAggregateOutputType | null
-    _avg: Product_ImageAvgAggregateOutputType | null
-    _sum: Product_ImageSumAggregateOutputType | null
-    _min: Product_ImageMinAggregateOutputType | null
-    _max: Product_ImageMaxAggregateOutputType | null
-  }
-
-  export type Product_ImageAvgAggregateOutputType = {
-    id: number | null
-    product_id: number | null
-  }
-
-  export type Product_ImageSumAggregateOutputType = {
-    id: number | null
-    product_id: number | null
-  }
-
-  export type Product_ImageMinAggregateOutputType = {
-    id: number | null
-    product_id: number | null
-    url: string | null
-  }
-
-  export type Product_ImageMaxAggregateOutputType = {
-    id: number | null
-    product_id: number | null
-    url: string | null
-  }
-
-  export type Product_ImageCountAggregateOutputType = {
-    id: number
-    product_id: number
-    url: number
-    _all: number
-  }
-
-
-  export type Product_ImageAvgAggregateInputType = {
-    id?: true
-    product_id?: true
-  }
-
-  export type Product_ImageSumAggregateInputType = {
-    id?: true
-    product_id?: true
-  }
-
-  export type Product_ImageMinAggregateInputType = {
-    id?: true
-    product_id?: true
-    url?: true
-  }
-
-  export type Product_ImageMaxAggregateInputType = {
-    id?: true
-    product_id?: true
-    url?: true
-  }
-
-  export type Product_ImageCountAggregateInputType = {
-    id?: true
-    product_id?: true
-    url?: true
-    _all?: true
-  }
-
-  export type Product_ImageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Product_Image to aggregate.
-     */
-    where?: Product_ImageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Product_Images to fetch.
-     */
-    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: Product_ImageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Product_Images from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Product_Images.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Product_Images
-    **/
-    _count?: true | Product_ImageCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: Product_ImageAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: Product_ImageSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Product_ImageMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Product_ImageMaxAggregateInputType
-  }
-
-  export type GetProduct_ImageAggregateType<T extends Product_ImageAggregateArgs> = {
-        [P in keyof T & keyof AggregateProduct_Image]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateProduct_Image[P]>
-      : GetScalarType<T[P], AggregateProduct_Image[P]>
-  }
-
-
-
-
-  export type Product_ImageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: Product_ImageWhereInput
-    orderBy?: Product_ImageOrderByWithAggregationInput | Product_ImageOrderByWithAggregationInput[]
-    by: Product_ImageScalarFieldEnum[] | Product_ImageScalarFieldEnum
-    having?: Product_ImageScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Product_ImageCountAggregateInputType | true
-    _avg?: Product_ImageAvgAggregateInputType
-    _sum?: Product_ImageSumAggregateInputType
-    _min?: Product_ImageMinAggregateInputType
-    _max?: Product_ImageMaxAggregateInputType
-  }
-
-  export type Product_ImageGroupByOutputType = {
-    id: number
-    product_id: number
-    url: string
-    _count: Product_ImageCountAggregateOutputType | null
-    _avg: Product_ImageAvgAggregateOutputType | null
-    _sum: Product_ImageSumAggregateOutputType | null
-    _min: Product_ImageMinAggregateOutputType | null
-    _max: Product_ImageMaxAggregateOutputType | null
-  }
-
-  type GetProduct_ImageGroupByPayload<T extends Product_ImageGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<Product_ImageGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Product_ImageGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Product_ImageGroupByOutputType[P]>
-            : GetScalarType<T[P], Product_ImageGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type Product_ImageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    product_id?: boolean
-    url?: boolean
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["product_Image"]>
-
-
-
-  export type Product_ImageSelectScalar = {
-    id?: boolean
-    product_id?: boolean
-    url?: boolean
-  }
-
-  export type Product_ImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "product_id" | "url", ExtArgs["result"]["product_Image"]>
-  export type Product_ImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-  }
-
-  export type $Product_ImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Product_Image"
-    objects: {
-      product: Prisma.$ProductPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      product_id: number
-      url: string
-    }, ExtArgs["result"]["product_Image"]>
-    composites: {}
-  }
-
-  type Product_ImageGetPayload<S extends boolean | null | undefined | Product_ImageDefaultArgs> = $Result.GetResult<Prisma.$Product_ImagePayload, S>
-
-  type Product_ImageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<Product_ImageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: Product_ImageCountAggregateInputType | true
-    }
-
-  export interface Product_ImageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Product_Image'], meta: { name: 'Product_Image' } }
-    /**
-     * Find zero or one Product_Image that matches the filter.
-     * @param {Product_ImageFindUniqueArgs} args - Arguments to find a Product_Image
-     * @example
-     * // Get one Product_Image
-     * const product_Image = await prisma.product_Image.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends Product_ImageFindUniqueArgs>(args: SelectSubset<T, Product_ImageFindUniqueArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Product_Image that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {Product_ImageFindUniqueOrThrowArgs} args - Arguments to find a Product_Image
-     * @example
-     * // Get one Product_Image
-     * const product_Image = await prisma.product_Image.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends Product_ImageFindUniqueOrThrowArgs>(args: SelectSubset<T, Product_ImageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Product_Image that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Product_ImageFindFirstArgs} args - Arguments to find a Product_Image
-     * @example
-     * // Get one Product_Image
-     * const product_Image = await prisma.product_Image.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends Product_ImageFindFirstArgs>(args?: SelectSubset<T, Product_ImageFindFirstArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Product_Image that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Product_ImageFindFirstOrThrowArgs} args - Arguments to find a Product_Image
-     * @example
-     * // Get one Product_Image
-     * const product_Image = await prisma.product_Image.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends Product_ImageFindFirstOrThrowArgs>(args?: SelectSubset<T, Product_ImageFindFirstOrThrowArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Product_Images that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Product_ImageFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Product_Images
-     * const product_Images = await prisma.product_Image.findMany()
-     * 
-     * // Get first 10 Product_Images
-     * const product_Images = await prisma.product_Image.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const product_ImageWithIdOnly = await prisma.product_Image.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends Product_ImageFindManyArgs>(args?: SelectSubset<T, Product_ImageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Product_Image.
-     * @param {Product_ImageCreateArgs} args - Arguments to create a Product_Image.
-     * @example
-     * // Create one Product_Image
-     * const Product_Image = await prisma.product_Image.create({
-     *   data: {
-     *     // ... data to create a Product_Image
-     *   }
-     * })
-     * 
-     */
-    create<T extends Product_ImageCreateArgs>(args: SelectSubset<T, Product_ImageCreateArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Product_Images.
-     * @param {Product_ImageCreateManyArgs} args - Arguments to create many Product_Images.
-     * @example
-     * // Create many Product_Images
-     * const product_Image = await prisma.product_Image.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends Product_ImageCreateManyArgs>(args?: SelectSubset<T, Product_ImageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Product_Image.
-     * @param {Product_ImageDeleteArgs} args - Arguments to delete one Product_Image.
-     * @example
-     * // Delete one Product_Image
-     * const Product_Image = await prisma.product_Image.delete({
-     *   where: {
-     *     // ... filter to delete one Product_Image
-     *   }
-     * })
-     * 
-     */
-    delete<T extends Product_ImageDeleteArgs>(args: SelectSubset<T, Product_ImageDeleteArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Product_Image.
-     * @param {Product_ImageUpdateArgs} args - Arguments to update one Product_Image.
-     * @example
-     * // Update one Product_Image
-     * const product_Image = await prisma.product_Image.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends Product_ImageUpdateArgs>(args: SelectSubset<T, Product_ImageUpdateArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Product_Images.
-     * @param {Product_ImageDeleteManyArgs} args - Arguments to filter Product_Images to delete.
-     * @example
-     * // Delete a few Product_Images
-     * const { count } = await prisma.product_Image.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends Product_ImageDeleteManyArgs>(args?: SelectSubset<T, Product_ImageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Product_Images.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Product_ImageUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Product_Images
-     * const product_Image = await prisma.product_Image.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends Product_ImageUpdateManyArgs>(args: SelectSubset<T, Product_ImageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Product_Image.
-     * @param {Product_ImageUpsertArgs} args - Arguments to update or create a Product_Image.
-     * @example
-     * // Update or create a Product_Image
-     * const product_Image = await prisma.product_Image.upsert({
-     *   create: {
-     *     // ... data to create a Product_Image
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Product_Image we want to update
-     *   }
-     * })
-     */
-    upsert<T extends Product_ImageUpsertArgs>(args: SelectSubset<T, Product_ImageUpsertArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Product_Images.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Product_ImageCountArgs} args - Arguments to filter Product_Images to count.
-     * @example
-     * // Count the number of Product_Images
-     * const count = await prisma.product_Image.count({
-     *   where: {
-     *     // ... the filter for the Product_Images we want to count
-     *   }
-     * })
-    **/
-    count<T extends Product_ImageCountArgs>(
-      args?: Subset<T, Product_ImageCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Product_ImageCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Product_Image.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Product_ImageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Product_ImageAggregateArgs>(args: Subset<T, Product_ImageAggregateArgs>): Prisma.PrismaPromise<GetProduct_ImageAggregateType<T>>
-
-    /**
-     * Group by Product_Image.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Product_ImageGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends Product_ImageGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: Product_ImageGroupByArgs['orderBy'] }
-        : { orderBy?: Product_ImageGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, Product_ImageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProduct_ImageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Product_Image model
-   */
-  readonly fields: Product_ImageFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Product_Image.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__Product_ImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Product_Image model
-   */
-  interface Product_ImageFieldRefs {
-    readonly id: FieldRef<"Product_Image", 'Int'>
-    readonly product_id: FieldRef<"Product_Image", 'Int'>
-    readonly url: FieldRef<"Product_Image", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Product_Image findUnique
-   */
-  export type Product_ImageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * Filter, which Product_Image to fetch.
-     */
-    where: Product_ImageWhereUniqueInput
-  }
-
-  /**
-   * Product_Image findUniqueOrThrow
-   */
-  export type Product_ImageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * Filter, which Product_Image to fetch.
-     */
-    where: Product_ImageWhereUniqueInput
-  }
-
-  /**
-   * Product_Image findFirst
-   */
-  export type Product_ImageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * Filter, which Product_Image to fetch.
-     */
-    where?: Product_ImageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Product_Images to fetch.
-     */
-    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Product_Images.
-     */
-    cursor?: Product_ImageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Product_Images from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Product_Images.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Product_Images.
-     */
-    distinct?: Product_ImageScalarFieldEnum | Product_ImageScalarFieldEnum[]
-  }
-
-  /**
-   * Product_Image findFirstOrThrow
-   */
-  export type Product_ImageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * Filter, which Product_Image to fetch.
-     */
-    where?: Product_ImageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Product_Images to fetch.
-     */
-    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Product_Images.
-     */
-    cursor?: Product_ImageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Product_Images from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Product_Images.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Product_Images.
-     */
-    distinct?: Product_ImageScalarFieldEnum | Product_ImageScalarFieldEnum[]
-  }
-
-  /**
-   * Product_Image findMany
-   */
-  export type Product_ImageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * Filter, which Product_Images to fetch.
-     */
-    where?: Product_ImageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Product_Images to fetch.
-     */
-    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Product_Images.
-     */
-    cursor?: Product_ImageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Product_Images from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Product_Images.
-     */
-    skip?: number
-    distinct?: Product_ImageScalarFieldEnum | Product_ImageScalarFieldEnum[]
-  }
-
-  /**
-   * Product_Image create
-   */
-  export type Product_ImageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Product_Image.
-     */
-    data: XOR<Product_ImageCreateInput, Product_ImageUncheckedCreateInput>
-  }
-
-  /**
-   * Product_Image createMany
-   */
-  export type Product_ImageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Product_Images.
-     */
-    data: Product_ImageCreateManyInput | Product_ImageCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Product_Image update
-   */
-  export type Product_ImageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Product_Image.
-     */
-    data: XOR<Product_ImageUpdateInput, Product_ImageUncheckedUpdateInput>
-    /**
-     * Choose, which Product_Image to update.
-     */
-    where: Product_ImageWhereUniqueInput
-  }
-
-  /**
-   * Product_Image updateMany
-   */
-  export type Product_ImageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Product_Images.
-     */
-    data: XOR<Product_ImageUpdateManyMutationInput, Product_ImageUncheckedUpdateManyInput>
-    /**
-     * Filter which Product_Images to update
-     */
-    where?: Product_ImageWhereInput
-    /**
-     * Limit how many Product_Images to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Product_Image upsert
-   */
-  export type Product_ImageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Product_Image to update in case it exists.
-     */
-    where: Product_ImageWhereUniqueInput
-    /**
-     * In case the Product_Image found by the `where` argument doesn't exist, create a new Product_Image with this data.
-     */
-    create: XOR<Product_ImageCreateInput, Product_ImageUncheckedCreateInput>
-    /**
-     * In case the Product_Image was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<Product_ImageUpdateInput, Product_ImageUncheckedUpdateInput>
-  }
-
-  /**
-   * Product_Image delete
-   */
-  export type Product_ImageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-    /**
-     * Filter which Product_Image to delete.
-     */
-    where: Product_ImageWhereUniqueInput
-  }
-
-  /**
-   * Product_Image deleteMany
-   */
-  export type Product_ImageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Product_Images to delete
-     */
-    where?: Product_ImageWhereInput
-    /**
-     * Limit how many Product_Images to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Product_Image without action
-   */
-  export type Product_ImageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product_Image
-     */
-    select?: Product_ImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product_Image
-     */
-    omit?: Product_ImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Product_ImageInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Product
    */
 
@@ -10254,6 +9212,951 @@ export namespace Prisma {
 
 
   /**
+   * Model Product_Image
+   */
+
+  export type AggregateProduct_Image = {
+    _count: Product_ImageCountAggregateOutputType | null
+    _avg: Product_ImageAvgAggregateOutputType | null
+    _sum: Product_ImageSumAggregateOutputType | null
+    _min: Product_ImageMinAggregateOutputType | null
+    _max: Product_ImageMaxAggregateOutputType | null
+  }
+
+  export type Product_ImageAvgAggregateOutputType = {
+    id: number | null
+    product_id: number | null
+  }
+
+  export type Product_ImageSumAggregateOutputType = {
+    id: number | null
+    product_id: number | null
+  }
+
+  export type Product_ImageMinAggregateOutputType = {
+    id: number | null
+    product_id: number | null
+    url: string | null
+  }
+
+  export type Product_ImageMaxAggregateOutputType = {
+    id: number | null
+    product_id: number | null
+    url: string | null
+  }
+
+  export type Product_ImageCountAggregateOutputType = {
+    id: number
+    product_id: number
+    url: number
+    _all: number
+  }
+
+
+  export type Product_ImageAvgAggregateInputType = {
+    id?: true
+    product_id?: true
+  }
+
+  export type Product_ImageSumAggregateInputType = {
+    id?: true
+    product_id?: true
+  }
+
+  export type Product_ImageMinAggregateInputType = {
+    id?: true
+    product_id?: true
+    url?: true
+  }
+
+  export type Product_ImageMaxAggregateInputType = {
+    id?: true
+    product_id?: true
+    url?: true
+  }
+
+  export type Product_ImageCountAggregateInputType = {
+    id?: true
+    product_id?: true
+    url?: true
+    _all?: true
+  }
+
+  export type Product_ImageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Product_Image to aggregate.
+     */
+    where?: Product_ImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Product_Images to fetch.
+     */
+    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: Product_ImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Product_Images from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Product_Images.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Product_Images
+    **/
+    _count?: true | Product_ImageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Product_ImageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Product_ImageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Product_ImageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Product_ImageMaxAggregateInputType
+  }
+
+  export type GetProduct_ImageAggregateType<T extends Product_ImageAggregateArgs> = {
+        [P in keyof T & keyof AggregateProduct_Image]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProduct_Image[P]>
+      : GetScalarType<T[P], AggregateProduct_Image[P]>
+  }
+
+
+
+
+  export type Product_ImageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Product_ImageWhereInput
+    orderBy?: Product_ImageOrderByWithAggregationInput | Product_ImageOrderByWithAggregationInput[]
+    by: Product_ImageScalarFieldEnum[] | Product_ImageScalarFieldEnum
+    having?: Product_ImageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Product_ImageCountAggregateInputType | true
+    _avg?: Product_ImageAvgAggregateInputType
+    _sum?: Product_ImageSumAggregateInputType
+    _min?: Product_ImageMinAggregateInputType
+    _max?: Product_ImageMaxAggregateInputType
+  }
+
+  export type Product_ImageGroupByOutputType = {
+    id: number
+    product_id: number
+    url: string
+    _count: Product_ImageCountAggregateOutputType | null
+    _avg: Product_ImageAvgAggregateOutputType | null
+    _sum: Product_ImageSumAggregateOutputType | null
+    _min: Product_ImageMinAggregateOutputType | null
+    _max: Product_ImageMaxAggregateOutputType | null
+  }
+
+  type GetProduct_ImageGroupByPayload<T extends Product_ImageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Product_ImageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Product_ImageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Product_ImageGroupByOutputType[P]>
+            : GetScalarType<T[P], Product_ImageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type Product_ImageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    product_id?: boolean
+    url?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["product_Image"]>
+
+
+
+  export type Product_ImageSelectScalar = {
+    id?: boolean
+    product_id?: boolean
+    url?: boolean
+  }
+
+  export type Product_ImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "product_id" | "url", ExtArgs["result"]["product_Image"]>
+  export type Product_ImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $Product_ImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Product_Image"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      product_id: number
+      url: string
+    }, ExtArgs["result"]["product_Image"]>
+    composites: {}
+  }
+
+  type Product_ImageGetPayload<S extends boolean | null | undefined | Product_ImageDefaultArgs> = $Result.GetResult<Prisma.$Product_ImagePayload, S>
+
+  type Product_ImageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<Product_ImageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Product_ImageCountAggregateInputType | true
+    }
+
+  export interface Product_ImageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Product_Image'], meta: { name: 'Product_Image' } }
+    /**
+     * Find zero or one Product_Image that matches the filter.
+     * @param {Product_ImageFindUniqueArgs} args - Arguments to find a Product_Image
+     * @example
+     * // Get one Product_Image
+     * const product_Image = await prisma.product_Image.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends Product_ImageFindUniqueArgs>(args: SelectSubset<T, Product_ImageFindUniqueArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Product_Image that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {Product_ImageFindUniqueOrThrowArgs} args - Arguments to find a Product_Image
+     * @example
+     * // Get one Product_Image
+     * const product_Image = await prisma.product_Image.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends Product_ImageFindUniqueOrThrowArgs>(args: SelectSubset<T, Product_ImageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Product_Image that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Product_ImageFindFirstArgs} args - Arguments to find a Product_Image
+     * @example
+     * // Get one Product_Image
+     * const product_Image = await prisma.product_Image.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends Product_ImageFindFirstArgs>(args?: SelectSubset<T, Product_ImageFindFirstArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Product_Image that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Product_ImageFindFirstOrThrowArgs} args - Arguments to find a Product_Image
+     * @example
+     * // Get one Product_Image
+     * const product_Image = await prisma.product_Image.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends Product_ImageFindFirstOrThrowArgs>(args?: SelectSubset<T, Product_ImageFindFirstOrThrowArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Product_Images that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Product_ImageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Product_Images
+     * const product_Images = await prisma.product_Image.findMany()
+     * 
+     * // Get first 10 Product_Images
+     * const product_Images = await prisma.product_Image.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const product_ImageWithIdOnly = await prisma.product_Image.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends Product_ImageFindManyArgs>(args?: SelectSubset<T, Product_ImageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Product_Image.
+     * @param {Product_ImageCreateArgs} args - Arguments to create a Product_Image.
+     * @example
+     * // Create one Product_Image
+     * const Product_Image = await prisma.product_Image.create({
+     *   data: {
+     *     // ... data to create a Product_Image
+     *   }
+     * })
+     * 
+     */
+    create<T extends Product_ImageCreateArgs>(args: SelectSubset<T, Product_ImageCreateArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Product_Images.
+     * @param {Product_ImageCreateManyArgs} args - Arguments to create many Product_Images.
+     * @example
+     * // Create many Product_Images
+     * const product_Image = await prisma.product_Image.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends Product_ImageCreateManyArgs>(args?: SelectSubset<T, Product_ImageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Product_Image.
+     * @param {Product_ImageDeleteArgs} args - Arguments to delete one Product_Image.
+     * @example
+     * // Delete one Product_Image
+     * const Product_Image = await prisma.product_Image.delete({
+     *   where: {
+     *     // ... filter to delete one Product_Image
+     *   }
+     * })
+     * 
+     */
+    delete<T extends Product_ImageDeleteArgs>(args: SelectSubset<T, Product_ImageDeleteArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Product_Image.
+     * @param {Product_ImageUpdateArgs} args - Arguments to update one Product_Image.
+     * @example
+     * // Update one Product_Image
+     * const product_Image = await prisma.product_Image.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends Product_ImageUpdateArgs>(args: SelectSubset<T, Product_ImageUpdateArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Product_Images.
+     * @param {Product_ImageDeleteManyArgs} args - Arguments to filter Product_Images to delete.
+     * @example
+     * // Delete a few Product_Images
+     * const { count } = await prisma.product_Image.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends Product_ImageDeleteManyArgs>(args?: SelectSubset<T, Product_ImageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Product_Images.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Product_ImageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Product_Images
+     * const product_Image = await prisma.product_Image.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends Product_ImageUpdateManyArgs>(args: SelectSubset<T, Product_ImageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Product_Image.
+     * @param {Product_ImageUpsertArgs} args - Arguments to update or create a Product_Image.
+     * @example
+     * // Update or create a Product_Image
+     * const product_Image = await prisma.product_Image.upsert({
+     *   create: {
+     *     // ... data to create a Product_Image
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Product_Image we want to update
+     *   }
+     * })
+     */
+    upsert<T extends Product_ImageUpsertArgs>(args: SelectSubset<T, Product_ImageUpsertArgs<ExtArgs>>): Prisma__Product_ImageClient<$Result.GetResult<Prisma.$Product_ImagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Product_Images.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Product_ImageCountArgs} args - Arguments to filter Product_Images to count.
+     * @example
+     * // Count the number of Product_Images
+     * const count = await prisma.product_Image.count({
+     *   where: {
+     *     // ... the filter for the Product_Images we want to count
+     *   }
+     * })
+    **/
+    count<T extends Product_ImageCountArgs>(
+      args?: Subset<T, Product_ImageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Product_ImageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Product_Image.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Product_ImageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Product_ImageAggregateArgs>(args: Subset<T, Product_ImageAggregateArgs>): Prisma.PrismaPromise<GetProduct_ImageAggregateType<T>>
+
+    /**
+     * Group by Product_Image.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Product_ImageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends Product_ImageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: Product_ImageGroupByArgs['orderBy'] }
+        : { orderBy?: Product_ImageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, Product_ImageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProduct_ImageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Product_Image model
+   */
+  readonly fields: Product_ImageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Product_Image.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__Product_ImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Product_Image model
+   */
+  interface Product_ImageFieldRefs {
+    readonly id: FieldRef<"Product_Image", 'Int'>
+    readonly product_id: FieldRef<"Product_Image", 'Int'>
+    readonly url: FieldRef<"Product_Image", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Product_Image findUnique
+   */
+  export type Product_ImageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * Filter, which Product_Image to fetch.
+     */
+    where: Product_ImageWhereUniqueInput
+  }
+
+  /**
+   * Product_Image findUniqueOrThrow
+   */
+  export type Product_ImageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * Filter, which Product_Image to fetch.
+     */
+    where: Product_ImageWhereUniqueInput
+  }
+
+  /**
+   * Product_Image findFirst
+   */
+  export type Product_ImageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * Filter, which Product_Image to fetch.
+     */
+    where?: Product_ImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Product_Images to fetch.
+     */
+    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Product_Images.
+     */
+    cursor?: Product_ImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Product_Images from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Product_Images.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Product_Images.
+     */
+    distinct?: Product_ImageScalarFieldEnum | Product_ImageScalarFieldEnum[]
+  }
+
+  /**
+   * Product_Image findFirstOrThrow
+   */
+  export type Product_ImageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * Filter, which Product_Image to fetch.
+     */
+    where?: Product_ImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Product_Images to fetch.
+     */
+    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Product_Images.
+     */
+    cursor?: Product_ImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Product_Images from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Product_Images.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Product_Images.
+     */
+    distinct?: Product_ImageScalarFieldEnum | Product_ImageScalarFieldEnum[]
+  }
+
+  /**
+   * Product_Image findMany
+   */
+  export type Product_ImageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * Filter, which Product_Images to fetch.
+     */
+    where?: Product_ImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Product_Images to fetch.
+     */
+    orderBy?: Product_ImageOrderByWithRelationInput | Product_ImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Product_Images.
+     */
+    cursor?: Product_ImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Product_Images from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Product_Images.
+     */
+    skip?: number
+    distinct?: Product_ImageScalarFieldEnum | Product_ImageScalarFieldEnum[]
+  }
+
+  /**
+   * Product_Image create
+   */
+  export type Product_ImageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Product_Image.
+     */
+    data: XOR<Product_ImageCreateInput, Product_ImageUncheckedCreateInput>
+  }
+
+  /**
+   * Product_Image createMany
+   */
+  export type Product_ImageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Product_Images.
+     */
+    data: Product_ImageCreateManyInput | Product_ImageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Product_Image update
+   */
+  export type Product_ImageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Product_Image.
+     */
+    data: XOR<Product_ImageUpdateInput, Product_ImageUncheckedUpdateInput>
+    /**
+     * Choose, which Product_Image to update.
+     */
+    where: Product_ImageWhereUniqueInput
+  }
+
+  /**
+   * Product_Image updateMany
+   */
+  export type Product_ImageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Product_Images.
+     */
+    data: XOR<Product_ImageUpdateManyMutationInput, Product_ImageUncheckedUpdateManyInput>
+    /**
+     * Filter which Product_Images to update
+     */
+    where?: Product_ImageWhereInput
+    /**
+     * Limit how many Product_Images to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Product_Image upsert
+   */
+  export type Product_ImageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Product_Image to update in case it exists.
+     */
+    where: Product_ImageWhereUniqueInput
+    /**
+     * In case the Product_Image found by the `where` argument doesn't exist, create a new Product_Image with this data.
+     */
+    create: XOR<Product_ImageCreateInput, Product_ImageUncheckedCreateInput>
+    /**
+     * In case the Product_Image was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<Product_ImageUpdateInput, Product_ImageUncheckedUpdateInput>
+  }
+
+  /**
+   * Product_Image delete
+   */
+  export type Product_ImageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+    /**
+     * Filter which Product_Image to delete.
+     */
+    where: Product_ImageWhereUniqueInput
+  }
+
+  /**
+   * Product_Image deleteMany
+   */
+  export type Product_ImageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Product_Images to delete
+     */
+    where?: Product_ImageWhereInput
+    /**
+     * Limit how many Product_Images to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Product_Image without action
+   */
+  export type Product_ImageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product_Image
+     */
+    select?: Product_ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product_Image
+     */
+    omit?: Product_ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Product_ImageInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AiSearchHistory
    */
 
@@ -11364,15 +11267,6 @@ export namespace Prisma {
   export type OrderDetailScalarFieldEnum = (typeof OrderDetailScalarFieldEnum)[keyof typeof OrderDetailScalarFieldEnum]
 
 
-  export const Product_ImageScalarFieldEnum: {
-    id: 'id',
-    product_id: 'product_id',
-    url: 'url'
-  };
-
-  export type Product_ImageScalarFieldEnum = (typeof Product_ImageScalarFieldEnum)[keyof typeof Product_ImageScalarFieldEnum]
-
-
   export const ProductScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -11424,26 +11318,13 @@ export namespace Prisma {
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
-  export const AiSearchHistoryScalarFieldEnum: {
+  export const Product_ImageScalarFieldEnum: {
     id: 'id',
-    session_id: 'session_id',
-    user_id: 'user_id',
-    anonymous_id: 'anonymous_id',
-    query_type: 'query_type',
-    platform: 'platform',
-    source_feature: 'source_feature',
-    original_image_url: 'original_image_url',
-    detected_objects: 'detected_objects',
-    selected_bbox: 'selected_bbox',
-    recommendations: 'recommendations',
-    query_category: 'query_category',
-    avg_match_score: 'avg_match_score',
-    dominant_colors: 'dominant_colors',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
+    product_id: 'product_id',
+    url: 'url'
   };
 
-  export type AiSearchHistoryScalarFieldEnum = (typeof AiSearchHistoryScalarFieldEnum)[keyof typeof AiSearchHistoryScalarFieldEnum]
+  export type Product_ImageScalarFieldEnum = (typeof Product_ImageScalarFieldEnum)[keyof typeof Product_ImageScalarFieldEnum]
 
 
   export const AiSearchHistoryScalarFieldEnum: {
@@ -11474,14 +11355,6 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-  export const NullableJsonNullValueInput: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull
-  };
-
-  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const NullableJsonNullValueInput: {
@@ -11536,13 +11409,6 @@ export namespace Prisma {
   export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
 
 
-  export const Product_ImageOrderByRelevanceFieldEnum: {
-    url: 'url'
-  };
-
-  export type Product_ImageOrderByRelevanceFieldEnum = (typeof Product_ImageOrderByRelevanceFieldEnum)[keyof typeof Product_ImageOrderByRelevanceFieldEnum]
-
-
   export const ProductOrderByRelevanceFieldEnum: {
     name: 'name',
     description: 'description',
@@ -11576,33 +11442,11 @@ export namespace Prisma {
   export type TagOrderByRelevanceFieldEnum = (typeof TagOrderByRelevanceFieldEnum)[keyof typeof TagOrderByRelevanceFieldEnum]
 
 
-  export const JsonNullValueFilter: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull,
-    AnyNull: typeof AnyNull
+  export const Product_ImageOrderByRelevanceFieldEnum: {
+    url: 'url'
   };
 
-  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-  export const AiSearchHistoryOrderByRelevanceFieldEnum: {
-    session_id: 'session_id',
-    anonymous_id: 'anonymous_id',
-    platform: 'platform',
-    source_feature: 'source_feature',
-    original_image_url: 'original_image_url',
-    query_category: 'query_category'
-  };
-
-  export type AiSearchHistoryOrderByRelevanceFieldEnum = (typeof AiSearchHistoryOrderByRelevanceFieldEnum)[keyof typeof AiSearchHistoryOrderByRelevanceFieldEnum]
+  export type Product_ImageOrderByRelevanceFieldEnum = (typeof Product_ImageOrderByRelevanceFieldEnum)[keyof typeof Product_ImageOrderByRelevanceFieldEnum]
 
 
   export const JsonNullValueFilter: {
@@ -11706,27 +11550,6 @@ export namespace Prisma {
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Query_Type'
-   */
-  export type EnumQuery_TypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Query_Type'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -12112,54 +11935,6 @@ export namespace Prisma {
     total_price?: DecimalWithAggregatesFilter<"OrderDetail"> | Decimal | DecimalJsLike | number | string
   }
 
-  export type Product_ImageWhereInput = {
-    AND?: Product_ImageWhereInput | Product_ImageWhereInput[]
-    OR?: Product_ImageWhereInput[]
-    NOT?: Product_ImageWhereInput | Product_ImageWhereInput[]
-    id?: IntFilter<"Product_Image"> | number
-    product_id?: IntFilter<"Product_Image"> | number
-    url?: StringFilter<"Product_Image"> | string
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }
-
-  export type Product_ImageOrderByWithRelationInput = {
-    id?: SortOrder
-    product_id?: SortOrder
-    url?: SortOrder
-    product?: ProductOrderByWithRelationInput
-    _relevance?: Product_ImageOrderByRelevanceInput
-  }
-
-  export type Product_ImageWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: Product_ImageWhereInput | Product_ImageWhereInput[]
-    OR?: Product_ImageWhereInput[]
-    NOT?: Product_ImageWhereInput | Product_ImageWhereInput[]
-    product_id?: IntFilter<"Product_Image"> | number
-    url?: StringFilter<"Product_Image"> | string
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }, "id">
-
-  export type Product_ImageOrderByWithAggregationInput = {
-    id?: SortOrder
-    product_id?: SortOrder
-    url?: SortOrder
-    _count?: Product_ImageCountOrderByAggregateInput
-    _avg?: Product_ImageAvgOrderByAggregateInput
-    _max?: Product_ImageMaxOrderByAggregateInput
-    _min?: Product_ImageMinOrderByAggregateInput
-    _sum?: Product_ImageSumOrderByAggregateInput
-  }
-
-  export type Product_ImageScalarWhereWithAggregatesInput = {
-    AND?: Product_ImageScalarWhereWithAggregatesInput | Product_ImageScalarWhereWithAggregatesInput[]
-    OR?: Product_ImageScalarWhereWithAggregatesInput[]
-    NOT?: Product_ImageScalarWhereWithAggregatesInput | Product_ImageScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Product_Image"> | number
-    product_id?: IntWithAggregatesFilter<"Product_Image"> | number
-    url?: StringWithAggregatesFilter<"Product_Image"> | string
-  }
-
   export type ProductWhereInput = {
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
@@ -12428,6 +12203,54 @@ export namespace Prisma {
     NOT?: TagScalarWhereWithAggregatesInput | TagScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Tag"> | number
     name?: StringWithAggregatesFilter<"Tag"> | string
+  }
+
+  export type Product_ImageWhereInput = {
+    AND?: Product_ImageWhereInput | Product_ImageWhereInput[]
+    OR?: Product_ImageWhereInput[]
+    NOT?: Product_ImageWhereInput | Product_ImageWhereInput[]
+    id?: IntFilter<"Product_Image"> | number
+    product_id?: IntFilter<"Product_Image"> | number
+    url?: StringFilter<"Product_Image"> | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }
+
+  export type Product_ImageOrderByWithRelationInput = {
+    id?: SortOrder
+    product_id?: SortOrder
+    url?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    _relevance?: Product_ImageOrderByRelevanceInput
+  }
+
+  export type Product_ImageWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: Product_ImageWhereInput | Product_ImageWhereInput[]
+    OR?: Product_ImageWhereInput[]
+    NOT?: Product_ImageWhereInput | Product_ImageWhereInput[]
+    product_id?: IntFilter<"Product_Image"> | number
+    url?: StringFilter<"Product_Image"> | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id">
+
+  export type Product_ImageOrderByWithAggregationInput = {
+    id?: SortOrder
+    product_id?: SortOrder
+    url?: SortOrder
+    _count?: Product_ImageCountOrderByAggregateInput
+    _avg?: Product_ImageAvgOrderByAggregateInput
+    _max?: Product_ImageMaxOrderByAggregateInput
+    _min?: Product_ImageMinOrderByAggregateInput
+    _sum?: Product_ImageSumOrderByAggregateInput
+  }
+
+  export type Product_ImageScalarWhereWithAggregatesInput = {
+    AND?: Product_ImageScalarWhereWithAggregatesInput | Product_ImageScalarWhereWithAggregatesInput[]
+    OR?: Product_ImageScalarWhereWithAggregatesInput[]
+    NOT?: Product_ImageScalarWhereWithAggregatesInput | Product_ImageScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Product_Image"> | number
+    product_id?: IntWithAggregatesFilter<"Product_Image"> | number
+    url?: StringWithAggregatesFilter<"Product_Image"> | string
   }
 
   export type AiSearchHistoryWhereInput = {
@@ -12929,44 +12752,6 @@ export namespace Prisma {
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
-  export type Product_ImageCreateInput = {
-    url: string
-    product: ProductCreateNestedOneWithoutImagesInput
-  }
-
-  export type Product_ImageUncheckedCreateInput = {
-    id?: number
-    product_id: number
-    url: string
-  }
-
-  export type Product_ImageUpdateInput = {
-    url?: StringFieldUpdateOperationsInput | string
-    product?: ProductUpdateOneRequiredWithoutImagesNestedInput
-  }
-
-  export type Product_ImageUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    product_id?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type Product_ImageCreateManyInput = {
-    id?: number
-    product_id: number
-    url: string
-  }
-
-  export type Product_ImageUpdateManyMutationInput = {
-    url?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type Product_ImageUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    product_id?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-  }
-
   export type ProductCreateInput = {
     name: string
     description?: string | null
@@ -13265,6 +13050,44 @@ export namespace Prisma {
   export type TagUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type Product_ImageCreateInput = {
+    url: string
+    product: ProductCreateNestedOneWithoutImagesInput
+  }
+
+  export type Product_ImageUncheckedCreateInput = {
+    id?: number
+    product_id: number
+    url: string
+  }
+
+  export type Product_ImageUpdateInput = {
+    url?: StringFieldUpdateOperationsInput | string
+    product?: ProductUpdateOneRequiredWithoutImagesNestedInput
+  }
+
+  export type Product_ImageUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type Product_ImageCreateManyInput = {
+    id?: number
+    product_id: number
+    url: string
+  }
+
+  export type Product_ImageUpdateManyMutationInput = {
+    url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type Product_ImageUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    url?: StringFieldUpdateOperationsInput | string
   }
 
   export type AiSearchHistoryCreateInput = {
@@ -13953,40 +13776,6 @@ export namespace Prisma {
     total_price?: SortOrder
   }
 
-  export type Product_ImageOrderByRelevanceInput = {
-    fields: Product_ImageOrderByRelevanceFieldEnum | Product_ImageOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type Product_ImageCountOrderByAggregateInput = {
-    id?: SortOrder
-    product_id?: SortOrder
-    url?: SortOrder
-  }
-
-  export type Product_ImageAvgOrderByAggregateInput = {
-    id?: SortOrder
-    product_id?: SortOrder
-  }
-
-  export type Product_ImageMaxOrderByAggregateInput = {
-    id?: SortOrder
-    product_id?: SortOrder
-    url?: SortOrder
-  }
-
-  export type Product_ImageMinOrderByAggregateInput = {
-    id?: SortOrder
-    product_id?: SortOrder
-    url?: SortOrder
-  }
-
-  export type Product_ImageSumOrderByAggregateInput = {
-    id?: SortOrder
-    product_id?: SortOrder
-  }
-
   export type EnumProduct_StatusFilter<$PrismaModel = never> = {
     equals?: $Enums.Product_Status | EnumProduct_StatusFieldRefInput<$PrismaModel>
     in?: $Enums.Product_Status[]
@@ -14273,137 +14062,38 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type EnumQuery_TypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
-    in?: $Enums.Query_Type[]
-    notIn?: $Enums.Query_Type[]
-    not?: NestedEnumQuery_TypeFilter<$PrismaModel> | $Enums.Query_Type
-  }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type AiSearchHistoryOrderByRelevanceInput = {
-    fields: AiSearchHistoryOrderByRelevanceFieldEnum | AiSearchHistoryOrderByRelevanceFieldEnum[]
+  export type Product_ImageOrderByRelevanceInput = {
+    fields: Product_ImageOrderByRelevanceFieldEnum | Product_ImageOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type AiSearchHistoryCountOrderByAggregateInput = {
+  export type Product_ImageCountOrderByAggregateInput = {
     id?: SortOrder
-    session_id?: SortOrder
-    user_id?: SortOrder
-    anonymous_id?: SortOrder
-    query_type?: SortOrder
-    platform?: SortOrder
-    source_feature?: SortOrder
-    original_image_url?: SortOrder
-    detected_objects?: SortOrder
-    selected_bbox?: SortOrder
-    recommendations?: SortOrder
-    query_category?: SortOrder
-    avg_match_score?: SortOrder
-    dominant_colors?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
+    product_id?: SortOrder
+    url?: SortOrder
   }
 
-  export type AiSearchHistoryAvgOrderByAggregateInput = {
+  export type Product_ImageAvgOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
-    avg_match_score?: SortOrder
+    product_id?: SortOrder
   }
 
-  export type AiSearchHistoryMaxOrderByAggregateInput = {
+  export type Product_ImageMaxOrderByAggregateInput = {
     id?: SortOrder
-    session_id?: SortOrder
-    user_id?: SortOrder
-    anonymous_id?: SortOrder
-    query_type?: SortOrder
-    platform?: SortOrder
-    source_feature?: SortOrder
-    original_image_url?: SortOrder
-    query_category?: SortOrder
-    avg_match_score?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
+    product_id?: SortOrder
+    url?: SortOrder
   }
 
-  export type AiSearchHistoryMinOrderByAggregateInput = {
+  export type Product_ImageMinOrderByAggregateInput = {
     id?: SortOrder
-    session_id?: SortOrder
-    user_id?: SortOrder
-    anonymous_id?: SortOrder
-    query_type?: SortOrder
-    platform?: SortOrder
-    source_feature?: SortOrder
-    original_image_url?: SortOrder
-    query_category?: SortOrder
-    avg_match_score?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
+    product_id?: SortOrder
+    url?: SortOrder
   }
 
-  export type AiSearchHistorySumOrderByAggregateInput = {
+  export type Product_ImageSumOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
-    avg_match_score?: SortOrder
-  }
-
-  export type EnumQuery_TypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
-    in?: $Enums.Query_Type[]
-    notIn?: $Enums.Query_Type[]
-    not?: NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel> | $Enums.Query_Type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumQuery_TypeFilter<$PrismaModel>
-    _max?: NestedEnumQuery_TypeFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
+    product_id?: SortOrder
   }
 
   export type EnumQuery_TypeFilter<$PrismaModel = never> = {
@@ -14763,20 +14453,6 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutOrder_detailsInput, ProductUpdateWithoutOrder_detailsInput>, ProductUncheckedUpdateWithoutOrder_detailsInput>
   }
 
-  export type ProductCreateNestedOneWithoutImagesInput = {
-    create?: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutImagesInput
-    connect?: ProductWhereUniqueInput
-  }
-
-  export type ProductUpdateOneRequiredWithoutImagesNestedInput = {
-    create?: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutImagesInput
-    upsert?: ProductUpsertWithoutImagesInput
-    connect?: ProductWhereUniqueInput
-    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutImagesInput, ProductUpdateWithoutImagesInput>, ProductUncheckedUpdateWithoutImagesInput>
-  }
-
   export type OrderDetailCreateNestedManyWithoutProductInput = {
     create?: XOR<OrderDetailCreateWithoutProductInput, OrderDetailUncheckedCreateWithoutProductInput> | OrderDetailCreateWithoutProductInput[] | OrderDetailUncheckedCreateWithoutProductInput[]
     connectOrCreate?: OrderDetailCreateOrConnectWithoutProductInput | OrderDetailCreateOrConnectWithoutProductInput[]
@@ -14971,8 +14647,18 @@ export namespace Prisma {
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
-  export type EnumQuery_TypeFieldUpdateOperationsInput = {
-    set?: $Enums.Query_Type
+  export type ProductCreateNestedOneWithoutImagesInput = {
+    create?: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutImagesInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type ProductUpdateOneRequiredWithoutImagesNestedInput = {
+    create?: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutImagesInput
+    upsert?: ProductUpsertWithoutImagesInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutImagesInput, ProductUpdateWithoutImagesInput>, ProductUncheckedUpdateWithoutImagesInput>
   }
 
   export type EnumQuery_TypeFieldUpdateOperationsInput = {
@@ -15324,46 +15010,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type NestedEnumQuery_TypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
-    in?: $Enums.Query_Type[]
-    notIn?: $Enums.Query_Type[]
-    not?: NestedEnumQuery_TypeFilter<$PrismaModel> | $Enums.Query_Type
-  }
-
-  export type NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
-    in?: $Enums.Query_Type[]
-    notIn?: $Enums.Query_Type[]
-    not?: NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel> | $Enums.Query_Type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumQuery_TypeFilter<$PrismaModel>
-    _max?: NestedEnumQuery_TypeFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumQuery_TypeFilter<$PrismaModel = never> = {
@@ -15989,132 +15635,6 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutProductsNestedInput
   }
 
-  export type ProductCreateWithoutImagesInput = {
-    name: string
-    description?: string | null
-    price: Decimal | DecimalJsLike | number | string
-    sale_price?: Decimal | DecimalJsLike | number | string | null
-    stock_quantity?: number
-    material?: string | null
-    color?: string | null
-    status?: $Enums.Product_Status
-    created_at?: Date | string
-    updated_at?: Date | string | null
-    height?: Decimal | DecimalJsLike | number | string | null
-    length?: Decimal | DecimalJsLike | number | string | null
-    weight?: Decimal | DecimalJsLike | number | string | null
-    width?: Decimal | DecimalJsLike | number | string | null
-    brand?: string | null
-    discount?: number | null
-    rating?: number | null
-    reviews?: number | null
-    shipping?: string | null
-    style?: string | null
-    warranty?: string | null
-    order_details?: OrderDetailCreateNestedManyWithoutProductInput
-    category: CategoryCreateNestedOneWithoutProductsInput
-    tags?: TagCreateNestedManyWithoutProductsInput
-  }
-
-  export type ProductUncheckedCreateWithoutImagesInput = {
-    id?: number
-    name: string
-    description?: string | null
-    price: Decimal | DecimalJsLike | number | string
-    sale_price?: Decimal | DecimalJsLike | number | string | null
-    category_id: number
-    stock_quantity?: number
-    material?: string | null
-    color?: string | null
-    status?: $Enums.Product_Status
-    created_at?: Date | string
-    updated_at?: Date | string | null
-    height?: Decimal | DecimalJsLike | number | string | null
-    length?: Decimal | DecimalJsLike | number | string | null
-    weight?: Decimal | DecimalJsLike | number | string | null
-    width?: Decimal | DecimalJsLike | number | string | null
-    brand?: string | null
-    discount?: number | null
-    rating?: number | null
-    reviews?: number | null
-    shipping?: string | null
-    style?: string | null
-    warranty?: string | null
-    order_details?: OrderDetailUncheckedCreateNestedManyWithoutProductInput
-    tags?: TagUncheckedCreateNestedManyWithoutProductsInput
-  }
-
-  export type ProductCreateOrConnectWithoutImagesInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
-  }
-
-  export type ProductUpsertWithoutImagesInput = {
-    update: XOR<ProductUpdateWithoutImagesInput, ProductUncheckedUpdateWithoutImagesInput>
-    create: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
-    where?: ProductWhereInput
-  }
-
-  export type ProductUpdateToOneWithWhereWithoutImagesInput = {
-    where?: ProductWhereInput
-    data: XOR<ProductUpdateWithoutImagesInput, ProductUncheckedUpdateWithoutImagesInput>
-  }
-
-  export type ProductUpdateWithoutImagesInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    stock_quantity?: IntFieldUpdateOperationsInput | number
-    material?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumProduct_StatusFieldUpdateOperationsInput | $Enums.Product_Status
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    brand?: NullableStringFieldUpdateOperationsInput | string | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    reviews?: NullableIntFieldUpdateOperationsInput | number | null
-    shipping?: NullableStringFieldUpdateOperationsInput | string | null
-    style?: NullableStringFieldUpdateOperationsInput | string | null
-    warranty?: NullableStringFieldUpdateOperationsInput | string | null
-    order_details?: OrderDetailUpdateManyWithoutProductNestedInput
-    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
-    tags?: TagUpdateManyWithoutProductsNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutImagesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    category_id?: IntFieldUpdateOperationsInput | number
-    stock_quantity?: IntFieldUpdateOperationsInput | number
-    material?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumProduct_StatusFieldUpdateOperationsInput | $Enums.Product_Status
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    brand?: NullableStringFieldUpdateOperationsInput | string | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    reviews?: NullableIntFieldUpdateOperationsInput | number | null
-    shipping?: NullableStringFieldUpdateOperationsInput | string | null
-    style?: NullableStringFieldUpdateOperationsInput | string | null
-    warranty?: NullableStringFieldUpdateOperationsInput | string | null
-    order_details?: OrderDetailUncheckedUpdateManyWithoutProductNestedInput
-    tags?: TagUncheckedUpdateManyWithoutProductsNestedInput
-  }
-
   export type OrderDetailCreateWithoutProductInput = {
     quantity: number
     unit_price: Decimal | DecimalJsLike | number | string
@@ -16354,6 +15874,132 @@ export namespace Prisma {
   export type ProductUpdateManyWithWhereWithoutTagsInput = {
     where: ProductScalarWhereInput
     data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutTagsInput>
+  }
+
+  export type ProductCreateWithoutImagesInput = {
+    name: string
+    description?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    sale_price?: Decimal | DecimalJsLike | number | string | null
+    stock_quantity?: number
+    material?: string | null
+    color?: string | null
+    status?: $Enums.Product_Status
+    created_at?: Date | string
+    updated_at?: Date | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    brand?: string | null
+    discount?: number | null
+    rating?: number | null
+    reviews?: number | null
+    shipping?: string | null
+    style?: string | null
+    warranty?: string | null
+    order_details?: OrderDetailCreateNestedManyWithoutProductInput
+    category: CategoryCreateNestedOneWithoutProductsInput
+    tags?: TagCreateNestedManyWithoutProductsInput
+  }
+
+  export type ProductUncheckedCreateWithoutImagesInput = {
+    id?: number
+    name: string
+    description?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    sale_price?: Decimal | DecimalJsLike | number | string | null
+    category_id: number
+    stock_quantity?: number
+    material?: string | null
+    color?: string | null
+    status?: $Enums.Product_Status
+    created_at?: Date | string
+    updated_at?: Date | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    brand?: string | null
+    discount?: number | null
+    rating?: number | null
+    reviews?: number | null
+    shipping?: string | null
+    style?: string | null
+    warranty?: string | null
+    order_details?: OrderDetailUncheckedCreateNestedManyWithoutProductInput
+    tags?: TagUncheckedCreateNestedManyWithoutProductsInput
+  }
+
+  export type ProductCreateOrConnectWithoutImagesInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
+  }
+
+  export type ProductUpsertWithoutImagesInput = {
+    update: XOR<ProductUpdateWithoutImagesInput, ProductUncheckedUpdateWithoutImagesInput>
+    create: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutImagesInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutImagesInput, ProductUncheckedUpdateWithoutImagesInput>
+  }
+
+  export type ProductUpdateWithoutImagesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sale_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    stock_quantity?: IntFieldUpdateOperationsInput | number
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProduct_StatusFieldUpdateOperationsInput | $Enums.Product_Status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    brand?: NullableStringFieldUpdateOperationsInput | string | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    reviews?: NullableIntFieldUpdateOperationsInput | number | null
+    shipping?: NullableStringFieldUpdateOperationsInput | string | null
+    style?: NullableStringFieldUpdateOperationsInput | string | null
+    warranty?: NullableStringFieldUpdateOperationsInput | string | null
+    order_details?: OrderDetailUpdateManyWithoutProductNestedInput
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    tags?: TagUpdateManyWithoutProductsNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutImagesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sale_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    category_id?: IntFieldUpdateOperationsInput | number
+    stock_quantity?: IntFieldUpdateOperationsInput | number
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProduct_StatusFieldUpdateOperationsInput | $Enums.Product_Status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    brand?: NullableStringFieldUpdateOperationsInput | string | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    reviews?: NullableIntFieldUpdateOperationsInput | number | null
+    shipping?: NullableStringFieldUpdateOperationsInput | string | null
+    style?: NullableStringFieldUpdateOperationsInput | string | null
+    warranty?: NullableStringFieldUpdateOperationsInput | string | null
+    order_details?: OrderDetailUncheckedUpdateManyWithoutProductNestedInput
+    tags?: TagUncheckedUpdateManyWithoutProductsNestedInput
   }
 
   export type ProductCreateManyCategoryInput = {
