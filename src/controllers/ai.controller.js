@@ -2,6 +2,9 @@ const axios = require('axios');
 const FormData = require('form-data');
 const { successResponse, errorResponse } = require('../utils/response');
 const aiHistoryService = require('../services/aiHistory.service');
+const { classifyRoomCategory } = require('../utils/roomClassifier');
+const { extractDominantColors } = require('../utils/colorExtractor');
+const { calculateAvgMatchScore } = require('../utils/matchScoreCalculator');
 
 const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
 
@@ -45,6 +48,19 @@ const detectObjects = async (req, res) => {
 
     const aiData = aiResponse.data;
 
+    // Extract metadata for analytics
+    let queryCategory = null;
+    let dominantColors = null;
+
+    try {
+      queryCategory = classifyRoomCategory(aiData.detected_objects);
+      dominantColors = extractDominantColors(aiData.detected_objects);
+      console.log(`[AI Detect] Analytics - Category: ${queryCategory}, Colors: ${JSON.stringify(dominantColors)}`);
+    } catch (utilError) {
+      console.error('[AI Detect] Error in analytics extraction:', utilError);
+      // Continue with null values - don't block the main flow
+    }
+
     // Save to Main Backend database
     try {
       await aiHistoryService.createSearchHistory({
@@ -55,6 +71,8 @@ const detectObjects = async (req, res) => {
         platform: platform,
         sourceFeature: sourceFeature,
         originalImageUrl: aiData.original_image_url || null,
+        queryCategory: queryCategory,
+        dominantColors: dominantColors,
       });
 
       // Update with detected objects
@@ -117,12 +135,24 @@ const getRecommendations = async (req, res) => {
 
     const aiData = aiResponse.data;
 
+    // Calculate analytics - average match score
+    let avgMatchScore = 0.0;
+
+    try {
+      avgMatchScore = calculateAvgMatchScore(aiData.recommendations);
+      console.log(`[AI Recommend] Average match score: ${avgMatchScore}`);
+    } catch (utilError) {
+      console.error('[AI Recommend] Error calculating match score:', utilError);
+      // Continue with default value 0.0
+    }
+
     // Update Main Backend database with recommendations
     try {
       await aiHistoryService.updateSearchHistory(session_id, {
         query_type: 'recommend',
         selected_bbox: selected_bbox,
         recommendations: aiData.recommendations || [],
+        avg_match_score: avgMatchScore,
       });
     } catch (dbError) {
       console.error('Failed to update history in database:', dbError);
@@ -218,9 +248,48 @@ const clearHistory = async (req, res) => {
   }
 };
 
+/**
+ * GET /api/ai/history/session/:sessionId
+ * Get search history by session ID
+ */
+const getHistoryBySession = async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!sessionId) {
+      return errorResponse(res, 'Session ID is required', null, 400);
+    }
+
+    // Get history record from database
+    const history = await aiHistoryService.getHistoryBySession(sessionId);
+
+    if (!history) {
+      return errorResponse(res, 'History not found', null, 404);
+    }
+
+    // Add counts for detected_objects and recommendations
+    const historyWithCounts = {
+      ...history,
+      detected_objects_count: Array.isArray(history.detected_objects)
+        ? history.detected_objects.length
+        : 0,
+      recommendations_count: Array.isArray(history.recommendations)
+        ? history.recommendations.length
+        : 0,
+    };
+
+    return successResponse(res, 'History retrieved successfully', historyWithCounts);
+
+  } catch (error) {
+    console.error('Get history by session error:', error.message);
+    return errorResponse(res, 'Failed to get history', error.message, 500);
+  }
+};
+
 module.exports = {
   detectObjects,
   getRecommendations,
   getHistory,
-  clearHistory
+  clearHistory,
+  getHistoryBySession
 };

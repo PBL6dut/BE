@@ -27,6 +27,7 @@ router.use(checkLogin);
 router.post('/detect', upload.single('file'), aiController.detectObjects);
 router.post('/:session_id', aiController.getRecommendations);
 router.get('/history/me', aiController.getHistory);
+router.get('/history/session/:sessionId', aiController.getHistoryBySession);
 router.delete('/history/clear', aiController.clearHistory);
 
 module.exports = router;

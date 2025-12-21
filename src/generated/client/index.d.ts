@@ -10160,11 +10160,13 @@ export namespace Prisma {
   export type AiSearchHistoryAvgAggregateOutputType = {
     id: number | null
     user_id: number | null
+    avg_match_score: number | null
   }
 
   export type AiSearchHistorySumAggregateOutputType = {
     id: number | null
     user_id: number | null
+    avg_match_score: number | null
   }
 
   export type AiSearchHistoryMinAggregateOutputType = {
@@ -10176,6 +10178,8 @@ export namespace Prisma {
     platform: string | null
     source_feature: string | null
     original_image_url: string | null
+    query_category: string | null
+    avg_match_score: number | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -10189,6 +10193,8 @@ export namespace Prisma {
     platform: string | null
     source_feature: string | null
     original_image_url: string | null
+    query_category: string | null
+    avg_match_score: number | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -10205,6 +10211,9 @@ export namespace Prisma {
     detected_objects: number
     selected_bbox: number
     recommendations: number
+    query_category: number
+    avg_match_score: number
+    dominant_colors: number
     created_at: number
     updated_at: number
     _all: number
@@ -10214,11 +10223,13 @@ export namespace Prisma {
   export type AiSearchHistoryAvgAggregateInputType = {
     id?: true
     user_id?: true
+    avg_match_score?: true
   }
 
   export type AiSearchHistorySumAggregateInputType = {
     id?: true
     user_id?: true
+    avg_match_score?: true
   }
 
   export type AiSearchHistoryMinAggregateInputType = {
@@ -10230,6 +10241,8 @@ export namespace Prisma {
     platform?: true
     source_feature?: true
     original_image_url?: true
+    query_category?: true
+    avg_match_score?: true
     created_at?: true
     updated_at?: true
   }
@@ -10243,6 +10256,8 @@ export namespace Prisma {
     platform?: true
     source_feature?: true
     original_image_url?: true
+    query_category?: true
+    avg_match_score?: true
     created_at?: true
     updated_at?: true
   }
@@ -10259,6 +10274,9 @@ export namespace Prisma {
     detected_objects?: true
     selected_bbox?: true
     recommendations?: true
+    query_category?: true
+    avg_match_score?: true
+    dominant_colors?: true
     created_at?: true
     updated_at?: true
     _all?: true
@@ -10362,6 +10380,9 @@ export namespace Prisma {
     detected_objects: JsonValue | null
     selected_bbox: JsonValue | null
     recommendations: JsonValue | null
+    query_category: string | null
+    avg_match_score: number | null
+    dominant_colors: JsonValue | null
     created_at: Date
     updated_at: Date
     _count: AiSearchHistoryCountAggregateOutputType | null
@@ -10397,6 +10418,9 @@ export namespace Prisma {
     detected_objects?: boolean
     selected_bbox?: boolean
     recommendations?: boolean
+    query_category?: boolean
+    avg_match_score?: boolean
+    dominant_colors?: boolean
     created_at?: boolean
     updated_at?: boolean
   }, ExtArgs["result"]["aiSearchHistory"]>
@@ -10415,11 +10439,14 @@ export namespace Prisma {
     detected_objects?: boolean
     selected_bbox?: boolean
     recommendations?: boolean
+    query_category?: boolean
+    avg_match_score?: boolean
+    dominant_colors?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type AiSearchHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "session_id" | "user_id" | "anonymous_id" | "query_type" | "platform" | "source_feature" | "original_image_url" | "detected_objects" | "selected_bbox" | "recommendations" | "created_at" | "updated_at", ExtArgs["result"]["aiSearchHistory"]>
+  export type AiSearchHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "session_id" | "user_id" | "anonymous_id" | "query_type" | "platform" | "source_feature" | "original_image_url" | "detected_objects" | "selected_bbox" | "recommendations" | "query_category" | "avg_match_score" | "dominant_colors" | "created_at" | "updated_at", ExtArgs["result"]["aiSearchHistory"]>
 
   export type $AiSearchHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AiSearchHistory"
@@ -10436,6 +10463,9 @@ export namespace Prisma {
       detected_objects: Prisma.JsonValue | null
       selected_bbox: Prisma.JsonValue | null
       recommendations: Prisma.JsonValue | null
+      query_category: string | null
+      avg_match_score: number | null
+      dominant_colors: Prisma.JsonValue | null
       created_at: Date
       updated_at: Date
     }, ExtArgs["result"]["aiSearchHistory"]>
@@ -10818,6 +10848,9 @@ export namespace Prisma {
     readonly detected_objects: FieldRef<"AiSearchHistory", 'Json'>
     readonly selected_bbox: FieldRef<"AiSearchHistory", 'Json'>
     readonly recommendations: FieldRef<"AiSearchHistory", 'Json'>
+    readonly query_category: FieldRef<"AiSearchHistory", 'String'>
+    readonly avg_match_score: FieldRef<"AiSearchHistory", 'Float'>
+    readonly dominant_colors: FieldRef<"AiSearchHistory", 'Json'>
     readonly created_at: FieldRef<"AiSearchHistory", 'DateTime'>
     readonly updated_at: FieldRef<"AiSearchHistory", 'DateTime'>
   }
@@ -11294,6 +11327,9 @@ export namespace Prisma {
     detected_objects: 'detected_objects',
     selected_bbox: 'selected_bbox',
     recommendations: 'recommendations',
+    query_category: 'query_category',
+    avg_match_score: 'avg_match_score',
+    dominant_colors: 'dominant_colors',
     created_at: 'created_at',
     updated_at: 'updated_at'
   };
@@ -11422,7 +11458,8 @@ export namespace Prisma {
     anonymous_id: 'anonymous_id',
     platform: 'platform',
     source_feature: 'source_feature',
-    original_image_url: 'original_image_url'
+    original_image_url: 'original_image_url',
+    query_category: 'query_category'
   };
 
   export type AiSearchHistoryOrderByRelevanceFieldEnum = (typeof AiSearchHistoryOrderByRelevanceFieldEnum)[keyof typeof AiSearchHistoryOrderByRelevanceFieldEnum]
@@ -12213,6 +12250,9 @@ export namespace Prisma {
     detected_objects?: JsonNullableFilter<"AiSearchHistory">
     selected_bbox?: JsonNullableFilter<"AiSearchHistory">
     recommendations?: JsonNullableFilter<"AiSearchHistory">
+    query_category?: StringNullableFilter<"AiSearchHistory"> | string | null
+    avg_match_score?: FloatNullableFilter<"AiSearchHistory"> | number | null
+    dominant_colors?: JsonNullableFilter<"AiSearchHistory">
     created_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
     updated_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
   }
@@ -12229,6 +12269,9 @@ export namespace Prisma {
     detected_objects?: SortOrderInput | SortOrder
     selected_bbox?: SortOrderInput | SortOrder
     recommendations?: SortOrderInput | SortOrder
+    query_category?: SortOrderInput | SortOrder
+    avg_match_score?: SortOrderInput | SortOrder
+    dominant_colors?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     _relevance?: AiSearchHistoryOrderByRelevanceInput
@@ -12249,6 +12292,9 @@ export namespace Prisma {
     detected_objects?: JsonNullableFilter<"AiSearchHistory">
     selected_bbox?: JsonNullableFilter<"AiSearchHistory">
     recommendations?: JsonNullableFilter<"AiSearchHistory">
+    query_category?: StringNullableFilter<"AiSearchHistory"> | string | null
+    avg_match_score?: FloatNullableFilter<"AiSearchHistory"> | number | null
+    dominant_colors?: JsonNullableFilter<"AiSearchHistory">
     created_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
     updated_at?: DateTimeFilter<"AiSearchHistory"> | Date | string
   }, "id" | "session_id">
@@ -12265,6 +12311,9 @@ export namespace Prisma {
     detected_objects?: SortOrderInput | SortOrder
     selected_bbox?: SortOrderInput | SortOrder
     recommendations?: SortOrderInput | SortOrder
+    query_category?: SortOrderInput | SortOrder
+    avg_match_score?: SortOrderInput | SortOrder
+    dominant_colors?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     _count?: AiSearchHistoryCountOrderByAggregateInput
@@ -12289,6 +12338,9 @@ export namespace Prisma {
     detected_objects?: JsonNullableWithAggregatesFilter<"AiSearchHistory">
     selected_bbox?: JsonNullableWithAggregatesFilter<"AiSearchHistory">
     recommendations?: JsonNullableWithAggregatesFilter<"AiSearchHistory">
+    query_category?: StringNullableWithAggregatesFilter<"AiSearchHistory"> | string | null
+    avg_match_score?: FloatNullableWithAggregatesFilter<"AiSearchHistory"> | number | null
+    dominant_colors?: JsonNullableWithAggregatesFilter<"AiSearchHistory">
     created_at?: DateTimeWithAggregatesFilter<"AiSearchHistory"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"AiSearchHistory"> | Date | string
   }
@@ -13024,6 +13076,9 @@ export namespace Prisma {
     detected_objects?: NullableJsonNullValueInput | InputJsonValue
     selected_bbox?: NullableJsonNullValueInput | InputJsonValue
     recommendations?: NullableJsonNullValueInput | InputJsonValue
+    query_category?: string | null
+    avg_match_score?: number | null
+    dominant_colors?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -13040,6 +13095,9 @@ export namespace Prisma {
     detected_objects?: NullableJsonNullValueInput | InputJsonValue
     selected_bbox?: NullableJsonNullValueInput | InputJsonValue
     recommendations?: NullableJsonNullValueInput | InputJsonValue
+    query_category?: string | null
+    avg_match_score?: number | null
+    dominant_colors?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -13055,6 +13113,9 @@ export namespace Prisma {
     detected_objects?: NullableJsonNullValueInput | InputJsonValue
     selected_bbox?: NullableJsonNullValueInput | InputJsonValue
     recommendations?: NullableJsonNullValueInput | InputJsonValue
+    query_category?: NullableStringFieldUpdateOperationsInput | string | null
+    avg_match_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    dominant_colors?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13071,6 +13132,9 @@ export namespace Prisma {
     detected_objects?: NullableJsonNullValueInput | InputJsonValue
     selected_bbox?: NullableJsonNullValueInput | InputJsonValue
     recommendations?: NullableJsonNullValueInput | InputJsonValue
+    query_category?: NullableStringFieldUpdateOperationsInput | string | null
+    avg_match_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    dominant_colors?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13087,6 +13151,9 @@ export namespace Prisma {
     detected_objects?: NullableJsonNullValueInput | InputJsonValue
     selected_bbox?: NullableJsonNullValueInput | InputJsonValue
     recommendations?: NullableJsonNullValueInput | InputJsonValue
+    query_category?: string | null
+    avg_match_score?: number | null
+    dominant_colors?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -13102,6 +13169,9 @@ export namespace Prisma {
     detected_objects?: NullableJsonNullValueInput | InputJsonValue
     selected_bbox?: NullableJsonNullValueInput | InputJsonValue
     recommendations?: NullableJsonNullValueInput | InputJsonValue
+    query_category?: NullableStringFieldUpdateOperationsInput | string | null
+    avg_match_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    dominant_colors?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13118,6 +13188,9 @@ export namespace Prisma {
     detected_objects?: NullableJsonNullValueInput | InputJsonValue
     selected_bbox?: NullableJsonNullValueInput | InputJsonValue
     recommendations?: NullableJsonNullValueInput | InputJsonValue
+    query_category?: NullableStringFieldUpdateOperationsInput | string | null
+    avg_match_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    dominant_colors?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14043,6 +14116,9 @@ export namespace Prisma {
     detected_objects?: SortOrder
     selected_bbox?: SortOrder
     recommendations?: SortOrder
+    query_category?: SortOrder
+    avg_match_score?: SortOrder
+    dominant_colors?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -14050,6 +14126,7 @@ export namespace Prisma {
   export type AiSearchHistoryAvgOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
+    avg_match_score?: SortOrder
   }
 
   export type AiSearchHistoryMaxOrderByAggregateInput = {
@@ -14061,6 +14138,8 @@ export namespace Prisma {
     platform?: SortOrder
     source_feature?: SortOrder
     original_image_url?: SortOrder
+    query_category?: SortOrder
+    avg_match_score?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -14074,6 +14153,8 @@ export namespace Prisma {
     platform?: SortOrder
     source_feature?: SortOrder
     original_image_url?: SortOrder
+    query_category?: SortOrder
+    avg_match_score?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -14081,6 +14162,7 @@ export namespace Prisma {
   export type AiSearchHistorySumOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
+    avg_match_score?: SortOrder
   }
 
   export type EnumQuery_TypeWithAggregatesFilter<$PrismaModel = never> = {

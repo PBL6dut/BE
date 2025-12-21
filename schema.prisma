@@ -201,6 +201,9 @@ model AiSearchHistory {
   detected_objects        Json?                         // Array of detected objects
   selected_bbox           Json?                         // Selected bounding box
   recommendations         Json?                         // Array of recommended products
+  query_category          String?     @db.VarChar(50)   // Living Room, Bedroom, Kitchen, Office, Other
+  avg_match_score         Float?      @default(0.0)     // Average similarity score (0.0-1.0)
+  dominant_colors         Json?                         // Top 2 dominant colors array
   created_at              DateTime    @default(now())
   updated_at              DateTime    @updatedAt
 
@@ -208,5 +211,6 @@ model AiSearchHistory {
   @@index([anonymous_id])
   @@index([created_at])
   @@index([session_id])
+  @@index([query_category])
   @@map("ai_search_history")
 }

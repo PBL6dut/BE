@@ -236,6 +236,9 @@ exports.Prisma.AiSearchHistoryScalarFieldEnum = {
   detected_objects: 'detected_objects',
   selected_bbox: 'selected_bbox',
   recommendations: 'recommendations',
+  query_category: 'query_category',
+  avg_match_score: 'avg_match_score',
+  dominant_colors: 'dominant_colors',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -325,7 +328,8 @@ exports.Prisma.AiSearchHistoryOrderByRelevanceFieldEnum = {
   anonymous_id: 'anonymous_id',
   platform: 'platform',
   source_feature: 'source_feature',
-  original_image_url: 'original_image_url'
+  original_image_url: 'original_image_url',
+  query_category: 'query_category'
 };
 exports.Order_Status = exports.$Enums.Order_Status = {
   pending: 'pending',

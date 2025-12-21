@@ -20,6 +20,8 @@ const createSearchHistory = async (data) => {
     platform,
     sourceFeature,
     originalImageUrl,
+    queryCategory,
+    dominantColors,
   } = data;
 
   return await prisma.aiSearchHistory.create({
@@ -31,6 +33,8 @@ const createSearchHistory = async (data) => {
       platform: platform || null,
       source_feature: sourceFeature || null,
       original_image_url: originalImageUrl || null,
+      query_category: queryCategory || null,
+      dominant_colors: dominantColors || null,
     },
   });
 };
@@ -97,6 +101,9 @@ const getUserHistory = async (userId, anonymousId, page = 1, pageSize = 20, isAd
       created_at: true,
       detected_objects: true,
       recommendations: true,
+      query_category: true,
+      avg_match_score: true,
+      dominant_colors: true,
     },
   });
 
@@ -109,6 +116,10 @@ const getUserHistory = async (userId, anonymousId, page = 1, pageSize = 20, isAd
     recommendations_count: Array.isArray(item.recommendations)
       ? item.recommendations.length
       : 0,
+    // Include analytics fields
+    query_category: item.query_category,
+    avg_match_score: item.avg_match_score,
+    dominant_colors: item.dominant_colors,
     // Remove full arrays to reduce response size
     detected_objects: undefined,
     recommendations: undefined,
