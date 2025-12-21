@@ -9,6 +9,7 @@ router.use('/users', require('./user.route'))
 router.use('/orders', require('./order.route'))
 router.use('/products', require('./product.route'))
 router.use('/payment', require('./payment.route'))
+router.use('/ai', require('./ai.route'))
 router.use('/chat', require('./chat.route'))
 
 // Middleware để bắt các route không tồn tại (404 Not Found)

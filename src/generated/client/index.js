@@ -214,9 +214,30 @@ exports.Prisma.AiSearchHistoryScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.AiSearchHistoryScalarFieldEnum = {
+  id: 'id',
+  session_id: 'session_id',
+  user_id: 'user_id',
+  anonymous_id: 'anonymous_id',
+  query_type: 'query_type',
+  platform: 'platform',
+  source_feature: 'source_feature',
+  original_image_url: 'original_image_url',
+  detected_objects: 'detected_objects',
+  selected_bbox: 'selected_bbox',
+  recommendations: 'recommendations',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.NullableJsonNullValueInput = {
@@ -302,6 +323,25 @@ exports.Prisma.AiSearchHistoryOrderByRelevanceFieldEnum = {
   source_feature: 'source_feature',
   original_image_url: 'original_image_url'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.AiSearchHistoryOrderByRelevanceFieldEnum = {
+  session_id: 'session_id',
+  anonymous_id: 'anonymous_id',
+  platform: 'platform',
+  source_feature: 'source_feature',
+  original_image_url: 'original_image_url'
+};
 exports.Order_Status = exports.$Enums.Order_Status = {
   pending: 'pending',
   confirmed: 'confirmed',
@@ -343,6 +383,11 @@ exports.Query_Type = exports.$Enums.Query_Type = {
   recommend: 'recommend'
 };
 
+exports.Query_Type = exports.$Enums.Query_Type = {
+  detect: 'detect',
+  recommend: 'recommend'
+};
+
 exports.Prisma.ModelName = {
   Category: 'Category',
   Customer: 'Customer',
@@ -351,6 +396,8 @@ exports.Prisma.ModelName = {
   Product_Image: 'Product_Image',
   Product: 'Product',
   Admin: 'Admin',
+  Tag: 'Tag',
+  AiSearchHistory: 'AiSearchHistory'
   Tag: 'Tag',
   AiSearchHistory: 'AiSearchHistory'
 };
@@ -365,7 +412,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\ADMIN\\Desktop\\Hoc tren truong\\PBL6\\PBL6_BE\\src\\generated\\client",
+      "value": "/Users/mac/code/pbl6/BE/src/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -374,7 +421,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       },
       {
@@ -383,7 +430,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\ADMIN\\Desktop\\Hoc tren truong\\PBL6\\PBL6_BE\\schema.prisma",
+    "sourceFilePath": "/Users/mac/code/pbl6/BE/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -445,8 +492,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "src/generated/client/query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "src/generated/client/libquery_engine-darwin-arm64.dylib.node")
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");

@@ -58,6 +58,11 @@ export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
  * 
  */
 export type AiSearchHistory = $Result.DefaultSelection<Prisma.$AiSearchHistoryPayload>
+/**
+ * Model AiSearchHistory
+ * 
+ */
+export type AiSearchHistory = $Result.DefaultSelection<Prisma.$AiSearchHistoryPayload>
 
 /**
  * Enums
@@ -121,6 +126,14 @@ export const Query_Type: {
 
 export type Query_Type = (typeof Query_Type)[keyof typeof Query_Type]
 
+
+export const Query_Type: {
+  detect: 'detect',
+  recommend: 'recommend'
+};
+
+export type Query_Type = (typeof Query_Type)[keyof typeof Query_Type]
+
 }
 
 export type Order_Status = $Enums.Order_Status
@@ -142,6 +155,10 @@ export const Shipping_Method: typeof $Enums.Shipping_Method
 export type Product_Status = $Enums.Product_Status
 
 export const Product_Status: typeof $Enums.Product_Status
+
+export type Query_Type = $Enums.Query_Type
+
+export const Query_Type: typeof $Enums.Query_Type
 
 export type Query_Type = $Enums.Query_Type
 
@@ -344,6 +361,16 @@ export class PrismaClient<
     * ```
     */
   get tag(): Prisma.TagDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiSearchHistory`: Exposes CRUD operations for the **AiSearchHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiSearchHistories
+    * const aiSearchHistories = await prisma.aiSearchHistory.findMany()
+    * ```
+    */
+  get aiSearchHistory(): Prisma.AiSearchHistoryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.aiSearchHistory`: Exposes CRUD operations for the **AiSearchHistory** model.
@@ -804,6 +831,8 @@ export namespace Prisma {
     Admin: 'Admin',
     Tag: 'Tag',
     AiSearchHistory: 'AiSearchHistory'
+    Tag: 'Tag',
+    AiSearchHistory: 'AiSearchHistory'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -822,6 +851,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
+      modelProps: "category" | "customer" | "order" | "orderDetail" | "product_Image" | "product" | "admin" | "tag" | "aiSearchHistory"
       modelProps: "category" | "customer" | "order" | "orderDetail" | "product_Image" | "product" | "admin" | "tag" | "aiSearchHistory"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
@@ -1420,6 +1450,72 @@ export namespace Prisma {
           }
         }
       }
+      AiSearchHistory: {
+        payload: Prisma.$AiSearchHistoryPayload<ExtArgs>
+        fields: Prisma.AiSearchHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiSearchHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiSearchHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.AiSearchHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiSearchHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.AiSearchHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.AiSearchHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.AiSearchHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.AiSearchHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          update: {
+            args: Prisma.AiSearchHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiSearchHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiSearchHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AiSearchHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiSearchHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.AiSearchHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiSearchHistory>
+          }
+          groupBy: {
+            args: Prisma.AiSearchHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiSearchHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiSearchHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<AiSearchHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1524,6 +1620,7 @@ export namespace Prisma {
     product?: ProductOmit
     admin?: AdminOmit
     tag?: TagOmit
+    aiSearchHistory?: AiSearchHistoryOmit
     aiSearchHistory?: AiSearchHistoryOmit
   }
 
@@ -11313,12 +11410,39 @@ export namespace Prisma {
   export type AiSearchHistoryScalarFieldEnum = (typeof AiSearchHistoryScalarFieldEnum)[keyof typeof AiSearchHistoryScalarFieldEnum]
 
 
+  export const AiSearchHistoryScalarFieldEnum: {
+    id: 'id',
+    session_id: 'session_id',
+    user_id: 'user_id',
+    anonymous_id: 'anonymous_id',
+    query_type: 'query_type',
+    platform: 'platform',
+    source_feature: 'source_feature',
+    original_image_url: 'original_image_url',
+    detected_objects: 'detected_objects',
+    selected_bbox: 'selected_bbox',
+    recommendations: 'recommendations',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type AiSearchHistoryScalarFieldEnum = (typeof AiSearchHistoryScalarFieldEnum)[keyof typeof AiSearchHistoryScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const NullableJsonNullValueInput: {
@@ -11441,6 +11565,34 @@ export namespace Prisma {
   export type AiSearchHistoryOrderByRelevanceFieldEnum = (typeof AiSearchHistoryOrderByRelevanceFieldEnum)[keyof typeof AiSearchHistoryOrderByRelevanceFieldEnum]
 
 
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const AiSearchHistoryOrderByRelevanceFieldEnum: {
+    session_id: 'session_id',
+    anonymous_id: 'anonymous_id',
+    platform: 'platform',
+    source_feature: 'source_feature',
+    original_image_url: 'original_image_url'
+  };
+
+  export type AiSearchHistoryOrderByRelevanceFieldEnum = (typeof AiSearchHistoryOrderByRelevanceFieldEnum)[keyof typeof AiSearchHistoryOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -11513,6 +11665,27 @@ export namespace Prisma {
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Query_Type'
+   */
+  export type EnumQuery_TypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Query_Type'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -14147,6 +14320,130 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type EnumQuery_TypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeFilter<$PrismaModel> | $Enums.Query_Type
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type AiSearchHistoryOrderByRelevanceInput = {
+    fields: AiSearchHistoryOrderByRelevanceFieldEnum | AiSearchHistoryOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type AiSearchHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrder
+    anonymous_id?: SortOrder
+    query_type?: SortOrder
+    platform?: SortOrder
+    source_feature?: SortOrder
+    original_image_url?: SortOrder
+    detected_objects?: SortOrder
+    selected_bbox?: SortOrder
+    recommendations?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type AiSearchHistoryAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type AiSearchHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrder
+    anonymous_id?: SortOrder
+    query_type?: SortOrder
+    platform?: SortOrder
+    source_feature?: SortOrder
+    original_image_url?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type AiSearchHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    session_id?: SortOrder
+    user_id?: SortOrder
+    anonymous_id?: SortOrder
+    query_type?: SortOrder
+    platform?: SortOrder
+    source_feature?: SortOrder
+    original_image_url?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type AiSearchHistorySumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type EnumQuery_TypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel> | $Enums.Query_Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuery_TypeFilter<$PrismaModel>
+    _max?: NestedEnumQuery_TypeFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
   export type ProductCreateNestedManyWithoutCategoryInput = {
     create?: XOR<ProductCreateWithoutCategoryInput, ProductUncheckedCreateWithoutCategoryInput> | ProductCreateWithoutCategoryInput[] | ProductUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutCategoryInput | ProductCreateOrConnectWithoutCategoryInput[]
@@ -14583,6 +14880,10 @@ export namespace Prisma {
     set?: $Enums.Query_Type
   }
 
+  export type EnumQuery_TypeFieldUpdateOperationsInput = {
+    set?: $Enums.Query_Type
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -14928,6 +15229,46 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumQuery_TypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeFilter<$PrismaModel> | $Enums.Query_Type
+  }
+
+  export type NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Query_Type | EnumQuery_TypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Query_Type[]
+    notIn?: $Enums.Query_Type[]
+    not?: NestedEnumQuery_TypeWithAggregatesFilter<$PrismaModel> | $Enums.Query_Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuery_TypeFilter<$PrismaModel>
+    _max?: NestedEnumQuery_TypeFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumQuery_TypeFilter<$PrismaModel = never> = {

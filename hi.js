@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Load product_images.json (phải để cùng thư mục)
-const productImages = require('./data/product_images.json');
+const productImages = require('./product_images.json');
 
 // 1. TẠO CATEGORIES.JSON
 const categories = [

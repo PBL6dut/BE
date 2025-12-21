@@ -199,3 +199,30 @@ enum Query_Type {
   detect
   recommend
 }
+
+enum Query_Type {
+  detect
+  recommend
+}
+
+model AiSearchHistory {
+  id                 Int        @id @default(autoincrement())
+  session_id         String     @unique @db.VarChar(36)
+  user_id            Int?
+  anonymous_id       String?    @db.VarChar(255)
+  query_type         Query_Type
+  platform           String?    @db.VarChar(50) // web|app|mobile
+  source_feature     String?    @db.VarChar(100) // main_search|detail_page
+  original_image_url String?    @db.Text
+  detected_objects   Json? // Array of detected objects
+  selected_bbox      Json? // Selected bounding box
+  recommendations    Json? // Array of recommended products
+  created_at         DateTime   @default(now())
+  updated_at         DateTime   @updatedAt
+
+  @@index([user_id])
+  @@index([anonymous_id])
+  @@index([created_at])
+  @@index([session_id])
+  @@map("ai_search_history")
+}
