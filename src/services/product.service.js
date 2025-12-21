@@ -5,24 +5,36 @@ const { default: ApiError } = require("../utils/ApiError");
 const formatImageUrl = require("../utils/formatImageUrl");
 const { deleteFile } = require("../utils/imageStorage");
 const productRepository = require("../repositories/product.repository");
+const { get } = require("../routes/order.route");
 
 const prisma = new PrismaClient();
+
+const getStatistics = async () => {
+  const activeProducts = await productRepository.countActiveProducts();
+  const almostOutOfStockProducts =
+    await productRepository.countAlmostOutOfStockProducts();
+  const outOfStockProducts = await productRepository.countOutOfStockProducts();
+  const totalProducts = await productRepository.countProducts();
+
+  return {
+    activeProducts,
+    almostOutOfStockProducts,
+    outOfStockProducts,
+    totalProducts,
+  };
+};
 
 const countProducts = async () => {
   const count = await productRepository.countProducts();
   return count;
-}
+};
 
 const getMostProductsByCategory = async () => {
   const result = await productRepository.getMostProductsByCategory();
   return result;
-}
+};
 
-const getAllProducts = async (
-  page = 1,
-  limit = 10,
-  query = {}
-) => {  
+const getAllProducts = async (page = 1, limit = 10, query = {}) => {
   const result = await productRepository.getProducts(page, limit, query);
   const { products, count } = result;
   const totalPages = Math.ceil(count / limit);
@@ -188,7 +200,7 @@ const updateProduct = async (id, data) => {
       },
       category_id: false,
       order_details: true,
-    }
+    },
   });
 };
 
@@ -250,6 +262,7 @@ module.exports = {
   deleteProduct,
   SearchProducts,
   checkProductId,
-  countProducts,
+  getStatistics,
   getMostProductsByCategory,
+  countProducts,
 };

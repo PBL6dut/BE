@@ -132,13 +132,14 @@ exports.Prisma.CustomerScalarFieldEnum = {
   id: 'id',
   full_name: 'full_name',
   email: 'email',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   phone: 'phone',
   address: 'address',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id',
+  fcm_token: 'fcm_token'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -147,24 +148,24 @@ exports.Prisma.OrderScalarFieldEnum = {
   customer_id: 'customer_id',
   order_date: 'order_date',
   total_amount: 'total_amount',
-  shipping_fee: 'shipping_fee',
   status: 'status',
+  shipping_address: 'shipping_address',
+  phone: 'phone',
+  notes: 'notes',
+  created_at: 'created_at',
+  expected_delivery_date: 'expected_delivery_date',
+  paid_at: 'paid_at',
   payment_method: 'payment_method',
   payment_status: 'payment_status',
-  paid_at: 'paid_at',
-  transaction_id: 'transaction_id',
-  transaction_code: 'transaction_code',
-  transaction_content: 'transaction_content',
+  shipping_fee: 'shipping_fee',
+  shipping_method: 'shipping_method',
+  updated_at: 'updated_at',
   gateway: 'gateway',
   paid_amount: 'paid_amount',
   payment_verified_at: 'payment_verified_at',
-  shipping_method: 'shipping_method',
-  shipping_address: 'shipping_address',
-  phone: 'phone',
-  expected_delivery_date: 'expected_delivery_date',
-  notes: 'notes',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  transaction_code: 'transaction_code',
+  transaction_content: 'transaction_content',
+  transaction_id: 'transaction_id'
 };
 
 exports.Prisma.OrderDetailScalarFieldEnum = {
@@ -190,33 +191,33 @@ exports.Prisma.ProductScalarFieldEnum = {
   sale_price: 'sale_price',
   category_id: 'category_id',
   stock_quantity: 'stock_quantity',
-  weight: 'weight',
-  length: 'length',
-  width: 'width',
-  height: 'height',
   material: 'material',
   color: 'color',
   status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at',
+  height: 'height',
+  length: 'length',
+  weight: 'weight',
+  width: 'width',
   brand: 'brand',
-  style: 'style',
   discount: 'discount',
   rating: 'rating',
   reviews: 'reviews',
-  warranty: 'warranty',
-  shipping: 'shipping'
+  shipping: 'shipping',
+  style: 'style',
+  warranty: 'warranty'
 };
 
 exports.Prisma.AdminScalarFieldEnum = {
   id: 'id',
   username: 'username',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   full_name: 'full_name',
   email: 'email',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
@@ -266,22 +267,23 @@ exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
 exports.Prisma.CustomerOrderByRelevanceFieldEnum = {
   full_name: 'full_name',
   email: 'email',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   phone: 'phone',
-  address: 'address'
+  address: 'address',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id',
+  fcm_token: 'fcm_token'
 };
 
 exports.Prisma.OrderOrderByRelevanceFieldEnum = {
   order_number: 'order_number',
-  transaction_id: 'transaction_id',
-  transaction_code: 'transaction_code',
-  transaction_content: 'transaction_content',
-  gateway: 'gateway',
   shipping_address: 'shipping_address',
   phone: 'phone',
-  notes: 'notes'
+  notes: 'notes',
+  gateway: 'gateway',
+  transaction_code: 'transaction_code',
+  transaction_content: 'transaction_content',
+  transaction_id: 'transaction_id'
 };
 
 exports.Prisma.Product_ImageOrderByRelevanceFieldEnum = {
@@ -294,18 +296,18 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   material: 'material',
   color: 'color',
   brand: 'brand',
+  shipping: 'shipping',
   style: 'style',
-  warranty: 'warranty',
-  shipping: 'shipping'
+  warranty: 'warranty'
 };
 
 exports.Prisma.AdminOrderByRelevanceFieldEnum = {
   username: 'username',
-  google_id: 'google_id',
-  facebook_id: 'facebook_id',
   password: 'password',
   full_name: 'full_name',
-  email: 'email'
+  email: 'email',
+  facebook_id: 'facebook_id',
+  google_id: 'google_id'
 };
 
 exports.Prisma.TagOrderByRelevanceFieldEnum = {

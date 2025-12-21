@@ -4,6 +4,15 @@ const { getProductById } = require("../services/product.service");
 const { default: ApiError } = require("../utils/ApiError");
 const { StatusCodes } = require("http-status-codes");
 
+const getStatistics = async (req, res, next) => {
+  try {
+    const stats = await orderservice.getStatistics();
+    return successResponse(res, "Get order statistics success", stats, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getAllOrders = async (req, res, next) => {
   try {
     const { page: pageStr, pageSize: pageSizeStr, ...rest } = req.query;
@@ -116,6 +125,30 @@ const totalIncome = async (req, res, next) => {
   }
 }
 
+const cancelOrder = async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Cancel order failed",
+        "Order ID is required"
+      );
+    }
+    if (isNaN(parseInt(req.params.id))) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Cancel order failed",
+        "Order ID must be a number"
+      );
+    }
+    const orderId = parseInt(req.params.id);
+    await orderservice.cancelOrder(orderId);
+    return successResponse(res, "Cancel order success", null, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllOrders,
   getOrderById,
@@ -123,4 +156,6 @@ module.exports = {
   createOrder,
   countOrders,
   totalIncome,
+  cancelOrder,
+  getStatistics,
 };

@@ -10,27 +10,153 @@ datasource db {
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(50)
-  description String?  @db.Text
-  created_at  DateTime @default(now())
-
-  products Product[]
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(50)
+  description String?   @db.Text
+  created_at  DateTime  @default(now())
+  products    Product[]
 }
 
 model Customer {
   id          Int       @id @default(autoincrement())
   full_name   String
   email       String    @unique
-  google_id   String?   @unique
-  facebook_id String?   @unique
   password    String    @db.VarChar(255)
   phone       String?   @unique @db.VarChar(20)
   address     String?   @db.Text
   created_at  DateTime  @default(now())
   updated_at  DateTime? @updatedAt
+  facebook_id String?   @unique
+  google_id   String?   @unique
+  fcm_token   String?
+  orders      Order[]
+}
 
-  orders Order[]
+model Order {
+  id                     Int             @id @default(autoincrement())
+  order_number           String          @unique @db.VarChar(20)
+  customer_id            Int
+  order_date             DateTime        @default(now())
+  total_amount           Decimal         @db.Decimal(12, 2)
+  status                 Order_Status    @default(pending)
+  shipping_address       String          @db.Text
+  phone                  String          @db.VarChar(20)
+  notes                  String?         @db.Text
+  created_at             DateTime        @default(now())
+  expected_delivery_date DateTime?
+  paid_at                DateTime?
+  payment_method         Payment_Method  @default(cash_on_delivery)
+  payment_status         Payment_Status  @default(pending)
+  shipping_fee           Decimal         @default(0.00) @db.Decimal(10, 2)
+  shipping_method        Shipping_Method @default(standard_delivery)
+  updated_at             DateTime?       @updatedAt
+  gateway                String?         @db.VarChar(50)
+  paid_amount            Decimal?        @db.Decimal(12, 2)
+  payment_verified_at    DateTime?
+  transaction_code       String?         @db.VarChar(50)
+  transaction_content    String?         @db.Text
+  transaction_id         String?         @unique @db.VarChar(50)
+  customer               Customer        @relation(fields: [customer_id], references: [id])
+  order_details          OrderDetail[]
+
+  @@index([transaction_id])
+  @@index([payment_status])
+  @@index([order_number])
+  @@index([customer_id], map: "Order_customer_id_fkey")
+}
+
+model OrderDetail {
+  id          Int     @id @default(autoincrement())
+  order_id    Int
+  product_id  Int
+  quantity    Int
+  unit_price  Decimal @db.Decimal(12, 2)
+  total_price Decimal @db.Decimal(12, 2)
+  order       Order   @relation(fields: [order_id], references: [id])
+  product     Product @relation(fields: [product_id], references: [id])
+
+  @@unique([order_id, product_id])
+  @@index([product_id], map: "OrderDetail_product_id_fkey")
+}
+
+model Product_Image {
+  id         Int     @id @default(autoincrement())
+  product_id Int
+  url        String  @db.VarChar(500)
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@index([product_id], map: "Product_Image_product_id_fkey")
+}
+
+model Product {
+  id             Int             @id @default(autoincrement())
+  name           String
+  description    String?         @db.Text
+  price          Decimal         @db.Decimal(12, 2)
+  sale_price     Decimal?        @db.Decimal(12, 2)
+  category_id    Int
+  stock_quantity Int             @default(0)
+  material       String?         @db.VarChar(500)
+  color          String?         @db.VarChar(50)
+  status         Product_Status  @default(active)
+  created_at     DateTime        @default(now())
+  updated_at     DateTime?       @updatedAt
+  height         Decimal?        @db.Decimal(10, 2)
+  length         Decimal?        @db.Decimal(10, 2)
+  weight         Decimal?        @db.Decimal(10, 2)
+  width          Decimal?        @db.Decimal(10, 2)
+  brand          String?         @db.VarChar(100)
+  discount       Int?
+  rating         Float?
+  reviews        Int?
+  shipping       String?         @db.VarChar(100)
+  style          String?         @db.VarChar(100)
+  warranty       String?         @db.VarChar(100)
+  order_details  OrderDetail[]
+  category       Category        @relation(fields: [category_id], references: [id])
+  images         Product_Image[]
+  tags           Tag[]           @relation("ProductToTag")
+
+  @@index([category_id], map: "Product_category_id_fkey")
+}
+
+model Admin {
+  id          Int      @id @default(autoincrement())
+  username    String   @unique @db.VarChar(50)
+  password    String   @db.VarChar(255)
+  full_name   String   @db.VarChar(100)
+  email       String   @unique @db.VarChar(100)
+  created_at  DateTime @default(now())
+  facebook_id String?  @unique
+  google_id   String?  @unique
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(50)
+  products Product[] @relation("ProductToTag")
+}
+
+model AiSearchHistory {
+  id                 Int        @id @default(autoincrement())
+  session_id         String     @unique(map: "session_id") @db.VarChar(36)
+  user_id            Int?
+  anonymous_id       String?    @db.VarChar(255)
+  query_type         Query_Type
+  platform           String?    @db.VarChar(50)
+  source_feature     String?    @db.VarChar(100)
+  original_image_url String?    @db.Text
+  detected_objects   Json?
+  selected_bbox      Json?
+  recommendations    Json?
+  created_at         DateTime?  @default(now()) @db.Timestamp(0)
+  updated_at         DateTime?  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([anonymous_id], map: "idx_anonymous_id")
+  @@index([created_at], map: "idx_created_at")
+  @@index([session_id], map: "idx_session_id")
+  @@index([user_id], map: "idx_user_id")
+  @@map("ai_search_history")
 }
 
 enum Order_Status {
@@ -64,123 +190,14 @@ enum Shipping_Method {
   installation_service
 }
 
-model Order {
-  id           Int      @id @default(autoincrement())
-  order_number String   @unique @db.VarChar(20)
-  customer_id  Int
-  order_date   DateTime @default(now())
-  total_amount Decimal  @db.Decimal(12, 2)
-  shipping_fee Decimal  @default(0) @db.Decimal(10, 2)
-
-  status Order_Status @default(pending)
-
-  payment_method Payment_Method @default(cash_on_delivery)
-  payment_status Payment_Status @default(pending)
-  paid_at        DateTime?
-
-  // ✅ THÊM CÁC FIELD MỚI CHO SEPAY
-  transaction_id      String?   @unique @db.VarChar(50) // ID giao dịch từ Sepay, phải là duy nhất
-  transaction_code    String?   @db.VarChar(50) // Mã giao dịch ngân hàng (FT25322218005287)
-  transaction_content String?   @db.Text // Nội dung chuyển khoản đầy đủ
-  gateway             String?   @db.VarChar(50) // Tên ngân hàng/ví (MBBank, Momo, VNPay...)
-  paid_amount         Decimal?  @db.Decimal(12, 2) // Số tiền thực tế nhận được
-  payment_verified_at DateTime? // Thời điểm xác nhận thanh toán từ webhook
-
-  shipping_method        Shipping_Method @default(standard_delivery)
-  shipping_address       String          @db.Text
-  phone                  String          @db.VarChar(20)
-  expected_delivery_date DateTime?
-
-  notes      String?   @db.Text
-  created_at DateTime  @default(now())
-  updated_at DateTime? @updatedAt
-
-  customer      Customer      @relation(fields: [customer_id], references: [id])
-  order_details OrderDetail[]
-
-  // ✅ THÊM INDEX ĐỂ TÌM KIẾM NHANH
-  @@index([transaction_id])
-  @@index([payment_status])
-  @@index([order_number])
-}
-
-model OrderDetail {
-  id          Int     @id @default(autoincrement())
-  order_id    Int
-  product_id  Int
-  quantity    Int
-  unit_price  Decimal @db.Decimal(12, 2)
-  total_price Decimal @db.Decimal(12, 2)
-
-  order   Order   @relation(fields: [order_id], references: [id])
-  product Product @relation(fields: [product_id], references: [id])
-
-  @@unique([order_id, product_id])
-}
-
 enum Product_Status {
   active
   inactive
 }
 
-model Product_Image {
-  id         Int    @id @default(autoincrement())
-  product_id Int
-  url        String @db.VarChar(500)
-
-  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
-}
-
-model Product {
-  id             Int            @id @default(autoincrement())
-  name           String
-  description    String?        @db.Text
-  price          Decimal        @db.Decimal(12, 2)
-  sale_price     Decimal?       @db.Decimal(12, 2)
-  category_id    Int
-  stock_quantity Int            @default(0)
-  weight         Decimal?       @db.Decimal(10, 2) // Add weight in kg
-  length         Decimal?       @db.Decimal(10, 2) // Add length in cm
-  width          Decimal?       @db.Decimal(10, 2) // Add width in cm
-  height         Decimal?       @db.Decimal(10, 2) // Add height in cm
-  material       String?        @db.VarChar(500)
-  color          String?        @db.VarChar(50)
-  status         Product_Status @default(active)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime?      @updatedAt
-
-  // --- CÁC TRƯỜNG MỚI THÊM VÀO ĐÂY ---
-  brand    String? @db.VarChar(100)
-  style    String? @db.VarChar(100)
-  discount Int?
-  rating   Float?
-  reviews  Int?
-  warranty String? @db.VarChar(100)
-  shipping String? @db.VarChar(100)
-
-  category      Category        @relation(fields: [category_id], references: [id])
-  order_details OrderDetail[]
-  images        Product_Image[]
-
-  // --- THÊM QUAN HỆ NHIỀU-NHIỀU VỚI TAG ---
-  tags Tag[]
-}
-
-model Admin {
-  id          Int      @id @default(autoincrement())
-  username    String   @unique @db.VarChar(50)
-  google_id   String?  @unique
-  facebook_id String?  @unique
-  password    String   @db.VarChar(255)
-  full_name   String   @db.VarChar(100)
-  email       String   @unique @db.VarChar(100)
-  created_at  DateTime @default(now())
-}
-
-model Tag {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique @db.VarChar(50) // Tên tag (ví dụ: "Hot", "Sale")
-  products Product[] // Danh sách các sản phẩm có tag này
+enum Query_Type {
+  detect
+  recommend
 }
 
 enum Query_Type {

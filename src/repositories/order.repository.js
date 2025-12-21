@@ -1,4 +1,5 @@
 const prisma = require("../utils/prisma-client");
+const { default: ApiError } = require("../utils/ApiError");
 
 const countOrders = async () => {
   const count = await prisma.order.count();
@@ -47,7 +48,7 @@ const getOrderById = async (id) => {
 };
 
 const getOrdersByCustomer = async (customer_id) => {
-    const orders = await prisma.order.findMany({
+  const orders = await prisma.order.findMany({
     where: { customer_id },
     include: {
       order_details: {
@@ -63,7 +64,59 @@ const getOrdersByCustomer = async (customer_id) => {
       },
     },
   });
-    return orders;
+  return orders;
+};
+
+const cancelOrder = async (id) => {
+  const order = await prisma.order.findUnique({
+    where: { id },
+  });
+  if (!order) {
+    throw new ApiError(404, "Cancel order failed", "Order not found");
+  }
+
+  if (order.status !== "pending") {
+    throw new ApiError(400, "Cancel order failed", "Only pending orders can be canceled");
+  }
+  return await prisma.order.update({
+    where: { id },
+    data: { status: "cancelled" },
+  });
+}
+
+const countPendingOrders = async () => {
+  const count = await prisma.order.count({
+    where: { status: "pending" },
+  });
+  return count;
+};
+
+const countShippingOrders = async () => {
+  const count = await prisma.order.count({
+    where: { status: "shipping" },
+  });
+  return count;
+};
+
+const countCompletedOrders = async () => {
+  const count = await prisma.order.count({
+    where: { status: "completed" },
+  });
+  return count;
+};
+
+const countCancelledOrders = async () => {
+  const count = await prisma.order.count({
+    where: { status: "cancelled" },
+  });
+  return count;
+}
+
+const countConfirmedOrders = async () => {
+  const count = await prisma.order.count({
+    where: { status: "confirmed" },
+  });
+  return count;
 };
 
 module.exports = {
@@ -71,5 +124,11 @@ module.exports = {
   countOrders,
   getTotalIncome,
   getOrderById,
-    getOrdersByCustomer,
+  getOrdersByCustomer,
+  cancelOrder,
+  countPendingOrders,
+  countShippingOrders,
+  countCompletedOrders,
+  countCancelledOrders,
+  countConfirmedOrders,
 };

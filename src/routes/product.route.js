@@ -14,6 +14,7 @@ const productUpload = upload.productUpload
 
 
 router.get('/', validatePaginationQuery, productController.getAllProducts);
+router.get('/statistics', productController.getStatistics);
 router.get('/count', productController.countProducts);
 router.get('/search', productController.SearchProducts);
 router.get('/categories', productController.getAllCategories);

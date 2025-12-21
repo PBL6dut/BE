@@ -85,7 +85,7 @@ const getProducts = async (page = 1, limit = 10, query = {}) => {
   return { products, count };
 };
 
-const getProductsByIds = async (ids) => {
+const getProductsByIds = async (productIds) => {
   const products = await prisma.product.findMany({
     where: {
       id: { in: productIds },
@@ -115,6 +115,34 @@ const getAllCategories = async () => {
   });
 };
 
+const countActiveProducts = async () => {
+  const count = await prisma.product.count({
+    where: { status: "active" },
+  });
+  return count;
+};
+
+const countAlmostOutOfStockProducts = async () => {
+  const threshold = 5;
+  const count = await prisma.product.count({
+    where: {
+      stock_quantity: {
+        lte: threshold,
+      },
+    },
+  });
+  return count;
+};
+
+const countOutOfStockProducts = async () => {
+  const count = await prisma.product.count({
+    where: {
+      stock_quantity: 0,
+    },
+  });
+  return count;
+};
+
 module.exports = {
   countProducts,
   getProducts,
@@ -122,4 +150,7 @@ module.exports = {
   getProductById,
   getProductsByIds,
   getMostProductsByCategory,
+  countActiveProducts,
+  countAlmostOutOfStockProducts,
+  countOutOfStockProducts,
 };

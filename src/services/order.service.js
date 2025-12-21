@@ -24,6 +24,23 @@ const totalIncome = async () => {
   return income;
 };
 
+const getStatistics = async () => {
+  const pendingOrders = await orderRepository.countPendingOrders();
+  const shippingOrders = await orderRepository.countShippingOrders();
+  const completedOrders = await orderRepository.countCompletedOrders();
+  const cancelledOrders = await orderRepository.countCancelledOrders();
+  const confirmedOrders = await orderRepository.countConfirmedOrders();
+  const totalOrders = await countOrders();
+  return {
+    pendingOrders,
+    shippingOrders,
+    completedOrders,
+    cancelledOrders,
+    confirmedOrders,
+    totalOrders,
+  };
+};
+
 const getAllOrders = async (page = 1, pageSize = 10) => {
   const currentPage = page < 1 ? 1 : page;
 
@@ -65,10 +82,12 @@ const getOrdersByCustomer = async (customer_id) => {
 
 const createOrder = async (orderData) => {
   const { order_details, to_district_id, to_ward_code, ...data } = orderData;
+  console.log(order_details);
 
   // --- BƯỚC 1: LẤY THÔNG TIN SẢN PHẨM VÀ TÍNH TOÁN SƠ BỘ ---
   const productIds = order_details.map((item) => item.product_id);
   const products = await productRepository.getProductsByIds(productIds);
+  console.log(products);
 
   let subTotal = 0;
   let totalWeight = 0;
@@ -259,6 +278,10 @@ const updateOrderStatusAfterPayment = async (orderNumber, amount) => {
   });
 };
 
+const cancelOrder = async (id) => {
+  return await orderRepository.cancelOrder(id);
+}
+
 module.exports = {
   getAllOrders,
   getOrderById,
@@ -267,4 +290,6 @@ module.exports = {
   updateOrderStatusAfterPayment,
   countOrders,
   totalIncome,
+  cancelOrder,
+  getStatistics,
 };

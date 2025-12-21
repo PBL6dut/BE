@@ -10,6 +10,7 @@ router.use('/orders', require('./order.route'))
 router.use('/products', require('./product.route'))
 router.use('/payment', require('./payment.route'))
 router.use('/ai', require('./ai.route'))
+router.use('/chat', require('./chat.route'))
 
 // Middleware để bắt các route không tồn tại (404 Not Found)
 // Middleware này sẽ được thực thi nếu không có route nào ở trên khớp với yêu cầu.
