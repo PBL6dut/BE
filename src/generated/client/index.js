@@ -397,7 +397,7 @@ exports.Prisma.ModelName = {
   Product: 'Product',
   Admin: 'Admin',
   Tag: 'Tag',
-  AiSearchHistory: 'AiSearchHistory'
+  AiSearchHistory: 'AiSearchHistory',
   Tag: 'Tag',
   AiSearchHistory: 'AiSearchHistory'
 };
