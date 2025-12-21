@@ -41,7 +41,9 @@
     "openai": "^6.9.0",
     "prisma": "^6.16.1",
     "socket.io": "^4.8.1",
-    "vnpay": "^2.4.4"
+    "uuid": "^13.0.0",
+    "vnpay": "^2.4.4",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

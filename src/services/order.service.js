@@ -104,7 +104,8 @@ const createOrder = async (orderData) => {
       throw new Error(`Sản phẩm "${product.name}" không đủ số lượng tồn kho.`);
     }
 
-    const unitPrice = product.price || product.sale_price;
+    const unitPrice = product.sale_price || product.price;
+    console.log("unitPrice", unitPrice, "sale_price", product.sale_price, "price", product.price);
     subTotal += unitPrice * item.quantity;
 
     if (product.weight) {
@@ -176,7 +177,7 @@ const createOrder = async (orderData) => {
         );
       }
 
-      const unitPrice = product.price || product.sale_price;
+      const unitPrice = product.sale_price || product.price;
       const totalPrice = unitPrice * item.quantity;
 
       return {
@@ -273,6 +274,7 @@ const updateOrderStatusAfterPayment = async (orderNumber, amount) => {
       where: { id: order.id },
       data: {
         payment_status: "paid", // 'pending' -> 'paid'
+        status: "confirmed", // 'pending' -> 'confirmed'
       },
     });
   });

@@ -32,6 +32,7 @@ const getAllOrders = async (page = 1, pageSize = 10) => {
     },
     take: pageSize,
     skip: (page - 1) * pageSize,
+    orderBy: { created_at: "desc" },
   });
   const count = await countOrders();
   return { orders, count };
@@ -63,6 +64,7 @@ const getOrdersByCustomer = async (customer_id) => {
         },
       },
     },
+    orderBy: { created_at: "desc" },
   });
   return orders;
 };

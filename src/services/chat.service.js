@@ -1,264 +1,247 @@
 const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
-const { PromptTemplate } = require("@langchain/core/prompts");
-const { StringOutputParser } = require("@langchain/core/output_parsers");
-const { RunnableSequence } = require("@langchain/core/runnables");
+const { HumanMessage, AIMessage, ToolMessage } = require("@langchain/core/messages");
+const { tool } = require("@langchain/core/tools");
+const { z } = require("zod");
 const prisma = require("../utils/prisma-client");
+
+// KHO LƯU TRỮ LỊCH SỬ (RAM) - Key: sessionId
+const chatHistoryMap = new Map();
 
 class ChatService {
   constructor() {
-    // Chỉ cần khởi tạo Gemini Chat Model
     this.chatModel = new ChatGoogleGenerativeAI({
-      apiKey: process.env.GEMINI_API_KEY, // Sửa lại tên biến môi trường cho đúng với bên dưới
-      model: "gemini-3-flash-preview",
-      temperature: 0, // Để 0 khi trích xuất data
+      apiKey: process.env.GEMINI_API_KEY,
+      model: "gemini-3-flash-preview", // Hoặc "gemini-1.5-flash" nếu bản 3 chưa ổn định
+      temperature: 0,
     });
 
-    // Biến Cache để lưu metadata (tránh query DB liên tục)
     this.metadataCache = null;
     this.lastCacheTime = 0;
   }
 
-  // 1. Hàm lấy Metadata (Có Caching 1 tiếng)
+  // --- QUẢN LÝ HISTORY ---
+  getHistory(sessionId) {
+    if (!chatHistoryMap.has(sessionId)) {
+      chatHistoryMap.set(sessionId, []);
+    }
+    return chatHistoryMap.get(sessionId);
+  }
+
+  saveHistory(sessionId, messages) {
+    let history = this.getHistory(sessionId);
+    // Giữ 20 tin nhắn gần nhất
+    history = [...history, ...messages].slice(-20);
+    chatHistoryMap.set(sessionId, history);
+  }
+
+  async clearHistory(sessionId) {
+    chatHistoryMap.delete(sessionId);
+  }
+
+  // 1. Hàm lấy Metadata (Giữ nguyên của bạn)
   async getDatabaseMetadata() {
     const NOW = Date.now();
-    // Nếu đã có cache và chưa quá 1 tiếng (3600000ms) -> Dùng lại
     if (this.metadataCache && NOW - this.lastCacheTime < 3600000) {
       return this.metadataCache;
     }
 
-    // Nếu chưa có thì query DB
-    const categories = await prisma.category.findMany({
-      select: { name: true },
-    });
-    const materials = await prisma.product.findMany({
-      select: { material: true },
-      distinct: ["material"],
-    });
-    const colors = await prisma.product.findMany({
-      select: { color: true },
-      distinct: ["color"],
-    });
-    const styles = await prisma.product.findMany({
-      select: { style: true },
-      distinct: ["style"],
-    });
-    const ratings = await prisma.product.findMany({
-      select: { rating: true },
-      distinct: ["rating"],
-    });
+    const categories = await prisma.category.findMany({ select: { name: true } });
+    const materials = await prisma.product.findMany({ select: { material: true }, distinct: ["material"] });
+    const colors = await prisma.product.findMany({ select: { color: true }, distinct: ["color"] });
+    const styles = await prisma.product.findMany({ select: { style: true }, distinct: ["style"] });
+    const ratings = await prisma.product.findMany({ select: { rating: true }, distinct: ["rating"] });
 
     this.metadataCache = {
       categoryList: categories.map((c) => c.name).join(", "),
-      materialList: materials
-        .map((m) => m.material)
-        .filter(Boolean)
-        .join(", "),
-      colorList: colors
-        .map((c) => c.color)
-        .filter(Boolean)
-        .join(", "),
-      styleList: styles
-        .map((s) => s.style)
-        .filter(Boolean)
-        .join(", "),
-      ratingList: ratings
-        .map((r) => r.rating)
-        .filter(Boolean)
-        .join(", "),
+      materialList: materials.map((m) => m.material).filter(Boolean).join(", "),
+      colorList: colors.map((c) => c.color).filter(Boolean).join(", "),
+      styleList: styles.map((s) => s.style).filter(Boolean).join(", "),
+      ratingList: ratings.map((r) => r.rating).filter(Boolean).join(", "),
     };
     this.lastCacheTime = NOW;
 
     return this.metadataCache;
   }
 
-  // 2. Hàm trích xuất filter từ câu hỏi
-  async extractFilters(question) {
-    const { categoryList, materialList, colorList, styleList, ratingList } =
-      await this.getDatabaseMetadata();
+  // 2. TẠO TOOL SEARCH (Đưa logic Strategy của bạn vào đây)
+  createSearchTool(metadata) {
+    return tool(
+      async (filters) => {
+        console.log("🛠️ AI gọi Tool với filters:", filters);
+        
+        // --- LOGIC CHIẾN THUẬT CỦA BẠN (ĐƯỢC GIỮ NGUYÊN) ---
+        // Lọc bỏ các key undefined/null để lấy danh sách key thực tế
+        const filtersKeys = Object.keys(filters).filter(key => filters[key] !== undefined && filters[key] !== null);
+        
+        const searchStrategies2 = [];
+        // Tạo chiến thuật cắt lớp (Slicing) như bạn yêu cầu
+        for (let i = filtersKeys.length; i >= 1; i--) {
+          searchStrategies2.push(filtersKeys.slice(0, i));
+        }
+        console.log("Generated Strategies inside Tool:", searchStrategies2);
 
-    const prompt = PromptTemplate.fromTemplate(`
-        Bạn là trợ lý trích xuất thông tin nội thất.
-        DỮ LIỆU CHUẨN TRONG KHO:
-        - Categories: [${categoryList}]
-        - Colors: [${colorList}]
-        - Materials: [${materialList}]
-        - Styles: [${styleList}]
-        - Ratings: [${ratingList}]
-        
-        Câu hỏi: "{question}"
-        
-        Nhiệm vụ:
-        1. Map từ đồng nghĩa về từ chuẩn trong danh sách trên (salon -> sofa, gỗ sồi -> gỗ).
-        2. Trích xuất JSON tìm kiếm.
-        
-        Output JSON format: 
-        {{ 
-            "category": "string (bắt buộc, phải nằm trong list Categories)", 
-            "maxPrice": "number (nếu có)", 
-            "color": "string (nếu có, phải nằm trong list Colors)", 
-            "material": "string (nếu có, phải nằm trong list Materials)"
-            "style": "string (nếu có, phải nằm trong list Styles)"
-            "minPrice": "number (nếu có)"
-            "rating": "number (nếu có, phải nằm trong list Ratings)"
-        }}
-        
-        CHỈ TRẢ VỀ JSON DUY NHẤT.
-     `);
+        let finalProducts = [];
+        let seenProductIds = new Set();
 
-    const chain = RunnableSequence.from([
-      prompt,
-      this.chatModel,
-      new StringOutputParser(),
-    ]);
+        // Chạy vòng lặp chiến thuật
+        for (const strategy of searchStrategies2) {
+            if (finalProducts.length >= 5) break;
 
-    const jsonString = await chain.invoke({ question });
-    const cleanJson = jsonString.replace(/```json|```/g, "").trim();
-    return JSON.parse(cleanJson);
+            console.log(`🔍 Thử chiến thuật: [${strategy.join(", ")}]`);
+
+            let whereClause = {};
+
+            // Map logic dynamic where clause của bạn
+            if (strategy.includes("category") && filters.category) {
+                whereClause.category = { name: { contains: filters.category } };
+            }
+            if (strategy.includes("maxPrice") && filters.maxPrice) {
+                whereClause.price = { lte: filters.maxPrice };
+            }
+            if (strategy.includes("minPrice") && filters.minPrice) {
+                whereClause.price = { ...whereClause.price, gte: filters.minPrice };
+            }
+            if (strategy.includes("color") && filters.color) {
+                whereClause.color = { contains: filters.color };
+            }
+            if (strategy.includes("material") && filters.material) {
+                whereClause.material = { contains: filters.material };
+            }
+            if (strategy.includes("style") && filters.style) {
+                whereClause.style = { contains: filters.style };
+            }
+            if (strategy.includes("rating") && filters.rating) {
+                whereClause.rating = filters.rating;
+            }
+
+            try {
+                const products = await prisma.product.findMany({
+                    where: whereClause,
+                    include: {
+                        images: { select: { url: true } },
+                        category: { select: { id: true, name: true } },
+                    },
+                    take: 5,
+                    orderBy: { price: "asc" },
+                });
+
+                for (const p of products) {
+                    if (!seenProductIds.has(p.id)) {
+                        p.matchType = `Strategy: ${strategy.join("+")}`; // Đánh dấu
+                        finalProducts.push(p);
+                        seenProductIds.add(p.id);
+                    }
+                }
+            } catch (err) {
+                console.error("Lỗi query prisma:", err);
+            }
+        }
+
+        if (finalProducts.length === 0) return "Không tìm thấy sản phẩm nào phù hợp.";
+
+        // Trả về JSON String cho AI đọc
+        // Map lại dữ liệu gọn gàng để tiết kiệm token
+        return JSON.stringify(finalProducts);
+      },
+      {
+        name: "search_furniture",
+        description: "Tìm kiếm nội thất. Khi khách hàng hỏi mua sản phẩm, hãy dùng tool này để tìm.",
+        schema: z.object({
+          category: z.string().optional().describe(`Loại sản phẩm. Map về: ${metadata.categoryList}`),
+          color: z.string().optional().describe(`Màu sắc. Map về: ${metadata.colorList}`),
+          material: z.string().optional().describe(`Chất liệu. Map về: ${metadata.materialList}`),
+          style: z.string().optional().describe(`Phong cách. Map về: ${metadata.styleList}`),
+          maxPrice: z.number().optional().describe("Giá tối đa (VNĐ)"),
+          minPrice: z.number().optional().describe("Giá tối thiểu (VNĐ)"),
+          rating: z.number().optional().describe("Rating (số)"),
+        }),
+      }
+    );
   }
 
-  // 3. Hàm tạo câu trả lời thân thiện (Bước mới thêm)
-  async generateFriendlyAnswer(question, products) {
-    // Nếu không có sản phẩm nào
-    if (!products || products.length === 0) {
-      return "Dạ em tìm kỹ rồi mà hiện tại trong kho không có mẫu nào phù hợp với yêu cầu của anh/chị ạ. Anh/chị thử đổi tiêu chí khác xem sao ạ?";
-    }
-
-    // Nếu có sản phẩm, nhờ AI viết lời giới thiệu
-    const context = products
-      .slice(0, 3)
-      .map(
-        (p, i) =>
-          `${i + 1}. ${p.name} - Giá: ${p.price.toLocaleString(
-            "vi-VN"
-          )}đ - Màu: ${p.color} - Chất liệu: ${p.material} (Độ khớp: ${
-            p.score
-          } điểm)`
-      )
-      .join("\n");
-
-    const prompt = PromptTemplate.fromTemplate(`
-        Bạn là nhân viên bán hàng nhiệt tình.
-        Khách hỏi: "{question}"
-        
-        Hệ thống tìm được danh sách sản phẩm tốt nhất dưới đây:
-        ${context}
-        
-        Yêu cầu:
-        - Trả lời khách hàng ngắn gọn, thân thiện (có emoji 😊).
-        - Giới thiệu khéo léo sản phẩm đứng đầu (số 1).
-        - Nhắc khách bấm vào hình bên dưới để xem chi tiết.
-    `);
-
-    // Dùng model temperature cao hơn xíu để văn phong tự nhiên
-    const chatModelCreative = new ChatGoogleGenerativeAI({
-      apiKey: process.env.GEMINI_API_KEY,
-      model: "gemini-3-flash-preview",
-      temperature: 0.7,
-    });
-
-    const chain = RunnableSequence.from([
-      prompt,
-      chatModelCreative,
-      new StringOutputParser(),
-    ]);
-    return await chain.invoke({ question });
-  }
-
-  // 4. MAIN FUNCTION
-  async findProductsByAI(question) {
+  // 3. MAIN FUNCTION (Đã thêm SessionId và Lịch sử)
+  async findProductsByAI(sessionId, question) {
     try {
-      console.log("user asking:", question);
+      console.log(`User asking (Session ${sessionId}):`, question);
 
-      // B1: Trích xuất Filters
-      const filters = await this.extractFilters(question);
-      const filtersKeys = Object.keys(filters);
-      console.log("Extracted filters:", filters);
+      // B1: Lấy Metadata & Tạo Tool
+      const metadata = await this.getDatabaseMetadata();
+      const searchTool = this.createSearchTool(metadata);
+      
+      // B2: Bind Tool vào Model
+      const modelWithTools = this.chatModel.bindTools([searchTool]);
 
-      // 2. Định nghĩa các cấp độ ưu tiên (Strategy List)
-      // Mỗi cấp độ là một object chứa các trường cần filter
-      const searchStrategies2 = []
-      for (let i = filtersKeys.length; i >= 1; i--) {
-        searchStrategies2.push(filtersKeys.slice(0, i));
+      // B3: Lấy Lịch sử & Tạo Message
+      const history = this.getHistory(sessionId);
+      const userMessage = new HumanMessage(question);
+      const messages = [...history, userMessage]; // Gộp lịch sử cũ + câu mới
+
+      const newMessagesBatch = [userMessage]; // Để lưu batch này
+      let foundProductsRaw = []; // Để hứng dữ liệu trả về Frontend
+
+      // B4: Gọi AI lần 1
+      const aiResponse = await modelWithTools.invoke(messages);
+      messages.push(aiResponse);
+      newMessagesBatch.push(aiResponse);
+
+      // B5: Check Tool Call
+      if (aiResponse.tool_calls && aiResponse.tool_calls.length > 0) {
+        
+        for (const toolCall of aiResponse.tool_calls) {
+            if (toolCall.name === "search_furniture") {
+                // Thực thi Tool
+                // SỬA LỖI: Truyền toolCall.args thay vì toolCall
+                const toolOutputString = await searchTool.invoke(toolCall.args);
+                
+                // Parse lại để lấy object trả về Frontend
+                try {
+                    // Kiểm tra kỹ hơn trước khi parse
+                    if (toolOutputString && toolOutputString !== "Không tìm thấy sản phẩm nào phù hợp.") {
+                        foundProductsRaw = JSON.parse(toolOutputString);
+                    }
+                } catch (e) {
+                    console.error("❌ Lỗi Parse JSON sản phẩm:", e);
+                    // Log ra xem chuỗi bị lỗi là gì
+                    console.log("Chuỗi gây lỗi:", toolOutputString);
+                }
+
+                // Đóng gói kết quả Tool
+                const toolMsg = new ToolMessage({
+                    tool_call_id: toolCall.id,
+                    content: toolOutputString
+                });
+                
+                messages.push(toolMsg);
+                newMessagesBatch.push(toolMsg);
+            }
+        }
+
+        // B6: Gọi AI lần 2 để sinh câu trả lời cuối cùng
+        const finalResponse = await modelWithTools.invoke(messages);
+        newMessagesBatch.push(finalResponse);
+
+        // Lưu toàn bộ vào lịch sử
+        this.saveHistory(sessionId, newMessagesBatch);
+
+        return {
+            answer: finalResponse.content,
+            products: foundProductsRaw // Trả list sản phẩm về FE hiển thị
+        };
+
+      } else {
+        // Chat xã giao, không gọi tool
+        this.saveHistory(sessionId, newMessagesBatch);
+        return {
+            answer: aiResponse.content,
+            products: []
+        };
       }
-      console.log("searchStrategies2:", searchStrategies2);
 
-      let finalProducts = [];
-      let seenProductIds = new Set(); // Để tránh trùng lặp nếu chạy nhiều query
-
-      // 3. Chạy vòng lặp chiến thuật
-      for (const strategy of searchStrategies2) {
-        // Nếu đã tìm đủ 5 sản phẩm thì dừng ngay, không tìm thêm nữa
-        if (finalProducts.length >= 5) break;
-
-        console.log(`🔍 Đang thử chiến thuật: ${strategy.name}...`);
-
-        // Xây dựng whereClause động dựa trên strategy hiện tại
-        let whereClause = {};
-
-        // Chỉ thêm các điều kiện nếu strategy yêu cầu VÀ filter có dữ liệu
-        if (strategy.includes("category") && filters.category) {
-          whereClause.category = { name: { contains: filters.category } };
-        }
-        if (strategy.includes("maxPrice") && filters.maxPrice) {
-          whereClause.price = { lte: filters.maxPrice };
-        }
-        if (strategy.includes("minPrice") && filters.minPrice) {
-          whereClause.price = {
-            ...whereClause.price,
-            gte: filters.minPrice,
-          };
-        }
-        if (strategy.includes("color") && filters.color) {
-          whereClause.color = { contains: filters.color };
-        }
-        if (strategy.includes("material") && filters.material) {
-          whereClause.material = { contains: filters.material };
-        }
-        if (strategy.includes("style") && filters.style) {
-          whereClause.style = { contains: filters.style };
-        }
-        if (strategy.includes("rating") && filters.rating) {
-          whereClause.rating = filters.rating;
-        }
-        console.log("whereClause:", whereClause);
-
-        // Query Database
-        const products = await prisma.product.findMany({
-          where: whereClause,
-          include: {
-            images: { select: { url: true } },
-            category: { select: { id: true, name: true } },
-          },
-          take: 5, // Lấy thử 5 cái mỗi lần
-          orderBy: { price: "asc" }, // Ưu tiên rẻ trước nếu muốn
-        });
-
-        // 4. Merge kết quả (Lọc trùng)
-        for (const p of products) {
-          if (!seenProductIds.has(p.id)) {
-            // Đánh dấu sản phẩm này thuộc chiến thuật nào (để AI giải thích)
-            p.matchType = strategy.name;
-
-            finalProducts.push(p);
-            seenProductIds.add(p.id);
-          }
-        }
-      }
-      // B5: Sinh câu trả lời (QUAN TRỌNG)
-      const aiAnswer = await this.generateFriendlyAnswer(question, finalProducts);
-
-      // Trả về format chuẩn cho Controller
-      return {
-        answer: aiAnswer,
-        products: finalProducts,
-      };
     } catch (error) {
       console.error("Lỗi ChatService:", error);
-      // Fallback an toàn
       return {
-        answer:
-          "Xin lỗi, hệ thống đang gặp chút trục trặc. Anh/chị thử lại sau giây lát nhé!",
-        products: [],
+        answer: "Xin lỗi, hệ thống đang bận chút xíu, bạn thử lại sau nha!",
+        products: []
       };
     }
   }
